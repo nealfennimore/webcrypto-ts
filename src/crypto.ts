@@ -1,3 +1,5 @@
+import { SHA } from "./alg";
+
 export namespace WebCrypto {
     // @ts-ignore Use node webcrypto if available
     export const _crypto: Crypto = crypto?.webcrypto ?? crypto;
@@ -244,5 +246,12 @@ export namespace WebCrypto {
             extractable,
             keyUsages
         )) as T;
+    }
+
+    export async function digest(
+        algorithm: SHA.Variants,
+        data: BufferSource
+    ): Promise<ArrayBuffer> {
+        return await _crypto.subtle.digest(algorithm, data);
     }
 }

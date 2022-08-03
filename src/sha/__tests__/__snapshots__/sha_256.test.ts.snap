@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SHA_256 should hexify 1`] = `"f53c09ca39717a45c62d9aca8f8113eddbfd5f81dcab0b33b1c1834075225e68"`;
