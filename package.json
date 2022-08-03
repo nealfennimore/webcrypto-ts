@@ -7,8 +7,7 @@
         "prebuild": "rm -rf dist",
         "build": "tsc --build",
         "watch": "tsc --watch",
-        "test": "jest",
-        "test:coverage": "npm run test -- --coverage"
+        "test": "jest"
     },
     "author": "Neal Fennimore",
     "license": "MIT",
