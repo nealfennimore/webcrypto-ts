@@ -1,5 +1,7 @@
-import { ECDSA } from "../ecdsa";
+import { EC } from "../index";
 import { EcKeyPair } from "../shared";
+
+const { ECDSA } = EC;
 
 describe("ECDSA", () => {
     let keyPair: EcKeyPair;

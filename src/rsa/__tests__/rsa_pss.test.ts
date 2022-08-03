@@ -1,4 +1,6 @@
-import { RSA_PSS } from "../rsa_pss";
+import { RSA } from "../index";
+
+const { RSA_PSS } = RSA;
 
 describe("RSA_PSS", () => {
     it("should generate key", async () => {

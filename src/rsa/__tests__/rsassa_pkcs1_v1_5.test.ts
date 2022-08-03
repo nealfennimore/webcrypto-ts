@@ -1,4 +1,6 @@
-import { RSASSA_PKCS1_v1_5 } from "../rsassa_pkcs1_v1_5";
+import { RSA } from "../index";
+
+const { RSASSA_PKCS1_v1_5 } = RSA;
 
 describe("RSASSA_PKCS1_v1_5", () => {
     it("should generate key", async () => {

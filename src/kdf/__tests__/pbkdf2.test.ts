@@ -1,8 +1,10 @@
 import * as alg from "../../alg";
 import * as params from "../../params";
 import { Salt } from "../../salt";
-import { PBKDF2 } from "../pbkdf";
+import { KDF } from "../index";
 import type { Pbkdf2KeyMaterial } from "../shared";
+
+const { PBKDF2 } = KDF;
 
 describe("PBKDF2", () => {
     let keyMaterial: Pbkdf2KeyMaterial, salt: Uint8Array;

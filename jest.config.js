@@ -10,7 +10,6 @@ module.exports = {
             "decode": true,
         }
     },
-    collectCoverage: true,
     collectCoverageFrom: [
         "./src/**/*.ts",
         "!**/__tests__/**",

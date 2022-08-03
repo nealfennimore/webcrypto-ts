@@ -1,7 +1,9 @@
 import * as alg from "../../alg";
 import * as params from "../../params";
-import { ECDH } from "../ecdh";
+import { EC } from "../index";
 import { EcKeyPair } from "../shared";
+
+const { ECDH } = EC;
 
 describe("ECDH", () => {
     let keyPair: EcKeyPair;

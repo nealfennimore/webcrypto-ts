@@ -1,6 +1,8 @@
 import { AES } from "../../aes/index";
 import * as alg from "../../alg";
-import { RSA_OAEP } from "../rsa_oaep";
+import { RSA } from "../index";
+
+const { RSA_OAEP } = RSA;
 
 describe("RSA_OAEP", () => {
     it("should generate key", async () => {

@@ -1,9 +1,10 @@
 import * as alg from "../../alg";
 import * as params from "../../params";
 import { Salt } from "../../salt";
-import { HKDF } from "../hkdf";
+import { KDF } from "../index";
 import type { HkdfKeyMaterial } from "../shared";
 
+const { HKDF } = KDF;
 describe("HKDF", () => {
     let keyMaterial: HkdfKeyMaterial, salt: Uint8Array, info: Uint8Array;
     beforeEach(async () => {
