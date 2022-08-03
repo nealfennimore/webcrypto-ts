@@ -1,14 +1,12 @@
 import type { AesKey } from "../aes/index";
 import * as alg from "../alg";
 import { WebCrypto } from "../crypto";
+import { HmacKey } from "../hmac/index";
 import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../keyUsages";
 import * as params from "../params";
 
 export interface Pbkdf2KeyMaterial extends CryptoKey {}
-
 export interface HkdfKeyMaterial extends CryptoKey {}
-export interface HmacKey extends CryptoKey {}
-
 export namespace KdfShared {
     export async function generateKeyMaterial<K extends CryptoKey>(
         format: KeyFormat,
