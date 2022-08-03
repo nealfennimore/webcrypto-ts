@@ -1,8 +1,6 @@
-import { RSA } from "./alg";
-
 export namespace WebCrypto {
     // @ts-ignore Use node webcrypto if available
-    const _crypto: Crypto = crypto?.webcrypto ?? crypto;
+    export const _crypto: Crypto = crypto?.webcrypto ?? crypto;
 
     export async function encrypt<
         T extends CryptoKey,

@@ -1,10 +1,10 @@
-import { KeyUsagePairs, getKeyUsagePairsByAlg } from "./keyUsages";
-import * as params from "./params";
-import { WebCrypto } from "./crypto";
+import { WebCrypto } from "../crypto";
+import { getKeyUsagePairsByAlg } from "../keyUsages";
+import * as params from "../params";
 
 export interface AesKey extends CryptoKey {}
 
-export namespace AES {
+export namespace AesShared {
     export async function generateKey(
         algorithm: params.EnforcedAesKeyGenParams,
         extractable: boolean = true,
@@ -88,7 +88,7 @@ export namespace AES {
         unwrappingKey: AesKey,
         unwrappingKeyAlgorithm: params.EnforcedAesParams,
         extractable: boolean = true,
-        keyUsages?: KeyUsagePairs
+        keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {
         return await WebCrypto.unwrapKey(
             format as any,

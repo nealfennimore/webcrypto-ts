@@ -1,5 +1,7 @@
 import * as alg from "./alg";
 
+export type AesBlockSize = 128 | 192 | 256;
+
 export interface EnforcedRsaHashedKeyGenParams extends RsaHashedKeyGenParams {
     name: alg.RSA.Variants;
     hash: alg.SHA.SecureVariants;
@@ -13,7 +15,7 @@ export interface EnforcedEcKeyGenParams extends EcKeyGenParams {
 
 export interface EnforcedAesKeyGenParams extends AesKeyGenParams {
     name: alg.AES.Modes;
-    length: 128 | 192 | 256;
+    length: AesBlockSize;
 }
 
 export interface EnforcedHmacKeyGenParams extends HmacKeyGenParams {
@@ -38,10 +40,6 @@ export interface EnforcedHmacImportParams extends HmacImportParams {
     length?: 512 | 1024;
 }
 
-export interface AesGcmKeyAlgorithm extends AesKeyAlgorithm {
-    name: alg.AES.Mode.AES_GCM;
-}
-
 export interface EnforcedRsaOaepParams extends RsaOaepParams {
     name: alg.RSA.Variant.RSA_OAEP;
 }
@@ -62,12 +60,18 @@ export interface EnforcedEcdhKeyDeriveParams extends EcdhKeyDeriveParams {
     name: alg.EC.Variant.ECDH;
 }
 
+export interface AesGcmKeyAlgorithm extends AesKeyAlgorithm {
+    name: alg.AES.Mode.AES_GCM;
+    length: AesBlockSize;
+}
+
 export interface EnforcedAesGcmParams extends AesGcmParams {
     tagLength?: 32 | 64 | 96 | 104 | 112 | 120 | 128;
 }
 
 export interface AesCtrKeyAlgorithm extends AesKeyAlgorithm {
     name: alg.AES.Mode.AES_CTR;
+    length: AesBlockSize;
 }
 
 export interface EnforcedAesCtrParams extends AesCtrParams {
@@ -76,6 +80,7 @@ export interface EnforcedAesCtrParams extends AesCtrParams {
 
 export interface AesCbcKeyAlgorithm extends AesKeyAlgorithm {
     name: alg.AES.Mode.AES_CBC;
+    length: AesBlockSize;
 }
 
 export interface EnforcedAesCbcParams extends AesCbcParams {

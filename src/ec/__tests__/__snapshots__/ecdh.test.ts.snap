@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ECDH should derive keys 1`] = `
+CryptoKey {
+  Symbol(kKeyObject): SecretKeyObject {
+    Symbol(kKeyType): "secret",
+  },
+  Symbol(kAlgorithm): Object {
+    "hash": Object {
+      "hash": undefined,
+      "name": "SHA-512",
+    },
+    "length": 512,
+    "name": "HMAC",
+  },
+  Symbol(kExtractable): true,
+  Symbol(kKeyUsages): Array [
+    "sign",
+    "verify",
+  ],
+}
+`;
+
+exports[`ECDH should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey {
+    Symbol(kKeyObject): PrivateKeyObject {
+      Symbol(kKeyType): "private",
+    },
+    Symbol(kAlgorithm): Object {
+      "name": "ECDH",
+      "namedCurve": "P-521",
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "deriveKey",
+      "deriveBits",
+    ],
+  },
+  "publicKey": CryptoKey {
+    Symbol(kKeyObject): PublicKeyObject {
+      Symbol(kKeyType): "public",
+    },
+    Symbol(kAlgorithm): Object {
+      "name": "ECDH",
+      "namedCurve": "P-521",
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [],
+  },
+}
+`;

@@ -1,0 +1,59 @@
+import * as alg from "../../alg";
+import * as params from "../../params";
+import { ECDH } from "../ecdh";
+import { EcKeyPair } from "../shared";
+
+describe("ECDH", () => {
+    let keyPair: EcKeyPair;
+    beforeEach(async () => {
+        keyPair = await ECDH.generateKey();
+    });
+    it("should generate key", async () => {
+        expect(keyPair).toMatchSnapshot();
+    });
+    it("should import and export key", async () => {
+        let jwk = await ECDH.exportKey("jwk", keyPair.publicKey);
+        const importedPubKey = await ECDH.importKey(
+            "jwk",
+            "P-521",
+            jwk,
+            true,
+            []
+        );
+
+        expect(await ECDH.exportKey("jwk", importedPubKey)).toEqual(jwk);
+
+        jwk = await ECDH.exportKey("jwk", keyPair.privateKey);
+        const importedPrivKey = await ECDH.importKey("jwk", "P-521", jwk);
+
+        expect(await ECDH.exportKey("jwk", importedPrivKey)).toEqual(jwk);
+    });
+    it("should derive bits", async () => {
+        const otherKeyPair = await ECDH.generateKey();
+
+        const bits = await ECDH.deriveBits(
+            otherKeyPair.publicKey,
+            keyPair.privateKey,
+            128
+        );
+        expect(bits.byteLength).toEqual(16);
+
+        await expect(
+            ECDH.deriveBits(otherKeyPair.publicKey, keyPair.privateKey, 127)
+        ).rejects.toThrowError(RangeError);
+    });
+    it("should derive keys", async () => {
+        const otherKeyPair = await ECDH.generateKey();
+        const hmacParams: params.EnforcedHmacKeyGenParams = {
+            name: alg.Authentication.Code.HMAC,
+            hash: alg.SHA.Variant.SHA_512,
+            length: 512,
+        };
+        let key = await ECDH.deriveKey(
+            otherKeyPair.publicKey,
+            keyPair.privateKey,
+            hmacParams
+        );
+        expect(key).toMatchSnapshot();
+    });
+});
