@@ -105,6 +105,10 @@ export interface EnforcedPbkdf2Params extends Pbkdf2Params {
     iterations: 720_000 | 310_000 | 310_000 | 120_000;
 }
 
+export interface HmacKeyAlgorithm extends KeyAlgorithm {
+    name: alg.Authentication.Code.HMAC;
+}
+
 export type EnforcedAesKeyAlgorithms =
     | AesGcmKeyAlgorithm
     | AesCtrKeyAlgorithm

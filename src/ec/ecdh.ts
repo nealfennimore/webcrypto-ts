@@ -6,27 +6,31 @@ import { EcKey, EcKeyPair, SharedEc } from "./shared";
 
 export namespace ECDH {
     export const generateKey = async (
-        namedCurve: alg.EC.Curves = alg.EC.Curve.P_521,
+        algorithm: Omit<params.EnforcedEcKeyGenParams, "name"> = {
+            namedCurve: alg.EC.Curve.P_521,
+        },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         (await SharedEc.generateKey(
-            { name: alg.EC.Variant.ECDH, namedCurve },
+            { ...algorithm, name: alg.EC.Variant.ECDH },
             extractable,
             keyUsages
         )) as EcKeyPair;
 
     export const importKey = async (
         format: KeyFormat,
-        namedCurve: alg.EC.Curves,
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.EnforcedEcKeyImportParams, "name"> = {
+            namedCurve: alg.EC.Curve.P_521,
+        },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         await SharedEc.importKey(
             format,
-            { name: alg.EC.Variant.ECDH, namedCurve },
             keyData,
+            { ...algorithm, name: alg.EC.Variant.ECDH },
             extractable,
             keyUsages
         );
@@ -34,7 +38,7 @@ export namespace ECDH {
     export const exportKey = SharedEc.exportKey;
 
     export async function deriveKey(
-        publicKey: EcKey,
+        algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
         baseKey: EcKey,
         derivedKeyType:
             | params.EnforcedAesKeyGenParams
@@ -47,8 +51,8 @@ export namespace ECDH {
             params.EnforcedAesKeyGenParams | params.EnforcedHmacKeyGenParams
         >(
             {
+                ...algorithm,
                 name: alg.EC.Variant.ECDH,
-                public: publicKey,
             },
             baseKey,
             derivedKeyType,
@@ -58,14 +62,17 @@ export namespace ECDH {
     }
 
     export async function deriveBits(
-        publicKey: EcKey,
+        algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
         baseKey: EcKey,
         length: number
     ): Promise<ArrayBuffer> {
-        return await WebCrypto.deriveBits(
+        return await WebCrypto.deriveBits<
+            EcKey,
+            params.EnforcedEcdhKeyDeriveParams
+        >(
             {
+                ...algorithm,
                 name: alg.EC.Variant.ECDH,
-                public: publicKey,
             },
             baseKey,
             length

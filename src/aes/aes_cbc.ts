@@ -1,39 +1,41 @@
 import * as alg from "../alg";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
 import * as params from "../params";
 import { AesKey, AesShared } from "./shared";
 
 export namespace AES_CBC {
     export async function generateKey(
-        length: params.EnforcedAesKeyGenParams["length"] = 256,
+        algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
+            length: 256,
+        },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const _algorithm: params.EnforcedAesKeyGenParams = {
-            name: alg.AES.Mode.AES_CBC,
-            length,
-        };
-        return await AesShared.generateKey(_algorithm, extractable, keyUsages);
+        return await AesShared.generateKey(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CBC,
+            },
+            extractable,
+            keyUsages
+        );
     }
 
     export async function importKey(
         format: KeyFormat,
-        length: params.AesCbcKeyAlgorithm["length"],
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.AesCbcKeyAlgorithm, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const algorithm: params.AesCbcKeyAlgorithm = {
-            name: alg.AES.Mode.AES_CBC,
-            length,
-        };
-
         return await AesShared.importKey(
             format as any,
-            algorithm,
             keyData as any,
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CBC,
+            },
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages
         );
     }
 
@@ -44,11 +46,14 @@ export namespace AES_CBC {
         keyData: AesKey,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
-        const _algorithm: params.EnforcedAesCbcParams = {
-            ...algorithm,
-            name: alg.AES.Mode.AES_CBC,
-        };
-        return await AesShared.encrypt(_algorithm, keyData, plaintext);
+        return await AesShared.encrypt(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CBC,
+            },
+            keyData,
+            plaintext
+        );
     }
 
     export async function decrypt(
@@ -56,11 +61,14 @@ export namespace AES_CBC {
         keyData: AesKey,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
-        const _algorithm: params.EnforcedAesCbcParams = {
-            ...algorithm,
-            name: alg.AES.Mode.AES_CBC,
-        };
-        return await AesShared.decrypt(_algorithm, keyData, ciphertext);
+        return await AesShared.decrypt(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CBC,
+            },
+            keyData,
+            ciphertext
+        );
     }
 
     export async function wrapKey(
@@ -69,16 +77,10 @@ export namespace AES_CBC {
         wrappingkey: AesKey,
         wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
     ): Promise<ArrayBuffer> {
-        const _wrapAlgorithm: params.EnforcedAesCbcParams = {
+        return await AesShared.wrapKey(format as any, key, wrappingkey, {
             ...wrapAlgorithm,
             name: alg.AES.Mode.AES_CBC,
-        };
-        return await AesShared.wrapKey(
-            format as any,
-            key,
-            wrappingkey,
-            _wrapAlgorithm
-        );
+        });
     }
     export async function unwrapKey(
         format: KeyFormat,
@@ -89,16 +91,15 @@ export namespace AES_CBC {
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {
-        const _unwrappingKeyAlgorithm: params.EnforcedAesCbcParams = {
-            ...unwrappingKeyAlgorithm,
-            name: alg.AES.Mode.AES_CBC,
-        };
         return await AesShared.unwrapKey(
             format,
             wrappedKey,
             wrappedKeyAlgorithm,
             unwrappingKey,
-            _unwrappingKeyAlgorithm,
+            {
+                ...unwrappingKeyAlgorithm,
+                name: alg.AES.Mode.AES_CBC,
+            },
             extractable,
             keyUsages
         );

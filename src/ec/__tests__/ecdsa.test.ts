@@ -15,8 +15,8 @@ describe("ECDSA", () => {
         let jwk = await ECDSA.exportKey("jwk", keyPair.publicKey);
         const importedPubKey = await ECDSA.importKey(
             "jwk",
-            "P-521",
             jwk,
+            { namedCurve: "P-521" },
             true,
             ["verify"]
         );
@@ -26,8 +26,8 @@ describe("ECDSA", () => {
         jwk = await ECDSA.exportKey("jwk", keyPair.privateKey);
         const importedPrivKey = await ECDSA.importKey(
             "jwk",
-            "P-521",
             jwk,
+            { namedCurve: "P-521" },
             true,
             ["sign"]
         );
@@ -36,10 +36,19 @@ describe("ECDSA", () => {
     });
     it("should sign and verify", async () => {
         const text = encode("a message");
-        const signature = await ECDSA.sign("SHA-512", keyPair.privateKey, text);
+        const signature = await ECDSA.sign(
+            { hash: "SHA-512" },
+            keyPair.privateKey,
+            text
+        );
 
         expect(
-            await ECDSA.verify("SHA-512", keyPair.publicKey, signature, text)
+            await ECDSA.verify(
+                { hash: "SHA-512" },
+                keyPair.publicKey,
+                signature,
+                text
+            )
         ).toBe(true);
     });
 });

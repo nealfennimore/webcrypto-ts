@@ -1,19 +1,23 @@
 import * as alg from "../alg";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
 import * as params from "../params";
 import { AesKey, AesShared } from "./shared";
 
 export namespace AES_KW {
     export async function generateKey(
-        length: params.EnforcedAesKeyGenParams["length"],
+        algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
+            length: 256,
+        },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const _algorithm: params.EnforcedAesKeyGenParams = {
-            name: alg.AES.Mode.AES_KW,
-            length,
-        };
-        return await AesShared.generateKey(_algorithm, extractable, keyUsages);
+        return await AesShared.generateKey(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_KW,
+            },
+            extractable,
+            keyUsages
+        );
     }
 
     export async function importKey(
@@ -22,16 +26,14 @@ export namespace AES_KW {
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const algorithm: params.AesKwKeyAlgorithm = {
-            name: alg.AES.Mode.AES_KW,
-        };
-
         return await AesShared.importKey(
             format as any,
-            algorithm,
             keyData as any,
+            {
+                name: alg.AES.Mode.AES_KW,
+            },
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages
         );
     }
 
@@ -42,15 +44,9 @@ export namespace AES_KW {
         key: CryptoKey,
         wrappingkey: AesKey
     ): Promise<ArrayBuffer> {
-        const wrapAlgorithm: params.EnforcedAesKwParams = {
+        return await AesShared.wrapKey(format as any, key, wrappingkey, {
             name: alg.AES.Mode.AES_KW,
-        };
-        return await AesShared.wrapKey(
-            format as any,
-            key,
-            wrappingkey,
-            wrapAlgorithm
-        );
+        });
     }
     export async function unwrapKey(
         format: KeyFormat,
@@ -60,15 +56,14 @@ export namespace AES_KW {
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {
-        const unwrappingKeyAlgorithm: params.EnforcedAesKwParams = {
-            name: alg.AES.Mode.AES_KW,
-        };
         return await AesShared.unwrapKey(
             format,
             wrappedKey,
             wrappedKeyAlgorithm,
             unwrappingKey,
-            unwrappingKeyAlgorithm,
+            {
+                name: alg.AES.Mode.AES_KW,
+            },
             extractable,
             keyUsages
         );

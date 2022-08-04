@@ -13,9 +13,13 @@ describe("RSA_OAEP", () => {
     it("should import and export key", async () => {
         const keyPair = await RSA_OAEP.generateKey();
         const jwk = await RSA_OAEP.exportKey("jwk", keyPair.publicKey);
-        const pubKey = await RSA_OAEP.importKey("jwk", "SHA-512", jwk, false, [
-            "encrypt",
-        ]);
+        const pubKey = await RSA_OAEP.importKey(
+            "jwk",
+            jwk,
+            { hash: "SHA-512" },
+            false,
+            ["encrypt"]
+        );
         const text = encode("a message");
         const ciphertext = await RSA_OAEP.encrypt(pubKey, text);
         const plaintext = await RSA_OAEP.decrypt(
@@ -37,9 +41,11 @@ describe("RSA_OAEP", () => {
     it("should wrap and unwrap key", async () => {
         const aesKey = await AES.AES_CBC.generateKey();
         const keyPair = await RSA_OAEP.generateKey(
-            "SHA-512",
-            4096,
-            new Uint8Array([0x01, 0x00, 0x01]),
+            {
+                hash: "SHA-512",
+                modulusLength: 4096,
+                publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            },
             true,
             ["wrapKey", "unwrapKey"]
         );

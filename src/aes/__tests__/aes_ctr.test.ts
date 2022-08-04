@@ -8,7 +8,7 @@ describe("AES_CTR", () => {
     beforeEach(async () => {
         iv = await IV.generate();
         counter = await AES.AES_CTR.generateCounter();
-        key = await AES.AES_CTR.generateKey(256);
+        key = await AES.AES_CTR.generateKey();
     });
     it("should encrypt and decrypt", async () => {
         const ciphertextBytes = await AES.AES_CTR.encrypt(
@@ -31,7 +31,9 @@ describe("AES_CTR", () => {
         );
 
         const jwk = await AES.AES_CTR.exportKey("jwk", key);
-        const importedKey = await AES.AES_CTR.importKey("jwk", 256, jwk);
+        const importedKey = await AES.AES_CTR.importKey("jwk", jwk, {
+            length: 256,
+        });
 
         const plaintextBytes = await AES.AES_CTR.decrypt(
             { counter, length: 8 },
@@ -41,11 +43,11 @@ describe("AES_CTR", () => {
         expect(new TextDecoder().decode(plaintextBytes)).toEqual(text);
     });
     it("should wrap and unwrap keys", async () => {
-        const kek = await AES.AES_CTR.generateKey(256, true, [
+        const kek = await AES.AES_CTR.generateKey({ length: 256 }, true, [
             "wrapKey",
             "unwrapKey",
         ]);
-        const dek: AesKey = await AES.AES_CTR.generateKey(256);
+        const dek: AesKey = await AES.AES_CTR.generateKey({ length: 256 });
 
         const ciphertextBytes = await AES.AES_CTR.encrypt(
             { counter, length: 8 },

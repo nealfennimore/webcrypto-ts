@@ -14,8 +14,8 @@ describe("RSASSA_PKCS1_v1_5", () => {
         let jwk = await RSASSA_PKCS1_v1_5.exportKey("jwk", keyPair.publicKey);
         const pubKey = await RSASSA_PKCS1_v1_5.importKey(
             "jwk",
-            "SHA-512",
             jwk,
+            { hash: "SHA-512" },
             true,
             ["verify"]
         );
@@ -25,8 +25,8 @@ describe("RSASSA_PKCS1_v1_5", () => {
         jwk = await RSASSA_PKCS1_v1_5.exportKey("jwk", keyPair.privateKey);
         const privKey = await RSASSA_PKCS1_v1_5.importKey(
             "jwk",
-            "SHA-512",
             jwk,
+            { hash: "SHA-512" },
             true,
             ["sign"]
         );

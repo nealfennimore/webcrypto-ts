@@ -18,20 +18,16 @@ describe("HKDF", () => {
     });
     it("should derive bits", async () => {
         const bits = await HKDF.deriveBits(
+            { salt, info, hash: alg.SHA.Variant.SHA_512 },
             keyMaterial,
-            salt,
-            info,
-            alg.SHA.Variant.SHA_512,
             512
         );
         expect(bits.byteLength).toEqual(64);
 
         await expect(
             HKDF.deriveBits(
+                { salt, info, hash: alg.SHA.Variant.SHA_512 },
                 keyMaterial,
-                salt,
-                info,
-                alg.SHA.Variant.SHA_512,
                 511
             )
         ).rejects.toThrowError(RangeError);
@@ -49,10 +45,8 @@ describe("HKDF", () => {
                     };
                     try {
                         let key = await HKDF.deriveKey(
+                            { salt, info, hash: shaVal },
                             keyMaterial,
-                            salt,
-                            info,
-                            shaVal,
                             aesParams
                         );
                         expect(key).toMatchSnapshot(
@@ -71,10 +65,8 @@ describe("HKDF", () => {
             length: 512,
         };
         let key = await HKDF.deriveKey(
+            { salt, info, hash: alg.SHA.Variant.SHA_512 },
             keyMaterial,
-            salt,
-            info,
-            alg.SHA.Variant.SHA_512,
             hmacParams
         );
         expect(key).toMatchSnapshot("HMAC_SHA_512");

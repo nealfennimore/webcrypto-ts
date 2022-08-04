@@ -1,20 +1,21 @@
 import * as alg from "../alg";
+import * as params from "../params";
 import { RsaKey, RsaKeyPair, RsaShared } from "./shared";
 
 export namespace RSASSA_PKCS1_v1_5 {
     export const generateKey = async (
-        hash: alg.SHA.SecureVariants = alg.SHA.Variant.SHA_512,
-        modulusLength: 4096 = 4096,
-        publicExponent: Uint8Array = new Uint8Array([0x01, 0x00, 0x01]),
+        algorithm: Omit<params.EnforcedRsaHashedKeyGenParams, "name"> = {
+            hash: alg.SHA.Variant.SHA_512,
+            modulusLength: 4096,
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         (await RsaShared.generateKey(
             {
+                ...algorithm,
                 name: alg.RSA.Variant.RSASSA_PKCS1_v1_5,
-                hash,
-                modulusLength,
-                publicExponent,
             },
             extractable,
             keyUsages
@@ -22,15 +23,15 @@ export namespace RSASSA_PKCS1_v1_5 {
 
     export const importKey = async (
         format: KeyFormat,
-        hash: alg.SHA.SecureVariants,
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         await RsaShared.importKey(
             format,
-            { name: alg.RSA.Variant.RSASSA_PKCS1_v1_5, hash },
             keyData,
+            { ...algorithm, name: alg.RSA.Variant.RSASSA_PKCS1_v1_5 },
             extractable,
             keyUsages
         );

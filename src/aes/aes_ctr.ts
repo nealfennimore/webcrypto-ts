@@ -1,6 +1,5 @@
 import * as alg from "../alg";
 import { WebCrypto } from "../crypto";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
 import * as params from "../params";
 import { AesKey, AesShared } from "./shared";
 
@@ -17,35 +16,38 @@ export namespace AES_CTR {
         return counter;
     }
     export async function generateKey(
-        length: params.EnforcedAesKeyGenParams["length"] = 256,
+        algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
+            length: 256,
+        },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const _algorithm: params.EnforcedAesKeyGenParams = {
-            name: alg.AES.Mode.AES_CTR,
-            length,
-        };
-        return await AesShared.generateKey(_algorithm, extractable, keyUsages);
+        return await AesShared.generateKey(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CTR,
+            },
+            extractable,
+            keyUsages
+        );
     }
 
     export async function importKey(
         format: KeyFormat,
-        length: params.AesCtrKeyAlgorithm["length"],
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.AesCtrKeyAlgorithm, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const algorithm: params.AesCtrKeyAlgorithm = {
-            name: alg.AES.Mode.AES_CTR,
-            length,
-        };
-
         return await AesShared.importKey(
             format as any,
-            algorithm,
             keyData as any,
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CTR,
+            },
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages
         );
     }
 
@@ -56,11 +58,14 @@ export namespace AES_CTR {
         keyData: AesKey,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
-        const _algorithm: params.EnforcedAesCtrParams = {
-            ...algorithm,
-            name: alg.AES.Mode.AES_CTR,
-        };
-        return await AesShared.encrypt(_algorithm, keyData, plaintext);
+        return await AesShared.encrypt(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CTR,
+            },
+            keyData,
+            plaintext
+        );
     }
 
     export async function decrypt(
@@ -68,11 +73,14 @@ export namespace AES_CTR {
         keyData: AesKey,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
-        const _algorithm: params.EnforcedAesCtrParams = {
-            ...algorithm,
-            name: alg.AES.Mode.AES_CTR,
-        };
-        return await AesShared.decrypt(_algorithm, keyData, ciphertext);
+        return await AesShared.decrypt(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_CTR,
+            },
+            keyData,
+            ciphertext
+        );
     }
 
     export async function wrapKey(
@@ -81,16 +89,10 @@ export namespace AES_CTR {
         wrappingkey: AesKey,
         wrapAlgorithm: Omit<params.EnforcedAesCtrParams, "name">
     ): Promise<ArrayBuffer> {
-        const _wrapAlgorithm: params.EnforcedAesCtrParams = {
+        return await AesShared.wrapKey(format as any, key, wrappingkey, {
             ...wrapAlgorithm,
             name: alg.AES.Mode.AES_CTR,
-        };
-        return await AesShared.wrapKey(
-            format as any,
-            key,
-            wrappingkey,
-            _wrapAlgorithm
-        );
+        });
     }
     export async function unwrapKey(
         format: KeyFormat,
@@ -101,16 +103,15 @@ export namespace AES_CTR {
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {
-        const _unwrappingKeyAlgorithm: params.EnforcedAesCtrParams = {
-            ...unwrappingKeyAlgorithm,
-            name: alg.AES.Mode.AES_CTR,
-        };
         return await AesShared.unwrapKey(
             format,
             wrappedKey,
             wrappedKeyAlgorithm,
             unwrappingKey,
-            _unwrappingKeyAlgorithm,
+            {
+                ...unwrappingKeyAlgorithm,
+                name: alg.AES.Mode.AES_CTR,
+            },
             extractable,
             keyUsages
         );

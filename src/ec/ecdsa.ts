@@ -5,27 +5,31 @@ import { EcKey, SharedEc } from "./shared";
 
 export namespace ECDSA {
     export const generateKey = async (
-        namedCurve: alg.EC.Curves = alg.EC.Curve.P_521,
+        algorithm: Omit<params.EnforcedEcKeyGenParams, "name"> = {
+            namedCurve: alg.EC.Curve.P_521,
+        },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         await SharedEc.generateKey(
-            { name: alg.EC.Variant.ECDSA, namedCurve },
+            { ...algorithm, name: alg.EC.Variant.ECDSA },
             extractable,
             keyUsages
         );
 
     export const importKey = async (
         format: KeyFormat,
-        namedCurve: alg.EC.Curves,
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.EnforcedEcKeyImportParams, "name"> = {
+            namedCurve: alg.EC.Curve.P_521,
+        },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         await SharedEc.importKey(
             format,
-            { name: alg.EC.Variant.ECDSA, namedCurve },
             keyData,
+            { ...algorithm, name: alg.EC.Variant.ECDSA },
             extractable,
             keyUsages
         );
@@ -33,14 +37,14 @@ export namespace ECDSA {
     export const exportKey = SharedEc.exportKey;
 
     export async function sign(
-        hash: params.EnforcedEcdsaParams["hash"],
+        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
         keyData: EcKey,
         data: BufferSource
     ): Promise<ArrayBuffer> {
-        return await WebCrypto.sign(
+        return await WebCrypto.sign<EcKey, params.EnforcedEcdsaParams>(
             {
+                ...algorithm,
                 name: alg.EC.Variant.ECDSA,
-                hash,
             },
             keyData,
             data
@@ -48,15 +52,15 @@ export namespace ECDSA {
     }
 
     export async function verify(
-        hash: params.EnforcedEcdsaParams["hash"],
+        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
         keyData: EcKey,
         signature: BufferSource,
         data: BufferSource
     ): Promise<boolean> {
-        return await WebCrypto.verify(
+        return await WebCrypto.verify<EcKey, params.EnforcedEcdsaParams>(
             {
+                ...algorithm,
                 name: alg.EC.Variant.ECDSA,
-                hash,
             },
             keyData,
             signature,

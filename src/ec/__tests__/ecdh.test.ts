@@ -17,8 +17,8 @@ describe("ECDH", () => {
         let jwk = await ECDH.exportKey("jwk", keyPair.publicKey);
         const importedPubKey = await ECDH.importKey(
             "jwk",
-            "P-521",
             jwk,
+            { namedCurve: "P-521" },
             true,
             []
         );
@@ -26,7 +26,9 @@ describe("ECDH", () => {
         expect(await ECDH.exportKey("jwk", importedPubKey)).toEqual(jwk);
 
         jwk = await ECDH.exportKey("jwk", keyPair.privateKey);
-        const importedPrivKey = await ECDH.importKey("jwk", "P-521", jwk);
+        const importedPrivKey = await ECDH.importKey("jwk", jwk, {
+            namedCurve: "P-521",
+        });
 
         expect(await ECDH.exportKey("jwk", importedPrivKey)).toEqual(jwk);
     });
@@ -34,14 +36,18 @@ describe("ECDH", () => {
         const otherKeyPair = await ECDH.generateKey();
 
         const bits = await ECDH.deriveBits(
-            otherKeyPair.publicKey,
+            { public: otherKeyPair.publicKey },
             keyPair.privateKey,
             128
         );
         expect(bits.byteLength).toEqual(16);
 
         await expect(
-            ECDH.deriveBits(otherKeyPair.publicKey, keyPair.privateKey, 127)
+            ECDH.deriveBits(
+                { public: otherKeyPair.publicKey },
+                keyPair.privateKey,
+                127
+            )
         ).rejects.toThrowError(RangeError);
     });
     it("should derive keys", async () => {
@@ -52,7 +58,7 @@ describe("ECDH", () => {
             length: 512,
         };
         let key = await ECDH.deriveKey(
-            otherKeyPair.publicKey,
+            { public: otherKeyPair.publicKey },
             keyPair.privateKey,
             hmacParams
         );

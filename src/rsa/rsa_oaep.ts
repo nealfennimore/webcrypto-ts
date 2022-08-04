@@ -6,18 +6,18 @@ import { RsaKey, RsaKeyPair, RsaShared } from "./shared";
 
 export namespace RSA_OAEP {
     export const generateKey = async (
-        hash: alg.SHA.SecureVariants = alg.SHA.Variant.SHA_512,
-        modulusLength: 4096 = 4096,
-        publicExponent: Uint8Array = new Uint8Array([0x01, 0x00, 0x01]),
+        algorithm: Omit<params.EnforcedRsaHashedKeyGenParams, "name"> = {
+            hash: alg.SHA.Variant.SHA_512,
+            modulusLength: 4096,
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         (await RsaShared.generateKey(
             {
+                ...algorithm,
                 name: alg.RSA.Variant.RSA_OAEP,
-                hash,
-                modulusLength,
-                publicExponent,
             },
             extractable,
             keyUsages
@@ -25,15 +25,15 @@ export namespace RSA_OAEP {
 
     export const importKey = async (
         format: KeyFormat,
-        hash: alg.SHA.SecureVariants,
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ) =>
         await RsaShared.importKey(
             format,
-            { name: alg.RSA.Variant.RSA_OAEP, hash },
             keyData,
+            { ...algorithm, name: alg.RSA.Variant.RSA_OAEP },
             extractable,
             keyUsages
         );
@@ -55,7 +55,7 @@ export namespace RSA_OAEP {
     export async function decrypt(
         keyData: RsaKey,
         ciphertext: BufferSource,
-        label?: BufferSource
+        label?: params.EnforcedRsaOaepParams["label"]
     ): Promise<ArrayBuffer> {
         const algorithm: params.EnforcedRsaOaepParams = {
             name: alg.RSA.Variant.RSA_OAEP,

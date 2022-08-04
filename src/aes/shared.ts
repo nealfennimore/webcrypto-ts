@@ -22,8 +22,8 @@ export namespace AesShared {
 
     export async function importKey(
         format: KeyFormat,
-        algorithm: params.EnforcedAesKeyAlgorithms,
         keyData: BufferSource | JsonWebKey,
+        algorithm: params.EnforcedAesKeyAlgorithms,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {

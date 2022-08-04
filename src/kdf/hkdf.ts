@@ -16,10 +16,8 @@ export namespace HKDF {
         );
 
     export const deriveKey = (
+        algorithm: Omit<params.EnforcedHkdfParams, "name">,
         baseKey: HkdfKeyMaterial,
-        salt: BufferSource,
-        info: BufferSource,
-        hashAlgorithm: alg.SHA.SecureVariants = alg.SHA.Variant.SHA_512,
         derivedKeyType:
             | params.EnforcedAesKeyGenParams
             | params.EnforcedHmacKeyGenParams,
@@ -28,10 +26,8 @@ export namespace HKDF {
     ) =>
         KdfShared.deriveKey(
             {
+                ...algorithm,
                 name: alg.KDF.Variant.HKDF,
-                hash: hashAlgorithm,
-                salt,
-                info,
             },
             baseKey,
             derivedKeyType,
@@ -40,18 +36,14 @@ export namespace HKDF {
         );
 
     export const deriveBits = (
+        algorithm: Omit<params.EnforcedHkdfParams, "name">,
         baseKey: HkdfKeyMaterial,
-        salt: BufferSource,
-        info: BufferSource,
-        hashAlgorithm: alg.SHA.SecureVariants = alg.SHA.Variant.SHA_512,
         length: number
     ) =>
         KdfShared.deriveBits(
             {
+                ...algorithm,
                 name: alg.KDF.Variant.HKDF,
-                hash: hashAlgorithm,
-                salt,
-                info,
             },
             baseKey,
             length

@@ -7,7 +7,7 @@ describe("AES_GCM", () => {
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
         iv = await IV.generate();
-        key = await AES.AES_GCM.generateKey(256);
+        key = await AES.AES_GCM.generateKey({ length: 256 });
     });
     it("should encrypt and decrypt", async () => {
         const ciphertextBytes = await AES.AES_GCM.encrypt(
@@ -30,7 +30,9 @@ describe("AES_GCM", () => {
         );
 
         const jwk = await AES.AES_GCM.exportKey("jwk", key);
-        const importedKey = await AES.AES_GCM.importKey("jwk", 256, jwk);
+        const importedKey = await AES.AES_GCM.importKey("jwk", jwk, {
+            length: 256,
+        });
 
         const plaintextBytes = await AES.AES_GCM.decrypt(
             { iv },
@@ -40,11 +42,11 @@ describe("AES_GCM", () => {
         expect(new TextDecoder().decode(plaintextBytes)).toEqual(text);
     });
     it("should wrap and unwrap keys", async () => {
-        const kek = await AES.AES_GCM.generateKey(256, true, [
+        const kek = await AES.AES_GCM.generateKey({ length: 256 }, true, [
             "wrapKey",
             "unwrapKey",
         ]);
-        const dek: AesKey = await AES.AES_GCM.generateKey(256);
+        const dek: AesKey = await AES.AES_GCM.generateKey({ length: 256 });
 
         const ciphertextBytes = await AES.AES_GCM.encrypt(
             { iv },

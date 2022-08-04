@@ -6,16 +6,16 @@ export interface HmacKey extends CryptoKey {}
 
 export namespace HMAC {
     export const generateKey = async (
-        hash: params.EnforcedHmacKeyGenParams["hash"] = alg.SHA.Variant.SHA_512,
-        length?: params.EnforcedHmacKeyGenParams["length"],
+        algorithm: Omit<params.EnforcedHmacKeyGenParams, "name"> = {
+            hash: alg.SHA.Variant.SHA_512,
+        },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ) =>
         await WebCrypto.generateKey<HmacKey, params.EnforcedHmacKeyGenParams>(
             {
+                ...algorithm,
                 name: alg.Authentication.Code.HMAC,
-                hash,
-                length,
             },
             extractable,
             keyUsages ?? getKeyUsagePairsByAlg(alg.Authentication.Code.HMAC)
@@ -24,15 +24,14 @@ export namespace HMAC {
     export const importKey = async (
         format: KeyFormat,
         keyData: BufferSource | JsonWebKey,
-        hash: params.EnforcedHmacImportParams["hash"],
-        length?: params.EnforcedHmacImportParams["length"],
+        algorithm: Omit<params.EnforcedHmacImportParams, "name">,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ) =>
         await WebCrypto.importKey<HmacKey, params.EnforcedHmacImportParams>(
             format as any,
             keyData as any,
-            { name: alg.Authentication.Code.HMAC, hash, length },
+            { ...algorithm, name: alg.Authentication.Code.HMAC },
             extractable,
             keyUsages ?? getKeyUsagePairsByAlg(alg.Authentication.Code.HMAC)
         );
@@ -41,14 +40,14 @@ export namespace HMAC {
         format: KeyFormat,
         keyData: HmacKey
     ): Promise<JsonWebKey | ArrayBuffer> {
-        return await WebCrypto.exportKey(format as any, keyData);
+        return await WebCrypto.exportKey<HmacKey>(format as any, keyData);
     }
 
     export async function sign(
         keyData: HmacKey,
         data: BufferSource
     ): Promise<ArrayBuffer> {
-        return await WebCrypto.sign(
+        return await WebCrypto.sign<HmacKey, params.HmacKeyAlgorithm>(
             {
                 name: alg.Authentication.Code.HMAC,
             },
@@ -62,7 +61,7 @@ export namespace HMAC {
         signature: BufferSource,
         data: BufferSource
     ): Promise<boolean> {
-        return await WebCrypto.verify(
+        return await WebCrypto.verify<HmacKey, params.HmacKeyAlgorithm>(
             {
                 name: alg.Authentication.Code.HMAC,
             },

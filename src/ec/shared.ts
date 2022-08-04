@@ -23,8 +23,8 @@ export namespace SharedEc {
 
     export async function importKey(
         format: KeyFormat,
-        algorithm: params.EnforcedEcKeyImportParams,
         keyData: BufferSource | JsonWebKey,
+        algorithm: params.EnforcedEcKeyImportParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<EcKey> {

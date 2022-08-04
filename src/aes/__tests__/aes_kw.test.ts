@@ -4,7 +4,7 @@ import { AES, AesKey } from "../index";
 describe("AES_KW", () => {
     let key: AesKey;
     beforeEach(async () => {
-        key = await AES.AES_KW.generateKey(256);
+        key = await AES.AES_KW.generateKey();
     });
     it("should import and export keys", async () => {
         const jwk = await AES.AES_KW.exportKey("jwk", key);

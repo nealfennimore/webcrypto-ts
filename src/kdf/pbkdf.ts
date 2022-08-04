@@ -22,9 +22,8 @@ export namespace PBKDF2 {
         );
 
     export const deriveKey = (
+        algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
         baseKey: Pbkdf2KeyMaterial,
-        salt: BufferSource,
-        hashAlgorithm: alg.SHA.SecureVariants = alg.SHA.Variant.SHA_512,
         derivedKeyType:
             | params.EnforcedAesKeyGenParams
             | params.EnforcedHmacKeyGenParams,
@@ -33,10 +32,11 @@ export namespace PBKDF2 {
     ) =>
         KdfShared.deriveKey(
             {
+                ...algorithm,
                 name: alg.KDF.Variant.PBKDF2,
-                hash: hashAlgorithm,
-                salt,
-                iterations: hashIterations[hashAlgorithm] as any,
+                iterations: hashIterations[
+                    algorithm.hash
+                ] as params.EnforcedPbkdf2Params["iterations"],
             },
             baseKey,
             derivedKeyType,
@@ -45,17 +45,17 @@ export namespace PBKDF2 {
         );
 
     export const deriveBits = (
+        algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
         baseKey: Pbkdf2KeyMaterial,
-        salt: BufferSource,
-        hashAlgorithm: alg.SHA.SecureVariants = alg.SHA.Variant.SHA_512,
         length: number
     ) =>
         KdfShared.deriveBits(
             {
+                ...algorithm,
                 name: alg.KDF.Variant.PBKDF2,
-                hash: hashAlgorithm,
-                salt,
-                iterations: hashIterations[hashAlgorithm] as any,
+                iterations: hashIterations[
+                    algorithm.hash
+                ] as params.EnforcedPbkdf2Params["iterations"],
             },
             baseKey,
             length

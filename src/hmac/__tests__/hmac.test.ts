@@ -10,7 +10,9 @@ describe("HMAC", () => {
     });
     it("should import and export key", async () => {
         let jwk = await HMAC.exportKey("jwk", key);
-        const importedPubKey = await HMAC.importKey("jwk", jwk, "SHA-512");
+        const importedPubKey = await HMAC.importKey("jwk", jwk, {
+            hash: "SHA-512",
+        });
 
         expect(await HMAC.exportKey("jwk", importedPubKey)).toEqual(jwk);
     });

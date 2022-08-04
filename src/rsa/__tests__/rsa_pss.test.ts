@@ -12,16 +12,24 @@ describe("RSA_PSS", () => {
         const keyPair = await RSA_PSS.generateKey();
 
         let jwk = await RSA_PSS.exportKey("jwk", keyPair.publicKey);
-        const pubKey = await RSA_PSS.importKey("jwk", "SHA-512", jwk, true, [
-            "verify",
-        ]);
+        const pubKey = await RSA_PSS.importKey(
+            "jwk",
+            jwk,
+            { hash: "SHA-512" },
+            true,
+            ["verify"]
+        );
 
         expect(jwk).toEqual(await RSA_PSS.exportKey("jwk", pubKey));
 
         jwk = await RSA_PSS.exportKey("jwk", keyPair.privateKey);
-        const privKey = await RSA_PSS.importKey("jwk", "SHA-512", jwk, true, [
-            "sign",
-        ]);
+        const privKey = await RSA_PSS.importKey(
+            "jwk",
+            jwk,
+            { hash: "SHA-512" },
+            true,
+            ["sign"]
+        );
 
         expect(jwk).toEqual(await RSA_PSS.exportKey("jwk", privKey));
     });

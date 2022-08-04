@@ -1,39 +1,41 @@
 import * as alg from "../alg";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
 import * as params from "../params";
 import { AesKey, AesShared } from "./shared";
 
 export namespace AES_GCM {
     export async function generateKey(
-        length: params.EnforcedAesKeyGenParams["length"] = 256,
+        algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
+            length: 256,
+        },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const algorithm: params.EnforcedAesKeyGenParams = {
-            name: alg.AES.Mode.AES_GCM,
-            length,
-        };
-        return await AesShared.generateKey(algorithm, extractable, keyUsages);
+        return await AesShared.generateKey(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_GCM,
+            },
+            extractable,
+            keyUsages
+        );
     }
 
     export async function importKey(
         format: KeyFormat,
-        length: params.AesGcmKeyAlgorithm["length"],
         keyData: BufferSource | JsonWebKey,
+        algorithm: Omit<params.AesGcmKeyAlgorithm, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
     ): Promise<AesKey> {
-        const algorithm: params.AesGcmKeyAlgorithm = {
-            name: alg.AES.Mode.AES_GCM,
-            length,
-        };
-
         return await AesShared.importKey(
             format as any,
-            algorithm,
             keyData as any,
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_GCM,
+            },
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages
         );
     }
 
@@ -44,11 +46,14 @@ export namespace AES_GCM {
         keyData: AesKey,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
-        const _algorithm: params.EnforcedAesGcmParams = {
-            ...algorithm,
-            name: alg.AES.Mode.AES_GCM,
-        };
-        return await AesShared.encrypt(_algorithm, keyData, plaintext);
+        return await AesShared.encrypt(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_GCM,
+            },
+            keyData,
+            plaintext
+        );
     }
 
     export async function decrypt(
@@ -56,11 +61,14 @@ export namespace AES_GCM {
         keyData: AesKey,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
-        const _algorithm: params.EnforcedAesGcmParams = {
-            ...algorithm,
-            name: alg.AES.Mode.AES_GCM,
-        };
-        return await AesShared.decrypt(_algorithm, keyData, ciphertext);
+        return await AesShared.decrypt(
+            {
+                ...algorithm,
+                name: alg.AES.Mode.AES_GCM,
+            },
+            keyData,
+            ciphertext
+        );
     }
 
     export async function wrapKey(
@@ -69,16 +77,10 @@ export namespace AES_GCM {
         wrappingkey: AesKey,
         wrapAlgorithm: Omit<params.EnforcedAesGcmParams, "name">
     ): Promise<ArrayBuffer> {
-        const _wrapAlgorithm: params.EnforcedAesGcmParams = {
+        return await AesShared.wrapKey(format as any, key, wrappingkey, {
             ...wrapAlgorithm,
             name: alg.AES.Mode.AES_GCM,
-        };
-        return await AesShared.wrapKey(
-            format as any,
-            key,
-            wrappingkey,
-            _wrapAlgorithm
-        );
+        });
     }
     export async function unwrapKey(
         format: KeyFormat,
@@ -89,16 +91,15 @@ export namespace AES_GCM {
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {
-        const _unwrappingKeyAlgorithm: params.EnforcedAesGcmParams = {
-            ...unwrappingKeyAlgorithm,
-            name: alg.AES.Mode.AES_GCM,
-        };
         return await AesShared.unwrapKey(
             format,
             wrappedKey,
             wrappedKeyAlgorithm,
             unwrappingKey,
-            _unwrappingKeyAlgorithm,
+            {
+                ...unwrappingKeyAlgorithm,
+                name: alg.AES.Mode.AES_GCM,
+            },
             extractable,
             keyUsages
         );

@@ -18,15 +18,18 @@ describe("PBKDF2", () => {
     });
     it("should derive bits", async () => {
         const bits = await PBKDF2.deriveBits(
+            { salt, hash: alg.SHA.Variant.SHA_512 },
             keyMaterial,
-            salt,
-            alg.SHA.Variant.SHA_512,
             512
         );
         expect(bits.byteLength).toEqual(64);
 
         await expect(
-            PBKDF2.deriveBits(keyMaterial, salt, alg.SHA.Variant.SHA_512, 511)
+            PBKDF2.deriveBits(
+                { salt, hash: alg.SHA.Variant.SHA_512 },
+                keyMaterial,
+                511
+            )
         ).rejects.toThrowError(RangeError);
     });
     it("should derive keys", async () => {
@@ -42,9 +45,8 @@ describe("PBKDF2", () => {
                     };
                     try {
                         let key = await PBKDF2.deriveKey(
+                            { salt, hash: shaVal },
                             keyMaterial,
-                            salt,
-                            shaVal,
                             aesParams
                         );
                         expect(key).toMatchSnapshot(
@@ -63,9 +65,8 @@ describe("PBKDF2", () => {
             length: 512,
         };
         let key = await PBKDF2.deriveKey(
+            { salt, hash: alg.SHA.Variant.SHA_512 },
             keyMaterial,
-            salt,
-            alg.SHA.Variant.SHA_512,
             hmacParams
         );
         expect(key).toMatchSnapshot("HMAC_SHA_512");

@@ -23,8 +23,8 @@ export namespace RsaShared {
 
     export async function importKey(
         format: KeyFormat,
-        algorithm: params.EnforcedRsaHashedImportParams,
         keyData: BufferSource | JsonWebKey,
+        algorithm: params.EnforcedRsaHashedImportParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<RsaKey> {
