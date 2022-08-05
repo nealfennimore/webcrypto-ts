@@ -7,9 +7,7 @@ export namespace AES_CTR {
     export async function generateCounter(
         counterLength: number = 8
     ): Promise<Uint8Array> {
-        const nonce = await WebCrypto._crypto.getRandomValues(
-            new Uint8Array(16 - counterLength)
-        );
+        const nonce = await Random.getValues(16 - counterLength);
         const counter = new Uint8Array(16);
         counter.set([1], 15);
         counter.set(nonce);
