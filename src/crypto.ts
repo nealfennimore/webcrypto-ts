@@ -3,8 +3,8 @@ import { SHA } from "./alg.js";
 class CryptoLoader {
     static async load(): Promise<Crypto> {
         // @ts-ignore
-        return typeof window !== "undefined"
-            ? Promise.resolve(window.crypto)
+        return typeof crypto !== "undefined"
+            ? Promise.resolve(crypto)
             : await (
                   await import("node:crypto")
               ).webcrypto;
