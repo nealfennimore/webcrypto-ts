@@ -1,7 +1,7 @@
-import * as alg from "../../alg";
-import * as params from "../../params";
-import { EC } from "../index";
-import { EcKeyPair } from "../shared";
+import * as alg from "../../alg.js";
+import * as params from "../../params.js";
+import { EC } from "../index.js";
+import { EcKeyPair } from "../shared.js";
 
 const { ECDH } = EC;
 

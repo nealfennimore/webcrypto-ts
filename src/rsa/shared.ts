@@ -1,6 +1,6 @@
-import { WebCrypto } from "../crypto";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
-import * as params from "../params";
+import { WebCrypto } from "../crypto.js";
+import { getKeyUsagePairsByAlg } from "../keyUsages.js";
+import * as params from "../params.js";
 
 export interface RsaKey extends CryptoKey {}
 export interface RsaKeyPair extends CryptoKeyPair {}

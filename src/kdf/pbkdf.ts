@@ -1,6 +1,6 @@
-import * as alg from "../alg";
-import * as params from "../params";
-import { KdfShared, Pbkdf2KeyMaterial } from "./shared";
+import * as alg from "../alg.js";
+import * as params from "../params.js";
+import { KdfShared, Pbkdf2KeyMaterial } from "./shared.js";
 
 export namespace PBKDF2 {
     const hashIterations: Record<alg.SHA.SecureVariants, number> = {

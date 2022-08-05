@@ -1,9 +1,9 @@
-import type { AesKey } from "../aes/index";
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import { HmacKey } from "../hmac/index";
-import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../keyUsages";
-import * as params from "../params";
+import type { AesKey } from "../aes/index.js";
+import * as alg from "../alg.js";
+import { WebCrypto } from "../crypto.js";
+import { HmacKey } from "../hmac/index.js";
+import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../keyUsages.js";
+import * as params from "../params.js";
 
 export interface Pbkdf2KeyMaterial extends CryptoKey {}
 export interface HkdfKeyMaterial extends CryptoKey {}

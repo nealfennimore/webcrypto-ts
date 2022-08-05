@@ -1,4 +1,4 @@
-import { SHA } from "../index";
+import { SHA } from "../index.js";
 
 describe("SHA_1", () => {
     it("should hash", async () => {

@@ -1,6 +1,6 @@
-import * as alg from "../../alg";
-import { IV } from "../../iv";
-import { AES, AesKey } from "../index";
+import * as alg from "../../alg.js";
+import { IV } from "../../iv.js";
+import { AES, AesKey } from "../index.js";
 
 describe("AES_CBC", () => {
     let iv: Uint8Array, key: AesKey;

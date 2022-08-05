@@ -1,4 +1,4 @@
-import { AES, Authentication, EC, KDF, RSA } from "./alg";
+import { AES, Authentication, EC, KDF, RSA } from "./alg.js";
 
 export enum KeyFormats {
     raw = "raw",

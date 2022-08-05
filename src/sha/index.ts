@@ -1,7 +1,7 @@
-import { SHA_1 as _SHA_1 } from "./sha_1";
-import { SHA_256 as _SHA_256 } from "./sha_256";
-import { SHA_384 as _SHA_384 } from "./sha_384";
-import { SHA_512 as _SHA_512 } from "./sha_512";
+import { SHA_1 as _SHA_1 } from "./sha_1.js";
+import { SHA_256 as _SHA_256 } from "./sha_256.js";
+import { SHA_384 as _SHA_384 } from "./sha_384.js";
+import { SHA_512 as _SHA_512 } from "./sha_512.js";
 
 export namespace SHA {
     export const SHA_1 = _SHA_1;

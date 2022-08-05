@@ -1,6 +1,6 @@
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import { ShaShared } from "./shared";
+import * as alg from "../alg.js";
+import { WebCrypto } from "../crypto.js";
+import { ShaShared } from "./shared.js";
 
 export namespace SHA_512 {
     export const digest = (data: BufferSource) =>

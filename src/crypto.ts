@@ -1,4 +1,5 @@
-import { SHA } from "./alg";
+import { SHA } from "./alg.js";
+
 
 export namespace WebCrypto {
     // @ts-ignore Use node webcrypto if available

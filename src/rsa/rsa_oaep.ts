@@ -1,8 +1,8 @@
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../keyUsages";
-import * as params from "../params";
-import { RsaKey, RsaKeyPair, RsaShared } from "./shared";
+import * as alg from "../alg.js";
+import { WebCrypto } from "../crypto.js";
+import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../keyUsages.js";
+import * as params from "../params.js";
+import { RsaKey, RsaKeyPair, RsaShared } from "./shared.js";
 
 export namespace RSA_OAEP {
     export const generateKey = async (

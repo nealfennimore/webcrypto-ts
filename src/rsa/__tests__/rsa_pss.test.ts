@@ -1,4 +1,4 @@
-import { RSA } from "../index";
+import { RSA } from "../index.js";
 
 const { RSA_PSS } = RSA;
 

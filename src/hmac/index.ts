@@ -1,7 +1,7 @@
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
-import * as params from "../params";
+import * as alg from "../alg.js";
+import { WebCrypto } from "../crypto.js";
+import { getKeyUsagePairsByAlg } from "../keyUsages.js";
+import * as params from "../params.js";
 export interface HmacKey extends CryptoKey {}
 
 export namespace HMAC {

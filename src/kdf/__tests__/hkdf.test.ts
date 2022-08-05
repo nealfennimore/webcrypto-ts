@@ -1,8 +1,8 @@
-import * as alg from "../../alg";
-import * as params from "../../params";
-import { Salt } from "../../salt";
-import { KDF } from "../index";
-import type { HkdfKeyMaterial } from "../shared";
+import * as alg from "../../alg.js";
+import * as params from "../../params.js";
+import { Salt } from "../../salt.js";
+import { KDF } from "../index.js";
+import type { HkdfKeyMaterial } from "../shared.js";
 
 const { HKDF } = KDF;
 describe("HKDF", () => {

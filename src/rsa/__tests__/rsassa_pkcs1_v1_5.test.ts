@@ -1,4 +1,4 @@
-import { RSA } from "../index";
+import { RSA } from "../index.js";
 
 const { RSASSA_PKCS1_v1_5 } = RSA;
 

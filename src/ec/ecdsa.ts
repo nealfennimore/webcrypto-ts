@@ -1,7 +1,7 @@
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import * as params from "../params";
-import { EcKey, SharedEc } from "./shared";
+import * as alg from "../alg.js";
+import { WebCrypto } from "../crypto.js";
+import * as params from "../params.js";
+import { EcKey, SharedEc } from "./shared.js";
 
 export namespace ECDSA {
     export const generateKey = async (

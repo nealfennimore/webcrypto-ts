@@ -1,6 +1,6 @@
-import * as alg from "../alg";
-import * as params from "../params";
-import { RsaKey, RsaKeyPair, RsaShared } from "./shared";
+import * as alg from "../alg.js";
+import * as params from "../params.js";
+import { RsaKey, RsaKeyPair, RsaShared } from "./shared.js";
 
 export namespace RSA_PSS {
     export const generateKey = async (

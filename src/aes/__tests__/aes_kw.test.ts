@@ -1,5 +1,5 @@
-import * as alg from "../../alg";
-import { AES, AesKey } from "../index";
+import * as alg from "../../alg.js";
+import { AES, AesKey } from "../index.js";
 
 describe("AES_KW", () => {
     let key: AesKey;

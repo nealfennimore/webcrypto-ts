@@ -1,4 +1,4 @@
-import { HMAC, HmacKey } from "../index";
+import { HMAC, HmacKey } from "../index.js";
 
 describe("HMAC", () => {
     let key: HmacKey;

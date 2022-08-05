@@ -1,5 +1,5 @@
-import { EC } from "../index";
-import { EcKeyPair } from "../shared";
+import { EC } from "../index.js";
+import { EcKeyPair } from "../shared.js";
 
 const { ECDSA } = EC;
 

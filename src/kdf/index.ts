@@ -1,7 +1,7 @@
-import { HKDF as _HKDF } from "./hkdf";
-import { PBKDF2 as _PBKDF2 } from "./pbkdf";
+import { HKDF as _HKDF } from "./hkdf.js";
+import { PBKDF2 as _PBKDF2 } from "./pbkdf.js";
 
-export type { HkdfKeyMaterial, Pbkdf2KeyMaterial } from "./shared";
+export type { HkdfKeyMaterial, Pbkdf2KeyMaterial } from "./shared.js";
 
 export namespace KDF {
     export const HKDF = _HKDF;

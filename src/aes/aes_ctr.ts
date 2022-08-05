@@ -1,7 +1,7 @@
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import * as params from "../params";
-import { AesKey, AesShared } from "./shared";
+import * as alg from "../alg.js";
+import * as params from "../params.js";
+import { Random } from "../random.js";
+import { AesKey, AesShared } from "./shared.js";
 
 export namespace AES_CTR {
     export async function generateCounter(

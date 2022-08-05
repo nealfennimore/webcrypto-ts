@@ -1,6 +1,6 @@
-import * as alg from "../alg";
-import * as params from "../params";
-import { AesKey, AesShared } from "./shared";
+import * as alg from "../alg.js";
+import * as params from "../params.js";
+import { AesKey, AesShared } from "./shared.js";
 
 export namespace AES_KW {
     export async function generateKey(

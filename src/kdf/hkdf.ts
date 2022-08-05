@@ -1,6 +1,6 @@
-import * as alg from "../alg";
-import * as params from "../params";
-import { HkdfKeyMaterial, KdfShared } from "./shared";
+import * as alg from "../alg.js";
+import * as params from "../params.js";
+import { HkdfKeyMaterial, KdfShared } from "./shared.js";
 
 export namespace HKDF {
     export const generateKeyMaterial = (

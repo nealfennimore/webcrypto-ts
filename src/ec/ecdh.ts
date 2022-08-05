@@ -1,8 +1,8 @@
-import * as alg from "../alg";
-import { WebCrypto } from "../crypto";
-import { getKeyUsagePairsByAlg } from "../keyUsages";
-import * as params from "../params";
-import { EcKey, EcKeyPair, SharedEc } from "./shared";
+import * as alg from "../alg.js";
+import { WebCrypto } from "../crypto.js";
+import { getKeyUsagePairsByAlg } from "../keyUsages.js";
+import * as params from "../params.js";
+import { EcKey, EcKeyPair, SharedEc } from "./shared.js";
 
 export namespace ECDH {
     export const generateKey = async (

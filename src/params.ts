@@ -1,4 +1,4 @@
-import * as alg from "./alg";
+import * as alg from "./alg.js";
 
 export type AesBlockSize = 128 | 192 | 256;
 
