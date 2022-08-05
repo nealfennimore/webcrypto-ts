@@ -1,28 +1,18 @@
 import { SHA } from "./alg.js";
 
 class CryptoLoader {
-    private _crypto: Promise<Crypto>;
-
-    constructor() {
-        this._crypto = this.load();
-    }
-
-    async load(): Promise<Crypto> {
+    static async load(): Promise<Crypto> {
         // @ts-ignore
-        return typeof crypto !== "undefined"
-            ? Promise.resolve(crypto)
+        return typeof window !== "undefined"
+            ? Promise.resolve(window.crypto)
             : await (
                   await import("node:crypto")
               ).webcrypto;
     }
-
-    get crypto(): Promise<Crypto> {
-        return this._crypto;
-    }
 }
 
 export namespace WebCrypto {
-    export const _crypto = new CryptoLoader().crypto;
+    export const _crypto = CryptoLoader.load();
 
     export async function encrypt<
         T extends CryptoKey,
