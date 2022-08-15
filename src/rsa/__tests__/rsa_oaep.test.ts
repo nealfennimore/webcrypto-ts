@@ -12,13 +12,13 @@ describe("RSA_OAEP", () => {
     it("should import and export key", async () => {
         const keyPair = await RSA_OAEP.generateKey();
         const jwk = await RSA_OAEP.exportKey("jwk", keyPair.publicKey);
-        const pubKey = await RSA_OAEP.importKey(
+        const pubKey = (await RSA_OAEP.importKey(
             "jwk",
             jwk,
             { hash: "SHA-512" },
             false,
             ["encrypt"]
-        );
+        )) as RSA.RsaOaepPubCryptoKey;
         const text = encode("a message");
         const ciphertext = await RSA_OAEP.encrypt(pubKey, text);
         const plaintext = await RSA_OAEP.decrypt(

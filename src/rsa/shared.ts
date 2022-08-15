@@ -2,37 +2,50 @@ import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
 
-export interface RsaOaepCryptoKey extends CryptoKey {
-    _rsaOaepCryptoKeyBrand: any;
+export interface RsaOaepPubCryptoKey extends CryptoKey {
+    _rsaOaepPubCryptoKeyBrand: any;
 }
-export interface RsaPssCryptoKey extends CryptoKey {
-    _rsaPssCryptoKeyBrand: any;
+export interface RsaOaepPrivCryptoKey extends CryptoKey {
+    _rsaOaepPrivCryptoKeyBrand: any;
 }
-export interface RsassaPkcs1V15CryptoKey extends CryptoKey {
-    _rsassaPkcs1V15CryptoKeyBrand: any;
+export interface RsaPssPubCryptoKey extends CryptoKey {
+    _rsaPssPubCryptoKeyBrand: any;
+}
+export interface RsaPssPrivCryptoKey extends CryptoKey {
+    _rsaPssPrivCryptoKeyBrand: any;
+}
+export interface RsassaPkcs1V15PubCryptoKey extends CryptoKey {
+    _rsassaPkcs1V15PubCryptoKeyBrand: any;
+}
+export interface RsassaPkcs1V15PrivCryptoKey extends CryptoKey {
+    _rsassaPkcs1V15PrivCryptoKeyBrand: any;
 }
 
 export type RsaCryptoKeys =
-    | RsaOaepCryptoKey
-    | RsaPssCryptoKey
-    | RsassaPkcs1V15CryptoKey;
+    | RsaOaepPubCryptoKey
+    | RsaOaepPrivCryptoKey
+    | RsaPssPubCryptoKey
+    | RsaPssPrivCryptoKey
+    | RsassaPkcs1V15PubCryptoKey
+    | RsassaPkcs1V15PrivCryptoKey;
+
 export interface RsaOaepCryptoKeyPair extends CryptoKeyPair {
     _rsaOaepCryptoKeyPairBrand: any;
-    publicKey: RsaOaepCryptoKey;
+    publicKey: RsaOaepPubCryptoKey;
 
-    privateKey: RsaOaepCryptoKey;
+    privateKey: RsaOaepPrivCryptoKey;
 }
 export interface RsaPssCryptoKeyPair extends CryptoKeyPair {
     _rsaPssCryptoKeyPairBrand: any;
-    publicKey: RsaPssCryptoKey;
+    publicKey: RsaPssPubCryptoKey;
 
-    privateKey: RsaPssCryptoKey;
+    privateKey: RsaPssPrivCryptoKey;
 }
 export interface RsassaPkcs1V15CryptoKeyPair extends CryptoKeyPair {
     _rsassaPkcs1V15CryptoKeyBrand: any;
-    publicKey: RsassaPkcs1V15CryptoKey;
+    publicKey: RsassaPkcs1V15PubCryptoKey;
 
-    privateKey: RsassaPkcs1V15CryptoKey;
+    privateKey: RsassaPkcs1V15PrivCryptoKey;
 }
 export type RsaCryptoKeyPairs =
     | RsaOaepCryptoKeyPair
@@ -94,7 +107,7 @@ export namespace RsaShared {
         algorithm:
             | params.EnforcedRsaPssParams
             | params.EnforcedRsassaPkcs1v15Params,
-        keyData: RsaCryptoKeys,
+        keyData: RsaPssPrivCryptoKey | RsassaPkcs1V15PrivCryptoKey,
         data: BufferSource
     ): Promise<ArrayBuffer> {
         return await WebCrypto.sign(algorithm, keyData, data);
@@ -104,7 +117,7 @@ export namespace RsaShared {
         algorithm:
             | params.EnforcedRsaPssParams
             | params.EnforcedRsassaPkcs1v15Params,
-        keyData: RsaCryptoKeys,
+        keyData: RsaPssPubCryptoKey | RsassaPkcs1V15PubCryptoKey,
         signature: BufferSource,
         data: BufferSource
     ): Promise<boolean> {

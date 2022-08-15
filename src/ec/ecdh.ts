@@ -2,10 +2,18 @@
  * Code related to ECDH
  * @module
  */
+import { AesCryptoKeys } from "../aes/shared.js";
+import { HmacCryptoKey } from "../hmac/index.js";
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
-import { Alg, EcdhCryptoKey, EcdhCryptoKeyPair, EcShared } from "./shared.js";
+import {
+    Alg,
+    EcdhCryptoKeyPair,
+    EcdhPrivCryptoKey,
+    EcdhPubCryptoKey,
+    EcShared,
+} from "./shared.js";
 
 export const generateKey = async (
     algorithm: Omit<params.EnforcedEcKeyGenParams, "name"> = {
@@ -28,7 +36,7 @@ export const importKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<EcdhCryptoKey> =>
+): Promise<EcdhPubCryptoKey | EcdhPrivCryptoKey> =>
     await EcShared.importKey(
         format,
         keyData,
@@ -41,15 +49,15 @@ export const exportKey = EcShared.exportKey;
 
 export async function deriveKey(
     algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
-    baseKey: EcdhCryptoKey,
+    baseKey: EcdhPrivCryptoKey,
     derivedKeyType:
         | params.EnforcedAesKeyGenParams
         | params.EnforcedHmacKeyGenParams,
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-): Promise<CryptoKey> {
+): Promise<HmacCryptoKey | AesCryptoKeys> {
     return await WebCrypto.deriveKey<
-        CryptoKey,
+        HmacCryptoKey | AesCryptoKeys,
         params.EnforcedAesKeyGenParams | params.EnforcedHmacKeyGenParams
     >(
         {
@@ -65,11 +73,11 @@ export async function deriveKey(
 
 export async function deriveBits(
     algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
-    baseKey: EcdhCryptoKey,
+    baseKey: EcdhPrivCryptoKey,
     length: number
 ): Promise<ArrayBuffer> {
     return await WebCrypto.deriveBits<
-        EcdhCryptoKey,
+        EcdhPrivCryptoKey,
         params.EnforcedEcdhKeyDeriveParams
     >(
         {

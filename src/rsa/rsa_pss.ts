@@ -2,8 +2,9 @@ import * as params from "../params.js";
 import { Alg as SHA } from "../sha/shared.js";
 import {
     Alg,
-    RsaPssCryptoKey,
     RsaPssCryptoKeyPair,
+    RsaPssPrivCryptoKey,
+    RsaPssPubCryptoKey,
     RsaShared,
 } from "./shared.js";
 
@@ -31,7 +32,7 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<RsaPssCryptoKey> =>
+): Promise<RsaPssPrivCryptoKey | RsaPssPubCryptoKey> =>
     await RsaShared.importKey(
         format,
         keyData,
@@ -40,12 +41,14 @@ export const importKey = async (
         keyUsages
     );
 
-export const exportKey = async (format: KeyFormat, keyData: RsaPssCryptoKey) =>
-    RsaShared.exportKey(format, keyData);
+export const exportKey = async (
+    format: KeyFormat,
+    keyData: RsaPssPrivCryptoKey | RsaPssPubCryptoKey
+) => RsaShared.exportKey(format, keyData);
 
 export const sign = async (
     saltLength: number,
-    keyData: RsaPssCryptoKey,
+    keyData: RsaPssPrivCryptoKey,
     data: BufferSource
 ) =>
     await RsaShared.sign(
@@ -59,7 +62,7 @@ export const sign = async (
 
 export const verify = async (
     saltLength: number,
-    keyData: RsaPssCryptoKey,
+    keyData: RsaPssPubCryptoKey,
     signature: BufferSource,
     data: BufferSource
 ) =>

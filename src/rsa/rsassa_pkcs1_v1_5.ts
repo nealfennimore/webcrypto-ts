@@ -3,8 +3,9 @@ import { Alg as SHA } from "../sha/shared.js";
 import {
     Alg,
     RsaShared,
-    RsassaPkcs1V15CryptoKey,
     RsassaPkcs1V15CryptoKeyPair,
+    RsassaPkcs1V15PrivCryptoKey,
+    RsassaPkcs1V15PubCryptoKey,
 } from "./shared.js";
 
 export const generateKey = async (
@@ -31,7 +32,7 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<RsassaPkcs1V15CryptoKey> =>
+): Promise<RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey> =>
     await RsaShared.importKey(
         format,
         keyData,
@@ -42,11 +43,11 @@ export const importKey = async (
 
 export const exportKey = async (
     format: KeyFormat,
-    keyData: RsassaPkcs1V15CryptoKey
+    keyData: RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey
 ) => RsaShared.exportKey(format, keyData);
 
 export const sign = async (
-    keyData: RsassaPkcs1V15CryptoKey,
+    keyData: RsassaPkcs1V15PrivCryptoKey,
     data: BufferSource
 ) =>
     await RsaShared.sign(
@@ -58,7 +59,7 @@ export const sign = async (
     );
 
 export const verify = async (
-    keyData: RsassaPkcs1V15CryptoKey,
+    keyData: RsassaPkcs1V15PubCryptoKey,
     signature: BufferSource,
     data: BufferSource
 ) =>

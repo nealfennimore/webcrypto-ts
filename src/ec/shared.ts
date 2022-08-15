@@ -5,23 +5,33 @@ import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
 
-export interface EcdhCryptoKey extends CryptoKey {
-    _ecdhCryptoKeyBrand: any;
+export interface EcdhPubCryptoKey extends CryptoKey {
+    _ecdhPubCryptoKeyBrand: any;
+}
+export interface EcdhPrivCryptoKey extends CryptoKey {
+    _ecdhPrivCryptoKeyBrand: any;
 }
 export interface EcdhCryptoKeyPair extends CryptoKeyPair {
     _ecdhCryptoKeyPairBrand: any;
-    publicKey: EcdhCryptoKey;
-    privateKey: EcdhCryptoKey;
+    publicKey: EcdhPubCryptoKey;
+    privateKey: EcdhPrivCryptoKey;
 }
-export interface EcdsaCryptoKey extends CryptoKey {
-    _ecdsaCryptoKeyBrand: any;
+export interface EcdsaPubCryptoKey extends CryptoKey {
+    _ecdsaPubCryptoKeyBrand: any;
+}
+export interface EcdsaPrivCryptoKey extends CryptoKey {
+    _ecdsaPrivCryptoKeyBrand: any;
 }
 export interface EcdsaCryptoKeyPair extends CryptoKeyPair {
     _ecdsaCryptoKeyPairBrand: any;
-    publicKey: EcdsaCryptoKey;
-    privateKey: EcdsaCryptoKey;
+    publicKey: EcdsaPubCryptoKey;
+    privateKey: EcdsaPrivCryptoKey;
 }
-export type EcCryptoKeys = EcdhCryptoKey | EcdsaCryptoKey;
+export type EcCryptoKeys =
+    | EcdhPubCryptoKey
+    | EcdhPrivCryptoKey
+    | EcdsaPubCryptoKey
+    | EcdsaPrivCryptoKey;
 export type EcCryptoKeyPairs = EcdhCryptoKeyPair | EcdsaCryptoKeyPair;
 
 export namespace Alg {

@@ -1,5 +1,5 @@
 import { Alg as AES } from "./aes/shared.js";
-import { Alg as EC } from "./ec/shared.js";
+import { Alg as EC, EcdhPubCryptoKey } from "./ec/shared.js";
 import { Alg as Authentication } from "./hmac/index.js";
 import { Alg as KDF } from "./kdf/shared.js";
 import { Alg as RSA } from "./rsa/shared.js";
@@ -63,6 +63,7 @@ export interface EnforcedEcdsaParams extends EcdsaParams {
 
 export interface EnforcedEcdhKeyDeriveParams extends EcdhKeyDeriveParams {
     name: EC.Variant.ECDH;
+    public: EcdhPubCryptoKey;
 }
 
 export interface AesGcmKeyAlgorithm extends AesKeyAlgorithm {

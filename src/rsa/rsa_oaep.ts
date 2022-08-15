@@ -4,8 +4,9 @@ import { Alg as SHA } from "../sha/shared.js";
 import * as WebCrypto from "../webcrypto.js";
 import {
     Alg,
-    RsaOaepCryptoKey,
     RsaOaepCryptoKeyPair,
+    RsaOaepPrivCryptoKey,
+    RsaOaepPubCryptoKey,
     RsaShared,
 } from "./shared.js";
 
@@ -33,7 +34,7 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<RsaOaepCryptoKey> =>
+): Promise<RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey> =>
     await RsaShared.importKey(
         format,
         keyData,
@@ -42,11 +43,13 @@ export const importKey = async (
         keyUsages
     );
 
-export const exportKey = async (format: KeyFormat, keyData: RsaOaepCryptoKey) =>
-    RsaShared.exportKey(format, keyData);
+export const exportKey = async (
+    format: KeyFormat,
+    keyData: RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey
+) => RsaShared.exportKey(format, keyData);
 
 export async function encrypt(
-    keyData: RsaOaepCryptoKey,
+    keyData: RsaOaepPubCryptoKey,
     plaintext: BufferSource,
     label?: params.EnforcedRsaOaepParams["label"]
 ): Promise<ArrayBuffer> {
@@ -58,7 +61,7 @@ export async function encrypt(
 }
 
 export async function decrypt(
-    keyData: RsaOaepCryptoKey,
+    keyData: RsaOaepPrivCryptoKey,
     ciphertext: BufferSource,
     label?: params.EnforcedRsaOaepParams["label"]
 ): Promise<ArrayBuffer> {
@@ -72,7 +75,7 @@ export async function decrypt(
 export async function wrapKey(
     format: KeyFormat,
     key: CryptoKey,
-    wrappingkey: RsaOaepCryptoKey,
+    wrappingkey: RsaOaepPubCryptoKey,
     wrapAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">
 ): Promise<ArrayBuffer> {
     const _wrapAlgorithm: params.EnforcedRsaOaepParams = {
@@ -90,7 +93,7 @@ export async function unwrapKey(
     format: KeyFormat,
     wrappedKey: BufferSource,
     wrappedKeyAlgorithm: params.EnforcedImportParams,
-    unwrappingKey: RsaOaepCryptoKey,
+    unwrappingKey: RsaOaepPrivCryptoKey,
     unwrappingKeyAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">,
     extractable: boolean = true,
     keyUsages?: KeyUsagePairs
