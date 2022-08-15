@@ -2,12 +2,16 @@
     "name": "@nfen/webcrypto-ts",
     "version": "0.0.1",
     "description": "Enforced Webcrypto wrapper",
-    "exports": "lib/index.js",
+    "types": "./lib/index.d.js",
+    "main": "./lib/index.js",
+    "exports": "./lib/index.js",
     "type": "module",
     "engines": {
         "node": ">=16"
     },
     "scripts": {
+        "prepublishOnly": "npm run test && npm run build",
+        "prepare": "npm run build",
         "prebuild": "rm -rf lib",
         "build": "tsc --build",
         "watch": "tsc --watch",
@@ -20,6 +24,9 @@
         "type": "git",
         "url": "https://github.com/nealfennimore/webcrypto-ts.git"
     },
+    "files": [
+        "lib/**/*"
+    ],
     "devDependencies": {
         "@types/jest": "^28.1.6",
         "@types/webcrypto": "^0.0.28",
