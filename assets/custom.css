@@ -1,0 +1,3 @@
+.docblock code, .docblock-short code {
+    background-color: var(--code-background);
+}
