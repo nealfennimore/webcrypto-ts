@@ -12,6 +12,13 @@ const hashIterations: Record<SHA.SecureVariants, number> = {
     "SHA-512": 120_000,
 };
 
+/**
+ * Generate key material for deriving
+ * @example
+ * ```ts
+ * const keyMaterial = await PBKDF2.generateKeyMaterial("raw", new TextEncoder().encode("could_be_a_little_entropy"));
+ * ```
+ */
 export const generateKeyMaterial = (
     format: KeyFormat,
     keyData: BufferSource,
@@ -24,6 +31,22 @@ export const generateKeyMaterial = (
         extractable
     );
 
+/**
+ * Derive a shared key from PBKDF2 key material
+ * @example
+ * ```ts
+ * const hmacParams: params.EnforcedHmacKeyGenParams = {
+ *      name: Authentication.Alg.Code.HMAC,
+ *      hash: SHA.Alg.Variant.SHA_512,
+ *      length: 512,
+ * };
+ * let key = await PBKDF2.deriveKey(
+ *      { hash: "SHA-512" },
+ *      keyMaterial,
+ *      hmacParams
+ * );
+ * ```
+ */
 export const deriveKey = (
     algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
     baseKey: Pbkdf2KeyMaterial,
@@ -47,6 +70,17 @@ export const deriveKey = (
         keyUsages
     );
 
+/**
+ * Derive a number bits with a given key material
+ * @example
+ * ```ts
+ * const bits = await PBKDF2.deriveBits(
+ *      { hash: "SHA-512" },
+ *      keyMaterial,
+ *      128
+ * );
+ * ```
+ */
 export const deriveBits = (
     algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
     baseKey: Pbkdf2KeyMaterial,

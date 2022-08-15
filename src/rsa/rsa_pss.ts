@@ -1,3 +1,8 @@
+/**
+ * Code related to RSA_PSS
+ * @module
+ */
+
 import * as params from "../params.js";
 import { Alg as SHA } from "../sha/shared.js";
 import {
@@ -8,6 +13,13 @@ import {
     RsaShared,
 } from "./shared.js";
 
+/**
+ * Generate a new RSA_PSS keypair
+ * @example
+ * ```ts
+ * const keyPair = await RSA_PSS.generateKey();
+ * ```
+ */
 export const generateKey = async (
     algorithm: Omit<params.EnforcedRsaHashedKeyGenParams, "name"> = {
         hash: SHA.Variant.SHA_512,
@@ -26,6 +38,13 @@ export const generateKey = async (
         keyUsages
     )) as RsaPssCryptoKeyPair;
 
+/**
+ * Import an RSA_PSS public or private key
+ * @example
+ * ```ts
+ * const key = await RSA_PSS.importKey("jwk", pubKey, { hash: "SHA-512" }, true, ['verify']);
+ * ```
+ */
 export const importKey = async (
     format: KeyFormat,
     keyData: BufferSource | JsonWebKey,
@@ -41,11 +60,26 @@ export const importKey = async (
         keyUsages
     );
 
+/**
+ * Export an RSA_PSS public or private key
+ * @example
+ * ```ts
+ * const pubKeyJwk = await RSA_PSS.importKey("jwk", keyPair.publicKey);
+ * ```
+ */
 export const exportKey = async (
     format: KeyFormat,
     keyData: RsaPssPrivCryptoKey | RsaPssPubCryptoKey
 ) => RsaShared.exportKey(format, keyData);
 
+/**
+ * Sign a given payload
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await RSA_PSS.sign(128, keyPair.privateKey, message);
+ * ```
+ */
 export const sign = async (
     saltLength: number,
     keyData: RsaPssPrivCryptoKey,
@@ -60,6 +94,14 @@ export const sign = async (
         data
     );
 
+/**
+ * Verify a given signature
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await ECDSA.verify(128, keyPair.publicKey, signature, message);
+ * ```
+ */
 export const verify = async (
     saltLength: number,
     keyData: RsaPssPubCryptoKey,

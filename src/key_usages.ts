@@ -1,3 +1,8 @@
+/**
+ * Key usages and allowed formats
+ * @module
+ */
+
 import { Alg as AES } from "./aes/shared.js";
 import { Alg as EC } from "./ec/shared.js";
 import { Alg as Authentication } from "./hmac/index.js";
@@ -51,6 +56,9 @@ export type KeyUsagePairs =
     | WrappingKeyUsagePair
     | DeriveKeyUsagePair;
 
+/**
+ * Given a algorithm, return the _most likely_ key usage pair.
+ */
 export function getKeyUsagePairsByAlg(alg: string): KeyUsagePair {
     switch (alg) {
         case AES.Mode.AES_CBC:

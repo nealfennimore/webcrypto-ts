@@ -1,10 +1,17 @@
 /**
- * Code related to AES_KW
+ * Code related to AES_KW mode
  * @module
  */
 import * as params from "../params.js";
 import { AesKwCryptoKey, AesShared, Alg } from "./shared.js";
 
+/**
+ * Generate a new AES_KW key
+ * @example
+ * ```ts
+ * const key = await AES_KW.generateKey();
+ * ```
+ */
 export async function generateKey(
     algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
         length: 256,
@@ -22,6 +29,13 @@ export async function generateKey(
     );
 }
 
+/**
+ * Import an AES_KW key from the specified format
+ * @example
+ * ```ts
+ * const key = await AES_KW.importKey("jwk", jwk);
+ * ```
+ */
 export async function importKey(
     format: KeyFormat,
     keyData: BufferSource | JsonWebKey,
@@ -39,8 +53,25 @@ export async function importKey(
     );
 }
 
-export const exportKey = AesShared.exportKey;
+/**
+ * Export an AES_KW key into the specified format
+ * @example
+ * ```ts
+ * const jwk = await AES_KW.exportKey("jwk", key);
+ * ```
+ */
+export const exportKey = async (format: KeyFormat, keyData: AesKwCryptoKey) =>
+    AesShared.exportKey(format, keyData);
 
+/**
+ * Wrap another key with an AES_KW key
+ * @example
+ * ```ts
+ * const kek = await AES_KW.generateKey({length: 256}, true, ['wrapKey', 'unwrapKey']);
+ * const dek = await AES_GCM.generateKey();
+ * const wrappedKey = await AES_GCM.wrapKey("raw", dek, kek);
+ * ```
+ */
 export async function wrapKey(
     format: KeyFormat,
     key: CryptoKey,
@@ -50,6 +81,14 @@ export async function wrapKey(
         name: Alg.Mode.AES_KW,
     });
 }
+
+/**
+ * Unwrap a wrapped key using the key encryption key
+ * @example
+ * ```ts
+ * const dek = await AES_GCM.unwrapKey("raw", wrappedKey, {name: "AES_GCM"}, kek);
+ * ```
+ */
 export async function unwrapKey(
     format: KeyFormat,
     wrappedKey: BufferSource,

@@ -1,3 +1,8 @@
+/**
+ * Shared code for SHA
+ * @module
+ */
+
 export interface Sha1ArrayBuffer extends ArrayBuffer {
     _sha1ArrayBufferBrand: any;
 }

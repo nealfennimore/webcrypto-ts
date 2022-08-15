@@ -1,4 +1,9 @@
-import { getKeyUsagePairsByAlg } from "../keyUsages.js";
+/**
+ * Shared code for RSA
+ * @module
+ */
+
+import { getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
 

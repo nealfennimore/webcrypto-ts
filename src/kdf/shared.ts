@@ -1,9 +1,10 @@
 /**
+ * Shared code for KDF
  * @module
  */
 import type { AesCryptoKeys } from "../aes/index.js";
 import { HmacCryptoKey } from "../hmac/index.js";
-import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../keyUsages.js";
+import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
 

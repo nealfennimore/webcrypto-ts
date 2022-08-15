@@ -1,4 +1,5 @@
 /**
+ * All elliptic curve algorithms
  * @module
  */
 export * as ECDH from "./ecdh.js";

@@ -1,4 +1,5 @@
 /**
+ * All AES related modes and functions
  * @module
  */
 export * as AES_CBC from "./aes_cbc.js";

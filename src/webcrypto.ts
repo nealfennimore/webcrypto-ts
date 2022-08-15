@@ -1,3 +1,8 @@
+/**
+ * Wrapper for node/browser webcrypto
+ * @module
+ */
+
 import { Alg as SHA } from "./sha/shared.js";
 
 class CryptoLoader {

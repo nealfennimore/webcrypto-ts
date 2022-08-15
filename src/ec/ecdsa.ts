@@ -1,5 +1,6 @@
 /**
  * Code related to ECDSA
+ * @module
  */
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
@@ -11,6 +12,13 @@ import {
     EcShared,
 } from "./shared.js";
 
+/**
+ * Generate a new ECDSA keypair
+ * @example
+ * ```ts
+ * const keyPair = await ECDSA.generateKey();
+ * ```
+ */
 export const generateKey = async (
     algorithm: Omit<params.EnforcedEcKeyGenParams, "name"> = {
         namedCurve: Alg.Curve.P_521,
@@ -24,6 +32,13 @@ export const generateKey = async (
         keyUsages
     );
 
+/**
+ * Import an ECDSA public or private key
+ * @example
+ * ```ts
+ * const key = await ECDSA.importKey("jwk", pubKey, { namedCurve: "P-521" }, true, ['encrypt']);
+ * ```
+ */
 export const importKey = async (
     format: KeyFormat,
     keyData: BufferSource | JsonWebKey,
@@ -41,8 +56,26 @@ export const importKey = async (
         keyUsages
     );
 
-export const exportKey = EcShared.exportKey;
+/**
+ * Export an ECDSA public or private key
+ * @example
+ * ```ts
+ * const pubKeyJwk = await ECDSA.importKey("jwk", keyPair.publicKey);
+ * ```
+ */
+export const exportKey = async (
+    format: KeyFormat,
+    keyData: EcdsaPubCryptoKey | EcdsaPrivCryptoKey
+) => EcShared.exportKey(format, keyData);
 
+/**
+ * Sign a given payload
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await ECDSA.sign({hash: "SHA-512"}, keyPair.privateKey, message);
+ * ```
+ */
 export async function sign(
     algorithm: Omit<params.EnforcedEcdsaParams, "name">,
     keyData: EcdsaPrivCryptoKey,
@@ -58,6 +91,14 @@ export async function sign(
     );
 }
 
+/**
+ * Verify a given signature
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await ECDSA.verify({hash: "SHA-512"}, keyPair.publicKey, signature, message);
+ * ```
+ */
 export async function verify(
     algorithm: Omit<params.EnforcedEcdsaParams, "name">,
     keyData: EcdsaPubCryptoKey,

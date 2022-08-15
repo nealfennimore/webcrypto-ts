@@ -1,3 +1,8 @@
+/**
+ * Code related to RSASSA_PKCS1_v1_5
+ * @module
+ */
+
 import * as params from "../params.js";
 import { Alg as SHA } from "../sha/shared.js";
 import {
@@ -8,6 +13,13 @@ import {
     RsassaPkcs1V15PubCryptoKey,
 } from "./shared.js";
 
+/**
+ * Generate a new RSASSA_PKCS1_v1_5 keypair
+ * @example
+ * ```ts
+ * const keyPair = await RSASSA_PKCS1_v1_5.generateKey();
+ * ```
+ */
 export const generateKey = async (
     algorithm: Omit<params.EnforcedRsaHashedKeyGenParams, "name"> = {
         hash: SHA.Variant.SHA_512,
@@ -26,6 +38,13 @@ export const generateKey = async (
         keyUsages
     )) as RsassaPkcs1V15CryptoKeyPair;
 
+/**
+ * Import an RSASSA_PKCS1_v1_5 public or private key
+ * @example
+ * ```ts
+ * const key = await RSASSA_PKCS1_v1_5.importKey("jwk", pubKey, { hash: "SHA-512" }, true, ['verify']);
+ * ```
+ */
 export const importKey = async (
     format: KeyFormat,
     keyData: BufferSource | JsonWebKey,
@@ -41,11 +60,26 @@ export const importKey = async (
         keyUsages
     );
 
+/**
+ * Export an RSASSA_PKCS1_v1_5 public or private key
+ * @example
+ * ```ts
+ * const pubKeyJwk = await RSASSA_PKCS1_v1_5.importKey("jwk", keyPair.publicKey);
+ * ```
+ */
 export const exportKey = async (
     format: KeyFormat,
     keyData: RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey
 ) => RsaShared.exportKey(format, keyData);
 
+/**
+ * Sign a given payload
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await RSASSA_PKCS1_v1_5.sign(keyPair.privateKey, message);
+ * ```
+ */
 export const sign = async (
     keyData: RsassaPkcs1V15PrivCryptoKey,
     data: BufferSource
@@ -58,6 +92,14 @@ export const sign = async (
         data
     );
 
+/**
+ * Verify a given signature
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await RSASSA_PKCS1_v1_5.verify(keyPair.publicKey, signature, message);
+ * ```
+ */
 export const verify = async (
     keyData: RsassaPkcs1V15PubCryptoKey,
     signature: BufferSource,

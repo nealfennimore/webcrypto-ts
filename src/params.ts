@@ -1,3 +1,7 @@
+/**
+ * Enforced parameters for algorithms
+ * @module
+ */
 import { Alg as AES } from "./aes/shared.js";
 import { Alg as EC, EcdhPubCryptoKey } from "./ec/shared.js";
 import { Alg as Authentication } from "./hmac/index.js";

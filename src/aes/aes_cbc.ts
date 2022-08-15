@@ -1,16 +1,16 @@
 /**
- * Code related to AES_CBC
+ * Code related to AES_CBC mode
  * @module
  */
 
 import * as params from "../params.js";
 import { AesCbcCryptoKey, AesShared, Alg } from "./shared.js";
 /**
+ * Generate a new AES_CBC key
  * @example
  * ```ts
  * const key = await AES_CBC.generateKey();
  * ```
- * @category key generation
  */
 export async function generateKey(
     algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
@@ -30,13 +30,13 @@ export async function generateKey(
 }
 
 /**
+ * Import an AES_CBC key
  * @example
  * ```ts
  * const jwk await AES_CBC.importKey("jwk", jwk, {
  *     length: 256,
  * });
  * ```
- * @category key generation
  */
 export async function importKey(
     format: KeyFormat,
@@ -58,16 +58,18 @@ export async function importKey(
 }
 
 /**
+ * Export an AES_CBC key
  * @example
  * ```ts
  * const key = await AES_CBC.generateKey();
  * const jwk = await AES_CBC.exportKey("jwk", key);
  * ```
- * @category key generation
  */
-export const exportKey = AesShared.exportKey;
+export const exportKey = async (format: KeyFormat, keyData: AesCbcCryptoKey) =>
+    AesShared.exportKey(format, keyData);
 
 /**
+ * Encrypt a payload with an AES_CBC key
  * @example
  * ```ts
  * const key = await AES_CBC.generateKey();
@@ -78,7 +80,6 @@ export const exportKey = AesShared.exportKey;
  *    new TextEncoder().encode('message')
  * );
  * ```
- * @category encryption
  */
 export async function encrypt(
     algorithm: Omit<params.EnforcedAesCbcParams, "name">,
@@ -96,6 +97,7 @@ export async function encrypt(
 }
 
 /**
+ * Decrypt a ciphertext with an AES_CBC key
  * @example
  * ```ts
  * const plaintextBytes = await AES_CBC.decrypt(
@@ -104,7 +106,6 @@ export async function encrypt(
  *    ciphertextBytes
  * );
  * ```
- * @category encryption
  */
 export async function decrypt(
     algorithm: Omit<params.EnforcedAesCbcParams, "name">,
@@ -122,6 +123,7 @@ export async function decrypt(
 }
 
 /**
+ * Wrap another key with an AES_CBC key
  * @example
  * ```ts
  * const kek = await AES_CBC.generateKey({ length: 256 }, true, [
@@ -136,7 +138,6 @@ export async function decrypt(
  *     iv,
  * });
  * ```
- * @category key wrapping
  */
 export async function wrapKey(
     format: KeyFormat,
@@ -151,6 +152,7 @@ export async function wrapKey(
 }
 
 /**
+ * Unwrap a wrapped key using the key encryption key
  * @example
  * ```ts
  * const wrappedKey = await AES_CBC.wrapKey("raw", dek, kek, {
@@ -164,7 +166,6 @@ export async function wrapKey(
  *    { iv }
  * );
  * ```
- * @category key wrapping
  */
 export async function unwrapKey(
     format: KeyFormat,

@@ -1,5 +1,5 @@
 /**
- * Code related to AES_CTR
+ * Code related to AES_CTR mode
  * @module
  */
 
@@ -7,6 +7,14 @@ import * as params from "../params.js";
 import { getValues } from "../random.js";
 import { AesCtrCryptoKey, AesShared, Alg } from "./shared.js";
 
+/**
+ * Generates a counter, with the given length, starting from the count of 1. The nonce is randomized.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/AesCtrParams
+ * @example
+ * ```ts
+ * const counter = await AES_CTR.generateCounter();
+ * ```
+ */
 export async function generateCounter(
     counterLength: number = 8
 ): Promise<Uint8Array> {
@@ -16,6 +24,14 @@ export async function generateCounter(
     counter.set(nonce);
     return counter;
 }
+
+/**
+ * Generate a new AES_CTR key
+ * @example
+ * ```ts
+ * const key = await AES_CTR.generateKey();
+ * ```
+ */
 export async function generateKey(
     algorithm: Omit<params.EnforcedAesKeyGenParams, "name"> = {
         length: 256,
@@ -33,6 +49,13 @@ export async function generateKey(
     );
 }
 
+/**
+ * Import an AES_CTR key from the specified format
+ * @example
+ * ```ts
+ * const key = await AES_CTR.importKey("jwk", jwk, { length: 256 });
+ * ```
+ */
 export async function importKey(
     format: KeyFormat,
     keyData: BufferSource | JsonWebKey,
@@ -52,8 +75,27 @@ export async function importKey(
     );
 }
 
-export const exportKey = AesShared.exportKey;
+/**
+ * Export an AES_CTR key into the specified format
+ * @example
+ * ```ts
+ * const jwk = await AES_CTR.exportKey("jwk", key);
+ * ```
+ */
+export const exportKey = async (format: KeyFormat, keyData: AesCtrCryptoKey) =>
+    AesShared.exportKey(format, keyData);
 
+/**
+ * Encrypt with an AES_CTR key
+ * @example
+ * ```ts
+ * const key = await AES_CTR.generateKey();
+ * const message = new TextEncoder().encode("a message");
+ * const length = 8;
+ * const counter = await AES_CTR.generateCounter(length);
+ * const ciphertext = await AES_CTR.encrypt({length, counter}, key, message);
+ * ```
+ */
 export async function encrypt(
     algorithm: Omit<params.EnforcedAesCtrParams, "name">,
     keyData: AesCtrCryptoKey,
@@ -69,6 +111,13 @@ export async function encrypt(
     );
 }
 
+/**
+ * Decrypt with an AES_CTR key
+ * @example
+ * ```ts
+ * const plaintext = await AES_CTR.decrypt({length, counter}, key, ciphertext);
+ * ```
+ */
 export async function decrypt(
     algorithm: Omit<params.EnforcedAesCtrParams, "name">,
     keyData: AesCtrCryptoKey,
@@ -84,6 +133,17 @@ export async function decrypt(
     );
 }
 
+/**
+ * Wrap another key with an AES_CTR key
+ * @example
+ * ```ts
+ * const kek = await AES_CTR.generateKey({length: 256}, true, ['wrapKey', 'unwrapKey']);
+ * const dek = await AES_CTR.generateKey();
+ * const length = 8;
+ * const counter = await AES_CTR.generateCounter(length);
+ * const wrappedKey = await AES_CTR.wrapKey("raw", dek, kek, {length, counter});
+ * ```
+ */
 export async function wrapKey(
     format: KeyFormat,
     key: CryptoKey,
@@ -95,6 +155,14 @@ export async function wrapKey(
         name: Alg.Mode.AES_CTR,
     });
 }
+
+/**
+ * Unwrap a wrapped key using the key encryption key
+ * @example
+ * ```ts
+ * const dek = await AES_CTR.unwrapKey("raw", wrappedKey, {name: "AES_CTR"}, kek, {length, counter});
+ * ```
+ */
 export async function unwrapKey(
     format: KeyFormat,
     wrappedKey: BufferSource,

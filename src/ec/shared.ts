@@ -1,7 +1,8 @@
 /**
+ * Shared code for EC
  * @module
  */
-import { getKeyUsagePairsByAlg } from "../keyUsages.js";
+import { getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
 import * as WebCrypto from "../webcrypto.js";
 

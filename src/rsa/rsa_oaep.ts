@@ -1,4 +1,9 @@
-import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../keyUsages.js";
+/**
+ * Code related to RSA_OAEP
+ * @module
+ */
+
+import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../key_usages.js";
 import * as params from "../params.js";
 import { Alg as SHA } from "../sha/shared.js";
 import * as WebCrypto from "../webcrypto.js";
@@ -10,6 +15,13 @@ import {
     RsaShared,
 } from "./shared.js";
 
+/**
+ * Generate a new RSA_OAEP keypair
+ * @example
+ * ```ts
+ * const keyPair = await RSA_OAEP.generateKey();
+ * ```
+ */
 export const generateKey = async (
     algorithm: Omit<params.EnforcedRsaHashedKeyGenParams, "name"> = {
         hash: SHA.Variant.SHA_512,
@@ -28,6 +40,13 @@ export const generateKey = async (
         keyUsages
     )) as RsaOaepCryptoKeyPair;
 
+/**
+ * Import an RSA_OAEP public or private key
+ * @example
+ * ```ts
+ * const key = await RSA_OAEP.importKey("jwk", pubKey, { hash: "SHA-512" }, true, ['encrypt']);
+ * ```
+ */
 export const importKey = async (
     format: KeyFormat,
     keyData: BufferSource | JsonWebKey,
@@ -43,11 +62,26 @@ export const importKey = async (
         keyUsages
     );
 
+/**
+ * Export an RSA_OAEP public or private key
+ * @example
+ * ```ts
+ * const pubKeyJwk = await RSA_OAEP.importKey("jwk", keyPair.publicKey);
+ * ```
+ */
 export const exportKey = async (
     format: KeyFormat,
     keyData: RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey
 ) => RsaShared.exportKey(format, keyData);
 
+/**
+ * Encrypt with an RSA_OAEP public key
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const ciphertext = await RSA_OAEP.encrypt(keyPair.publicKey, message);
+ * ```
+ */
 export async function encrypt(
     keyData: RsaOaepPubCryptoKey,
     plaintext: BufferSource,
@@ -59,6 +93,14 @@ export async function encrypt(
     };
     return await WebCrypto.encrypt(algorithm, keyData, plaintext);
 }
+
+/**
+ * Decrypt with an RSA_OAEP private key
+ * @example
+ * ```ts
+ * const plaintext = await RSA_OAEP.decrypt(keyPair.privateKey, ciphertext);
+ * ```
+ */
 
 export async function decrypt(
     keyData: RsaOaepPrivCryptoKey,
@@ -72,6 +114,15 @@ export async function decrypt(
     return await WebCrypto.decrypt(algorithm, keyData, ciphertext);
 }
 
+/**
+ * Wrap another key with an RSA_OAEP public key
+ * @example
+ * ```ts
+ * const kek = await RSA_OAEP.generateKey(undefined, true, ['wrapKey', 'unwrapKey']);
+ * const dek = await RSA_OAEP.generateKey();
+ * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek, kek, {iv});
+ * ```
+ */
 export async function wrapKey(
     format: KeyFormat,
     key: CryptoKey,
@@ -89,6 +140,20 @@ export async function wrapKey(
         _wrapAlgorithm
     );
 }
+
+/**
+ * Unwrap a wrapped key using the key encryption key
+ * @example
+ * ```ts
+ * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek, kek);
+ * const unwrappedkey = await RSA_OAEP.unwrapKey(
+ *    "raw",
+ *    wrappedKey,
+ *    { name: Alg.Mode.RSA_OAEP },
+ *    kek,
+ * );
+ * ```
+ */
 export async function unwrapKey(
     format: KeyFormat,
     wrappedKey: BufferSource,
