@@ -34,10 +34,10 @@ jobs:
       if: steps.node-cache.outputs.cache-hit != 'true'
       run: npm ci
 
-    - run: npm run test -- --coverage
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+    - run: npm run doc
+
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        directory: ./coverage
-        flags: unittests
+        branch: gh-pages
+        folder: docs
