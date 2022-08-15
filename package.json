@@ -16,6 +16,10 @@
     },
     "author": "Neal Fennimore",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nealfennimore/webcrypto-ts.git"
+    },
     "devDependencies": {
         "@types/jest": "^28.1.6",
         "@types/webcrypto": "^0.0.28",

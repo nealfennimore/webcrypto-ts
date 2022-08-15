@@ -4,6 +4,8 @@
 
 An ESM based typescript wrapper for Web Crypto. Supports both nodejs webcrypto and browser webcrypto in the same package.
 
+[Documentation](https://neal.codes/webcrypto-ts/) :book:
+
 ## Usage
 
 ### Node
