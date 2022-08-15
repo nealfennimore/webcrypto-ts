@@ -2,7 +2,7 @@ import * as alg from "../alg.js";
 import { WebCrypto } from "../crypto.js";
 import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../keyUsages.js";
 import * as params from "../params.js";
-import { RsaKey, RsaKeyPair, RsaShared } from "./shared.js";
+import { RsaOaepCryptoKey, RsaOaepCryptoKeyPair, RsaShared } from "./shared.js";
 
 export namespace RSA_OAEP {
     export const generateKey = async (
@@ -21,7 +21,7 @@ export namespace RSA_OAEP {
             },
             extractable,
             keyUsages
-        )) as RsaKeyPair;
+        )) as RsaOaepCryptoKeyPair;
 
     export const importKey = async (
         format: KeyFormat,
@@ -29,7 +29,7 @@ export namespace RSA_OAEP {
         algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ) =>
+    ): Promise<RsaOaepCryptoKey> =>
         await RsaShared.importKey(
             format,
             keyData,
@@ -38,10 +38,13 @@ export namespace RSA_OAEP {
             keyUsages
         );
 
-    export const exportKey = RsaShared.exportKey;
+    export const exportKey = async (
+        format: KeyFormat,
+        keyData: RsaOaepCryptoKey
+    ) => RsaShared.exportKey(format, keyData);
 
     export async function encrypt(
-        keyData: RsaKey,
+        keyData: RsaOaepCryptoKey,
         plaintext: BufferSource,
         label?: BufferSource
     ): Promise<ArrayBuffer> {
@@ -53,7 +56,7 @@ export namespace RSA_OAEP {
     }
 
     export async function decrypt(
-        keyData: RsaKey,
+        keyData: RsaOaepCryptoKey,
         ciphertext: BufferSource,
         label?: params.EnforcedRsaOaepParams["label"]
     ): Promise<ArrayBuffer> {
@@ -67,7 +70,7 @@ export namespace RSA_OAEP {
     export async function wrapKey(
         format: KeyFormat,
         key: CryptoKey,
-        wrappingkey: RsaKey,
+        wrappingkey: RsaOaepCryptoKey,
         wrapAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">
     ): Promise<ArrayBuffer> {
         const _wrapAlgorithm: params.EnforcedRsaOaepParams = {
@@ -85,7 +88,7 @@ export namespace RSA_OAEP {
         format: KeyFormat,
         wrappedKey: BufferSource,
         wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKey: RsaKey,
+        unwrappingKey: RsaOaepCryptoKey,
         unwrappingKeyAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">,
         extractable: boolean = true,
         keyUsages?: KeyUsagePairs

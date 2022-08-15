@@ -1,7 +1,7 @@
 import * as alg from "../alg.js";
 import * as params from "../params.js";
 import { Random } from "../random.js";
-import { AesKey, AesShared } from "./shared.js";
+import { AesCtrCryptoKey, AesShared } from "./shared.js";
 
 export namespace AES_CTR {
     export async function generateCounter(
@@ -19,7 +19,7 @@ export namespace AES_CTR {
         },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesCtrCryptoKey> {
         return await AesShared.generateKey(
             {
                 ...algorithm,
@@ -36,7 +36,7 @@ export namespace AES_CTR {
         algorithm: Omit<params.AesCtrKeyAlgorithm, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesCtrCryptoKey> {
         return await AesShared.importKey(
             format as any,
             keyData as any,
@@ -53,7 +53,7 @@ export namespace AES_CTR {
 
     export async function encrypt(
         algorithm: Omit<params.EnforcedAesCtrParams, "name">,
-        keyData: AesKey,
+        keyData: AesCtrCryptoKey,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
         return await AesShared.encrypt(
@@ -68,7 +68,7 @@ export namespace AES_CTR {
 
     export async function decrypt(
         algorithm: Omit<params.EnforcedAesCtrParams, "name">,
-        keyData: AesKey,
+        keyData: AesCtrCryptoKey,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
         return await AesShared.decrypt(
@@ -84,7 +84,7 @@ export namespace AES_CTR {
     export async function wrapKey(
         format: KeyFormat,
         key: CryptoKey,
-        wrappingkey: AesKey,
+        wrappingkey: AesCtrCryptoKey,
         wrapAlgorithm: Omit<params.EnforcedAesCtrParams, "name">
     ): Promise<ArrayBuffer> {
         return await AesShared.wrapKey(format as any, key, wrappingkey, {
@@ -96,7 +96,7 @@ export namespace AES_CTR {
         format: KeyFormat,
         wrappedKey: BufferSource,
         wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKey: AesKey,
+        unwrappingKey: AesCtrCryptoKey,
         unwrappingKeyAlgorithm: Omit<params.EnforcedAesCtrParams, "name">,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]

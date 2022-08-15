@@ -1,7 +1,7 @@
 import * as alg from "../alg.js";
 import { WebCrypto } from "../crypto.js";
 import * as params from "../params.js";
-import { EcKey, SharedEc } from "./shared.js";
+import { EcdsaCryptoKey, EcdsaCryptoKeyPair, SharedEc } from "./shared.js";
 
 export namespace ECDSA {
     export const generateKey = async (
@@ -10,7 +10,7 @@ export namespace ECDSA {
         },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ) =>
+    ): Promise<EcdsaCryptoKeyPair> =>
         await SharedEc.generateKey(
             { ...algorithm, name: alg.EC.Variant.ECDSA },
             extractable,
@@ -25,7 +25,7 @@ export namespace ECDSA {
         },
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ) =>
+    ): Promise<EcdsaCryptoKey> =>
         await SharedEc.importKey(
             format,
             keyData,
@@ -38,10 +38,10 @@ export namespace ECDSA {
 
     export async function sign(
         algorithm: Omit<params.EnforcedEcdsaParams, "name">,
-        keyData: EcKey,
+        keyData: EcdsaCryptoKey,
         data: BufferSource
     ): Promise<ArrayBuffer> {
-        return await WebCrypto.sign<EcKey, params.EnforcedEcdsaParams>(
+        return await WebCrypto.sign<EcdsaCryptoKey, params.EnforcedEcdsaParams>(
             {
                 ...algorithm,
                 name: alg.EC.Variant.ECDSA,
@@ -53,11 +53,14 @@ export namespace ECDSA {
 
     export async function verify(
         algorithm: Omit<params.EnforcedEcdsaParams, "name">,
-        keyData: EcKey,
+        keyData: EcdsaCryptoKey,
         signature: BufferSource,
         data: BufferSource
     ): Promise<boolean> {
-        return await WebCrypto.verify<EcKey, params.EnforcedEcdsaParams>(
+        return await WebCrypto.verify<
+            EcdsaCryptoKey,
+            params.EnforcedEcdsaParams
+        >(
             {
                 ...algorithm,
                 name: alg.EC.Variant.ECDSA,

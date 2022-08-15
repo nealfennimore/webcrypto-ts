@@ -1,6 +1,6 @@
 import * as alg from "../alg.js";
 import * as params from "../params.js";
-import { RsaKey, RsaKeyPair, RsaShared } from "./shared.js";
+import { RsaPssCryptoKey, RsaPssCryptoKeyPair, RsaShared } from "./shared.js";
 
 export namespace RSA_PSS {
     export const generateKey = async (
@@ -19,7 +19,7 @@ export namespace RSA_PSS {
             },
             extractable,
             keyUsages
-        )) as RsaKeyPair;
+        )) as RsaPssCryptoKeyPair;
 
     export const importKey = async (
         format: KeyFormat,
@@ -27,7 +27,7 @@ export namespace RSA_PSS {
         algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ) =>
+    ): Promise<RsaPssCryptoKey> =>
         await RsaShared.importKey(
             format,
             keyData,
@@ -36,11 +36,14 @@ export namespace RSA_PSS {
             keyUsages
         );
 
-    export const exportKey = RsaShared.exportKey;
+    export const exportKey = async (
+        format: KeyFormat,
+        keyData: RsaPssCryptoKey
+    ) => RsaShared.exportKey(format, keyData);
 
     export const sign = async (
         saltLength: number,
-        keyData: RsaKey,
+        keyData: RsaPssCryptoKey,
         data: BufferSource
     ) =>
         await RsaShared.sign(
@@ -54,7 +57,7 @@ export namespace RSA_PSS {
 
     export const verify = async (
         saltLength: number,
-        keyData: RsaKey,
+        keyData: RsaPssCryptoKey,
         signature: BufferSource,
         data: BufferSource
     ) =>

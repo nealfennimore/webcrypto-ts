@@ -1,8 +1,8 @@
 import * as alg from "../../alg.js";
-import { AES, AesKey } from "../index.js";
+import { AES, AesKwCryptoKey } from "../index.js";
 
 describe("AES_KW", () => {
-    let key: AesKey;
+    let key: AesKwCryptoKey;
     beforeEach(async () => {
         key = await AES.AES_KW.generateKey();
     });

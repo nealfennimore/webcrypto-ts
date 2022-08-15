@@ -1,6 +1,6 @@
 import * as alg from "../alg.js";
 import * as params from "../params.js";
-import { AesKey, AesShared } from "./shared.js";
+import { AesKwCryptoKey, AesShared } from "./shared.js";
 
 export namespace AES_KW {
     export async function generateKey(
@@ -9,7 +9,7 @@ export namespace AES_KW {
         },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesKwCryptoKey> {
         return await AesShared.generateKey(
             {
                 ...algorithm,
@@ -25,7 +25,7 @@ export namespace AES_KW {
         keyData: BufferSource | JsonWebKey,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesKwCryptoKey> {
         return await AesShared.importKey(
             format as any,
             keyData as any,
@@ -42,7 +42,7 @@ export namespace AES_KW {
     export async function wrapKey(
         format: KeyFormat,
         key: CryptoKey,
-        wrappingkey: AesKey
+        wrappingkey: AesKwCryptoKey
     ): Promise<ArrayBuffer> {
         return await AesShared.wrapKey(format as any, key, wrappingkey, {
             name: alg.AES.Mode.AES_KW,
@@ -52,7 +52,7 @@ export namespace AES_KW {
         format: KeyFormat,
         wrappedKey: BufferSource,
         wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKey: AesKey,
+        unwrappingKey: AesKwCryptoKey,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {

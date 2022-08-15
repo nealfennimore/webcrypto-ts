@@ -2,17 +2,51 @@ import { WebCrypto } from "../crypto.js";
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
 
-export interface RsaKey extends CryptoKey {}
-export interface RsaKeyPair extends CryptoKeyPair {}
+export interface RsaOaepCryptoKey extends CryptoKey {
+    _rsaOaepCryptoKeyBrand: any;
+}
+export interface RsaPssCryptoKey extends CryptoKey {
+    _rsaPssCryptoKeyBrand: any;
+}
+export interface RsassaPkcs1V15CryptoKey extends CryptoKey {
+    _rsassaPkcs1V15CryptoKeyBrand: any;
+}
+
+export type RsaCryptoKeys =
+    | RsaOaepCryptoKey
+    | RsaPssCryptoKey
+    | RsassaPkcs1V15CryptoKey;
+export interface RsaOaepCryptoKeyPair extends CryptoKeyPair {
+    _rsaOaepCryptoKeyPairBrand: any;
+    publicKey: RsaOaepCryptoKey;
+
+    privateKey: RsaOaepCryptoKey;
+}
+export interface RsaPssCryptoKeyPair extends CryptoKeyPair {
+    _rsaPssCryptoKeyPairBrand: any;
+    publicKey: RsaPssCryptoKey;
+
+    privateKey: RsaPssCryptoKey;
+}
+export interface RsassaPkcs1V15CryptoKeyPair extends CryptoKeyPair {
+    _rsassaPkcs1V15CryptoKeyBrand: any;
+    publicKey: RsassaPkcs1V15CryptoKey;
+
+    privateKey: RsassaPkcs1V15CryptoKey;
+}
+export type RsaCryptoKeyPairs =
+    | RsaOaepCryptoKeyPair
+    | RsaPssCryptoKeyPair
+    | RsassaPkcs1V15CryptoKeyPair;
 
 export namespace RsaShared {
     export async function generateKey(
         algorithm: params.EnforcedRsaHashedKeyGenParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<RsaKey | RsaKeyPair> {
+    ): Promise<RsaCryptoKeys | RsaCryptoKeyPairs> {
         return await WebCrypto.generateKey<
-            RsaKey | RsaKeyPair,
+            RsaCryptoKeys | RsaCryptoKeyPairs,
             params.EnforcedRsaHashedKeyGenParams
         >(
             algorithm,
@@ -21,15 +55,15 @@ export namespace RsaShared {
         );
     }
 
-    export async function importKey(
+    export async function importKey<T extends RsaCryptoKeys>(
         format: KeyFormat,
         keyData: BufferSource | JsonWebKey,
         algorithm: params.EnforcedRsaHashedImportParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<RsaKey> {
+    ): Promise<T> {
         return await WebCrypto.importKey<
-            RsaKey,
+            T,
             params.EnforcedRsaHashedImportParams
         >(
             format as any,
@@ -40,9 +74,9 @@ export namespace RsaShared {
         );
     }
 
-    export async function exportKey(
+    export async function exportKey<T extends RsaCryptoKeys>(
         format: KeyFormat,
-        keyData: RsaKey
+        keyData: T
     ): Promise<JsonWebKey | ArrayBuffer> {
         return await WebCrypto.exportKey(format as any, keyData);
     }
@@ -51,7 +85,7 @@ export namespace RsaShared {
         algorithm:
             | params.EnforcedRsaPssParams
             | params.EnforcedRsassaPkcs1v15Params,
-        keyData: RsaKey,
+        keyData: RsaCryptoKeys,
         data: BufferSource
     ): Promise<ArrayBuffer> {
         return await WebCrypto.sign(algorithm, keyData, data);
@@ -61,7 +95,7 @@ export namespace RsaShared {
         algorithm:
             | params.EnforcedRsaPssParams
             | params.EnforcedRsassaPkcs1v15Params,
-        keyData: RsaKey,
+        keyData: RsaCryptoKeys,
         signature: BufferSource,
         data: BufferSource
     ): Promise<boolean> {

@@ -1,12 +1,12 @@
 import * as alg from "../../alg.js";
 import * as params from "../../params.js";
 import { EC } from "../index.js";
-import { EcKeyPair } from "../shared.js";
+import { EcdhCryptoKeyPair } from "../shared.js";
 
 const { ECDH } = EC;
 
 describe("ECDH", () => {
-    let keyPair: EcKeyPair;
+    let keyPair: EcdhCryptoKeyPair;
     beforeEach(async () => {
         keyPair = await ECDH.generateKey();
     });

@@ -1,6 +1,10 @@
 import * as alg from "../alg.js";
 import * as params from "../params.js";
-import { RsaKey, RsaKeyPair, RsaShared } from "./shared.js";
+import {
+    RsaShared,
+    RsassaPkcs1V15CryptoKey,
+    RsassaPkcs1V15CryptoKeyPair,
+} from "./shared.js";
 
 export namespace RSASSA_PKCS1_v1_5 {
     export const generateKey = async (
@@ -19,7 +23,7 @@ export namespace RSASSA_PKCS1_v1_5 {
             },
             extractable,
             keyUsages
-        )) as RsaKeyPair;
+        )) as RsassaPkcs1V15CryptoKeyPair;
 
     export const importKey = async (
         format: KeyFormat,
@@ -27,7 +31,7 @@ export namespace RSASSA_PKCS1_v1_5 {
         algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ) =>
+    ): Promise<RsassaPkcs1V15CryptoKey> =>
         await RsaShared.importKey(
             format,
             keyData,
@@ -36,9 +40,15 @@ export namespace RSASSA_PKCS1_v1_5 {
             keyUsages
         );
 
-    export const exportKey = RsaShared.exportKey;
+    export const exportKey = async (
+        format: KeyFormat,
+        keyData: RsassaPkcs1V15CryptoKey
+    ) => RsaShared.exportKey(format, keyData);
 
-    export const sign = async (keyData: RsaKey, data: BufferSource) =>
+    export const sign = async (
+        keyData: RsassaPkcs1V15CryptoKey,
+        data: BufferSource
+    ) =>
         await RsaShared.sign(
             {
                 name: alg.RSA.Variant.RSASSA_PKCS1_v1_5,
@@ -48,7 +58,7 @@ export namespace RSASSA_PKCS1_v1_5 {
         );
 
     export const verify = async (
-        keyData: RsaKey,
+        keyData: RsassaPkcs1V15CryptoKey,
         signature: BufferSource,
         data: BufferSource
     ) =>

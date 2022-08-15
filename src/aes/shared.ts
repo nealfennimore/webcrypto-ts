@@ -2,35 +2,49 @@ import { WebCrypto } from "../crypto.js";
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
 
-export interface AesKey extends CryptoKey {}
+export interface AesGcmCryptoKey extends CryptoKey {
+    _aesGcmKeyBrand: any;
+}
+
+export interface AesKwCryptoKey extends CryptoKey {
+    _aesKwKeyBrand: any;
+}
+
+export interface AesCtrCryptoKey extends CryptoKey {
+    _aesCtrKeyBrand: any;
+}
+
+export interface AesCbcCryptoKey extends CryptoKey {
+    _aesCbcKeyBrand: any;
+}
+
+export type AesCryptoKeys =
+    | AesCbcCryptoKey
+    | AesKwCryptoKey
+    | AesGcmCryptoKey
+    | AesCtrCryptoKey;
 
 export namespace AesShared {
-    export async function generateKey(
+    export async function generateKey<T extends CryptoKey>(
         algorithm: params.EnforcedAesKeyGenParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
-        return await WebCrypto.generateKey<
-            AesKey,
-            params.EnforcedAesKeyGenParams
-        >(
+    ): Promise<T> {
+        return await WebCrypto.generateKey<T, params.EnforcedAesKeyGenParams>(
             algorithm,
             extractable,
             keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
         );
     }
 
-    export async function importKey(
+    export async function importKey<T extends CryptoKey>(
         format: KeyFormat,
         keyData: BufferSource | JsonWebKey,
         algorithm: params.EnforcedAesKeyAlgorithms,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
-        return await WebCrypto.importKey<
-            AesKey,
-            params.EnforcedAesKeyAlgorithms
-        >(
+    ): Promise<T> {
+        return await WebCrypto.importKey<T, params.EnforcedAesKeyAlgorithms>(
             format as any,
             keyData as any,
             algorithm,
@@ -39,39 +53,39 @@ export namespace AesShared {
         );
     }
 
-    export async function exportKey(
+    export async function exportKey<T extends CryptoKey>(
         format: KeyFormat,
-        keyData: AesKey
+        keyData: T
     ): Promise<JsonWebKey | ArrayBuffer> {
         return await WebCrypto.exportKey(format as any, keyData);
     }
 
-    export async function encrypt(
+    export async function encrypt<T extends CryptoKey>(
         algorithm: Exclude<
             params.EnforcedAesParams,
             params.EnforcedAesKwParams
         >,
-        keyData: AesKey,
+        keyData: T,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
         return await WebCrypto.encrypt(algorithm, keyData, plaintext);
     }
 
-    export async function decrypt(
+    export async function decrypt<T extends CryptoKey>(
         algorithm: Exclude<
             params.EnforcedAesParams,
             params.EnforcedAesKwParams
         >,
-        keyData: AesKey,
+        keyData: T,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
         return await WebCrypto.decrypt(algorithm, keyData, ciphertext);
     }
 
-    export async function wrapKey(
+    export async function wrapKey<T extends CryptoKey>(
         format: KeyFormat,
         key: CryptoKey,
-        wrappingkey: AesKey,
+        wrappingkey: T,
         wrapAlgorithm: params.EnforcedAesParams
     ): Promise<ArrayBuffer> {
         return await WebCrypto.wrapKey(
@@ -81,11 +95,11 @@ export namespace AesShared {
             wrapAlgorithm
         );
     }
-    export async function unwrapKey(
+    export async function unwrapKey<T extends CryptoKey>(
         format: KeyFormat,
         wrappedKey: BufferSource,
         wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKey: AesKey,
+        unwrappingKey: T,
         unwrappingKeyAlgorithm: params.EnforcedAesParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]

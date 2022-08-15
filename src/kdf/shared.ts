@@ -1,12 +1,16 @@
-import type { AesKey } from "../aes/index.js";
+import type { AesCryptoKeys } from "../aes/index.js";
 import * as alg from "../alg.js";
 import { WebCrypto } from "../crypto.js";
-import { HmacKey } from "../hmac/index.js";
+import { HmacCryptoKey } from "../hmac/index.js";
 import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
 
-export interface Pbkdf2KeyMaterial extends CryptoKey {}
-export interface HkdfKeyMaterial extends CryptoKey {}
+export interface Pbkdf2KeyMaterial extends CryptoKey {
+    _pbkdf2KeyMaterialBrand: any;
+}
+export interface HkdfKeyMaterial extends CryptoKey {
+    _kkdfKeyMaterialBrand: any;
+}
 export namespace KdfShared {
     export async function generateKeyMaterial<K extends CryptoKey>(
         format: KeyFormat,
@@ -31,9 +35,9 @@ export namespace KdfShared {
             | params.EnforcedHmacKeyGenParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey | HmacKey> {
+    ): Promise<AesCryptoKeys | HmacCryptoKey> {
         return await WebCrypto.deriveKey<
-            AesKey | HmacKey,
+            AesCryptoKeys | HmacCryptoKey,
             params.EnforcedAesKeyGenParams | params.EnforcedHmacKeyGenParams
         >(
             algorithm,

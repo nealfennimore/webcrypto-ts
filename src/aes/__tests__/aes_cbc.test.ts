@@ -1,9 +1,9 @@
 import * as alg from "../../alg.js";
 import { IV } from "../../iv.js";
-import { AES, AesKey } from "../index.js";
+import { AES, AesCbcCryptoKey } from "../index.js";
 
 describe("AES_CBC", () => {
-    let iv: Uint8Array, key: AesKey;
+    let iv: Uint8Array, key: AesCbcCryptoKey;
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
         iv = await IV.generate();
@@ -46,7 +46,9 @@ describe("AES_CBC", () => {
             "wrapKey",
             "unwrapKey",
         ]);
-        const dek: AesKey = await AES.AES_CBC.generateKey({ length: 256 });
+        const dek: AesCbcCryptoKey = await AES.AES_CBC.generateKey({
+            length: 256,
+        });
 
         const ciphertextBytes = await AES.AES_CBC.encrypt(
             { iv },
@@ -57,13 +59,13 @@ describe("AES_CBC", () => {
         const wrappedKey = await AES.AES_CBC.wrapKey("raw", dek, kek, {
             iv,
         });
-        const unwrappedkey = await AES.AES_CBC.unwrapKey(
+        const unwrappedkey = (await AES.AES_CBC.unwrapKey(
             "raw",
             wrappedKey,
             { name: alg.AES.Mode.AES_CBC },
             kek,
             { iv }
-        );
+        )) as AesCbcCryptoKey;
 
         const plaintextBytes = await AES.AES_CBC.decrypt(
             { iv },

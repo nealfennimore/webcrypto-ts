@@ -3,7 +3,7 @@ import { SHA } from "./alg.js";
 class CryptoLoader {
     static async load(): Promise<Crypto> {
         // @ts-ignore
-        return typeof crypto !== "undefined"
+        return typeof crypto !== "undefined" // Should match node which includes crypto and window.crypto
             ? Promise.resolve(crypto)
             : await (
                   await import("node:crypto")
@@ -264,10 +264,10 @@ export namespace WebCrypto {
         ).subtle.generateKey(algorithm, extractable, keyUsages)) as T;
     }
 
-    export async function digest(
+    export async function digest<T extends ArrayBuffer>(
         algorithm: SHA.Variants,
         data: BufferSource
-    ): Promise<ArrayBuffer> {
-        return await (await _crypto).subtle.digest(algorithm, data);
+    ): Promise<T> {
+        return (await (await _crypto).subtle.digest(algorithm, data)) as T;
     }
 }

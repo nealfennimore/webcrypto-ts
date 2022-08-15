@@ -1,10 +1,10 @@
 import { EC } from "../index.js";
-import { EcKeyPair } from "../shared.js";
+import { EcdsaCryptoKeyPair } from "../shared.js";
 
 const { ECDSA } = EC;
 
 describe("ECDSA", () => {
-    let keyPair: EcKeyPair;
+    let keyPair: EcdsaCryptoKeyPair;
     beforeEach(async () => {
         keyPair = await ECDSA.generateKey();
     });

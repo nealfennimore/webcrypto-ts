@@ -2,7 +2,9 @@ import * as alg from "../alg.js";
 import { WebCrypto } from "../crypto.js";
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
-export interface HmacKey extends CryptoKey {}
+export interface HmacCryptoKey extends CryptoKey {
+    _hmacKeyBrand: any;
+}
 
 export namespace HMAC {
     export const generateKey = async (
@@ -12,7 +14,10 @@ export namespace HMAC {
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ) =>
-        await WebCrypto.generateKey<HmacKey, params.EnforcedHmacKeyGenParams>(
+        await WebCrypto.generateKey<
+            HmacCryptoKey,
+            params.EnforcedHmacKeyGenParams
+        >(
             {
                 ...algorithm,
                 name: alg.Authentication.Code.HMAC,
@@ -28,7 +33,10 @@ export namespace HMAC {
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ) =>
-        await WebCrypto.importKey<HmacKey, params.EnforcedHmacImportParams>(
+        await WebCrypto.importKey<
+            HmacCryptoKey,
+            params.EnforcedHmacImportParams
+        >(
             format as any,
             keyData as any,
             { ...algorithm, name: alg.Authentication.Code.HMAC },
@@ -38,16 +46,16 @@ export namespace HMAC {
 
     export async function exportKey(
         format: KeyFormat,
-        keyData: HmacKey
+        keyData: HmacCryptoKey
     ): Promise<JsonWebKey | ArrayBuffer> {
-        return await WebCrypto.exportKey<HmacKey>(format as any, keyData);
+        return await WebCrypto.exportKey<HmacCryptoKey>(format as any, keyData);
     }
 
     export async function sign(
-        keyData: HmacKey,
+        keyData: HmacCryptoKey,
         data: BufferSource
     ): Promise<ArrayBuffer> {
-        return await WebCrypto.sign<HmacKey, params.HmacKeyAlgorithm>(
+        return await WebCrypto.sign<HmacCryptoKey, params.HmacKeyAlgorithm>(
             {
                 name: alg.Authentication.Code.HMAC,
             },
@@ -57,11 +65,11 @@ export namespace HMAC {
     }
 
     export async function verify(
-        keyData: HmacKey,
+        keyData: HmacCryptoKey,
         signature: BufferSource,
         data: BufferSource
     ): Promise<boolean> {
-        return await WebCrypto.verify<HmacKey, params.HmacKeyAlgorithm>(
+        return await WebCrypto.verify<HmacCryptoKey, params.HmacKeyAlgorithm>(
             {
                 name: alg.Authentication.Code.HMAC,
             },

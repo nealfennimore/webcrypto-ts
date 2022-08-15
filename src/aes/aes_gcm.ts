@@ -1,6 +1,6 @@
 import * as alg from "../alg.js";
 import * as params from "../params.js";
-import { AesKey, AesShared } from "./shared.js";
+import { AesGcmCryptoKey, AesShared } from "./shared.js";
 
 export namespace AES_GCM {
     export async function generateKey(
@@ -9,7 +9,7 @@ export namespace AES_GCM {
         },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesGcmCryptoKey> {
         return await AesShared.generateKey(
             {
                 ...algorithm,
@@ -26,7 +26,7 @@ export namespace AES_GCM {
         algorithm: Omit<params.AesGcmKeyAlgorithm, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesGcmCryptoKey> {
         return await AesShared.importKey(
             format as any,
             keyData as any,
@@ -43,7 +43,7 @@ export namespace AES_GCM {
 
     export async function encrypt(
         algorithm: Omit<params.EnforcedAesGcmParams, "name">,
-        keyData: AesKey,
+        keyData: AesGcmCryptoKey,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
         return await AesShared.encrypt(
@@ -58,7 +58,7 @@ export namespace AES_GCM {
 
     export async function decrypt(
         algorithm: Omit<params.EnforcedAesGcmParams, "name">,
-        keyData: AesKey,
+        keyData: AesGcmCryptoKey,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
         return await AesShared.decrypt(
@@ -74,7 +74,7 @@ export namespace AES_GCM {
     export async function wrapKey(
         format: KeyFormat,
         key: CryptoKey,
-        wrappingkey: AesKey,
+        wrappingkey: AesGcmCryptoKey,
         wrapAlgorithm: Omit<params.EnforcedAesGcmParams, "name">
     ): Promise<ArrayBuffer> {
         return await AesShared.wrapKey(format as any, key, wrappingkey, {
@@ -86,7 +86,7 @@ export namespace AES_GCM {
         format: KeyFormat,
         wrappedKey: BufferSource,
         wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKey: AesKey,
+        unwrappingKey: AesGcmCryptoKey,
         unwrappingKeyAlgorithm: Omit<params.EnforcedAesGcmParams, "name">,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]

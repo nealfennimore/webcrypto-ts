@@ -1,9 +1,9 @@
 import * as alg from "../../alg.js";
 import { IV } from "../../iv.js";
-import { AES, AesKey } from "../index.js";
+import { AES, AesGcmCryptoKey } from "../index.js";
 
 describe("AES_GCM", () => {
-    let iv: Uint8Array, key: AesKey;
+    let iv: Uint8Array, key: AesGcmCryptoKey;
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
         iv = await IV.generate();
@@ -46,7 +46,9 @@ describe("AES_GCM", () => {
             "wrapKey",
             "unwrapKey",
         ]);
-        const dek: AesKey = await AES.AES_GCM.generateKey({ length: 256 });
+        const dek: AesGcmCryptoKey = await AES.AES_GCM.generateKey({
+            length: 256,
+        });
 
         const ciphertextBytes = await AES.AES_GCM.encrypt(
             { iv },
@@ -57,13 +59,13 @@ describe("AES_GCM", () => {
         const wrappedKey = await AES.AES_GCM.wrapKey("raw", dek, kek, {
             iv,
         });
-        const unwrappedkey = await AES.AES_GCM.unwrapKey(
+        const unwrappedkey = (await AES.AES_GCM.unwrapKey(
             "raw",
             wrappedKey,
             { name: alg.AES.Mode.AES_GCM },
             kek,
             { iv }
-        );
+        )) as AesGcmCryptoKey;
 
         const plaintextBytes = await AES.AES_GCM.decrypt(
             { iv },

@@ -1,6 +1,6 @@
 import * as alg from "../alg.js";
 import * as params from "../params.js";
-import { AesKey, AesShared } from "./shared.js";
+import { AesCbcCryptoKey, AesShared } from "./shared.js";
 
 export namespace AES_CBC {
     export async function generateKey(
@@ -9,8 +9,8 @@ export namespace AES_CBC {
         },
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
-        return await AesShared.generateKey(
+    ): Promise<AesCbcCryptoKey> {
+        return await AesShared.generateKey<AesCbcCryptoKey>(
             {
                 ...algorithm,
                 name: alg.AES.Mode.AES_CBC,
@@ -26,7 +26,7 @@ export namespace AES_CBC {
         algorithm: Omit<params.AesCbcKeyAlgorithm, "name">,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ): Promise<AesKey> {
+    ): Promise<AesCbcCryptoKey> {
         return await AesShared.importKey(
             format as any,
             keyData as any,
@@ -43,7 +43,7 @@ export namespace AES_CBC {
 
     export async function encrypt(
         algorithm: Omit<params.EnforcedAesCbcParams, "name">,
-        keyData: AesKey,
+        keyData: AesCbcCryptoKey,
         plaintext: BufferSource
     ): Promise<ArrayBuffer> {
         return await AesShared.encrypt(
@@ -58,7 +58,7 @@ export namespace AES_CBC {
 
     export async function decrypt(
         algorithm: Omit<params.EnforcedAesCbcParams, "name">,
-        keyData: AesKey,
+        keyData: AesCbcCryptoKey,
         ciphertext: BufferSource
     ): Promise<ArrayBuffer> {
         return await AesShared.decrypt(
@@ -74,7 +74,7 @@ export namespace AES_CBC {
     export async function wrapKey(
         format: KeyFormat,
         key: CryptoKey,
-        wrappingkey: AesKey,
+        wrappingkey: AesCbcCryptoKey,
         wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
     ): Promise<ArrayBuffer> {
         return await AesShared.wrapKey(format as any, key, wrappingkey, {
@@ -86,7 +86,7 @@ export namespace AES_CBC {
         format: KeyFormat,
         wrappedKey: BufferSource,
         wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKey: AesKey,
+        unwrappingKey: AesCbcCryptoKey,
         unwrappingKeyAlgorithm: Omit<params.EnforcedAesCbcParams, "name">,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
