@@ -32,8 +32,6 @@ jobs:
     - name: Install dependencies (if the cached directory was not found)
       if: steps.node-cache.outputs.cache-hit != 'true'
       run: npm ci
-
-    - run: npm test
     
     - uses: JS-DevTools/npm-publish@v1
       id: npm-publish
