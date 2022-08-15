@@ -16,14 +16,14 @@ describe("AES_KW", () => {
         const dek = await AES.AES_CBC.generateKey();
 
         const wrappedDek = await AES.AES_KW.wrapKey("raw", dek, key);
-        const unwrappedDek = await AES.AES_KW.unwrapKey(
+        const unwrappedDek = (await AES.AES_KW.unwrapKey(
             "raw",
             wrappedDek,
             {
                 name: AES.Alg.Mode.AES_CBC,
             },
             key
-        );
+        )) as AES.AesCbcCryptoKey;
 
         expect(await AES.AES_CBC.exportKey("jwk", dek)).toEqual(
             await AES.AES_CBC.exportKey("jwk", unwrappedDek)

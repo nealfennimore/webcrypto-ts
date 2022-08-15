@@ -55,13 +55,13 @@ describe("RSA_OAEP", () => {
             keyPair.publicKey,
             {}
         );
-        const unwrappedAesKey = await RSA_OAEP.unwrapKey(
+        const unwrappedAesKey = (await RSA_OAEP.unwrapKey(
             "raw",
             wrappedAesKey,
             { name: AES.Alg.Mode.AES_CBC },
             keyPair.privateKey,
             {}
-        );
+        )) as AES.AesCbcCryptoKey;
 
         expect(await AES.AES_CBC.exportKey("jwk", aesKey)).toEqual(
             await AES.AES_CBC.exportKey("jwk", unwrappedAesKey)
