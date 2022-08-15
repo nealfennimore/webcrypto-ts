@@ -76,7 +76,7 @@ export async function wrapKey(
     format: KeyFormat,
     key: CryptoKey,
     wrappingkey: RsaOaepPubCryptoKey,
-    wrapAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">
+    wrapAlgorithm?: Omit<params.EnforcedRsaOaepParams, "name">
 ): Promise<ArrayBuffer> {
     const _wrapAlgorithm: params.EnforcedRsaOaepParams = {
         ...wrapAlgorithm,
