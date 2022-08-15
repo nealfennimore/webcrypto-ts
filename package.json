@@ -1,5 +1,5 @@
 {
-    "name": "webcrypto-ts",
+    "name": "@nfen/webcrypto-ts",
     "version": "0.0.1",
     "description": "Enforced Webcrypto wrapper",
     "exports": "lib/index.js",
