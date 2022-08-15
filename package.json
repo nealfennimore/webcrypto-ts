@@ -1,6 +1,6 @@
 {
     "name": "@nfen/webcrypto-ts",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Enforced Webcrypto wrapper",
     "types": "./lib/index.d.js",
     "main": "./lib/index.js",
