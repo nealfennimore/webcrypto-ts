@@ -11,8 +11,8 @@ An ESM based typescript wrapper for Web Crypto. Supports both nodejs webcrypto a
 ### Node
 
 ```js
-import { AES_GCM } from "./lib/aes/aes_gcm.js";
-import { IV } from "./lib/iv.js";
+import { AES_GCM } from "@nfen/webcrypto-ts/lib/aes";
+import { IV } from "@nfen/webcrypto-ts/lib/random";
 
 (async function () {
     k = await AES_GCM.generateKey();
@@ -41,7 +41,7 @@ import { IV } from "./lib/iv.js";
         const decoder = new TextDecoder();
 
         const key = await WebCrypto.AES.AES_GCM.generateKey();
-        const iv = await WebCrypto.IV.generate();
+        const iv = await WebCrypto.Random.IV.generate();
         const message = encoder.encode("my message");
 
         const ciphertext = await WebCrypto.AES.AES_GCM.encrypt(
