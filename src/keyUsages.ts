@@ -18,7 +18,7 @@ export enum KeyUsages {
     unwrapKey = "unwrapKey",
 }
 
-type KeyUsagePair = [KeyUsage, KeyUsage];
+export type KeyUsagePair = [KeyUsage, KeyUsage];
 
 export type EncryptionKeyUsagePair = [KeyUsages.encrypt, KeyUsages.decrypt];
 export const EncryptionKeyUsagePair: KeyUsagePair = [

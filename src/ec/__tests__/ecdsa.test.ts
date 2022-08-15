@@ -1,4 +1,4 @@
-import { EC } from "../index.js";
+import * as EC from "../index.js";
 import { EcdsaCryptoKeyPair } from "../shared.js";
 
 const { ECDSA } = EC;

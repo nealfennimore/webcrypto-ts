@@ -1,6 +1,6 @@
 import * as alg from "../../alg.js";
 import * as params from "../../params.js";
-import { EC } from "../index.js";
+import * as EC from "../index.js";
 import { EcdhCryptoKeyPair } from "../shared.js";
 
 const { ECDH } = EC;

@@ -1,9 +1,9 @@
 import * as alg from "../../alg.js";
 import { IV } from "../../iv.js";
-import { AES, AesCtrCryptoKey } from "../index.js";
+import * as AES from "../index.js";
 
 describe("AES_CTR", () => {
-    let iv: Uint8Array, counter: Uint8Array, key: AesCtrCryptoKey;
+    let iv: Uint8Array, counter: Uint8Array, key: AES.AesCtrCryptoKey;
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
         iv = await IV.generate();
@@ -47,7 +47,7 @@ describe("AES_CTR", () => {
             "wrapKey",
             "unwrapKey",
         ]);
-        const dek: AesCtrCryptoKey = await AES.AES_CTR.generateKey({
+        const dek: AES.AesCtrCryptoKey = await AES.AES_CTR.generateKey({
             length: 256,
         });
 
@@ -67,7 +67,7 @@ describe("AES_CTR", () => {
             { name: alg.AES.Mode.AES_CTR },
             kek,
             { counter, length: 8 }
-        )) as AesCtrCryptoKey;
+        )) as AES.AesCtrCryptoKey;
 
         const plaintextBytes = await AES.AES_CTR.decrypt(
             { counter, length: 8 },

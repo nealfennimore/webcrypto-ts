@@ -1,6 +1,6 @@
-import { AES } from "../../aes/index.js";
+import * as AES from "../../aes/index.js";
 import * as alg from "../../alg.js";
-import { RSA } from "../index.js";
+import * as RSA from "../index.js";
 
 const { RSA_OAEP } = RSA;
 

@@ -1,9 +1,9 @@
-export { AES } from "./aes/index.js";
-export { EC } from "./ec/index.js";
+export * as AES from "./aes/index.js";
+export * as EC from "./ec/index.js";
 export { HMAC } from "./hmac/index.js";
 export { IV } from "./iv.js";
-export { KDF } from "./kdf/index.js";
+export * as KDF from "./kdf/index.js";
 export { Random } from "./random.js";
-export { RSA } from "./rsa/index.js";
+export * as RSA from "./rsa/index.js";
 export { Salt } from "./salt.js";
-export { SHA } from "./sha/index.js";
+export * as SHA from "./sha/index.js";

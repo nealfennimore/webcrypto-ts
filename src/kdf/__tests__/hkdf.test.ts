@@ -1,7 +1,7 @@
 import * as alg from "../../alg.js";
 import * as params from "../../params.js";
 import { Salt } from "../../salt.js";
-import { KDF } from "../index.js";
+import * as KDF from "../index.js";
 import type { HkdfKeyMaterial } from "../shared.js";
 
 const { HKDF } = KDF;
