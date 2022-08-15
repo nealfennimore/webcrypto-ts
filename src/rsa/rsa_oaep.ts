@@ -46,7 +46,7 @@ export namespace RSA_OAEP {
     export async function encrypt(
         keyData: RsaOaepCryptoKey,
         plaintext: BufferSource,
-        label?: BufferSource
+        label?: params.EnforcedRsaOaepParams["label"]
     ): Promise<ArrayBuffer> {
         const algorithm: params.EnforcedRsaOaepParams = {
             name: alg.RSA.Variant.RSA_OAEP,
