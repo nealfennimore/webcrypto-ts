@@ -12,7 +12,7 @@
         "build": "tsc --build",
         "watch": "tsc --watch",
         "test": "jest",
-        "doc": "npx typedoc --entryPointStrategy expand --exclude '**/__tests__/*' --out doc src"
+        "doc": "npx typedoc --entryPointStrategy expand --exclude '**/__tests__/*' --out docs src"
     },
     "author": "Neal Fennimore",
     "license": "MIT",
