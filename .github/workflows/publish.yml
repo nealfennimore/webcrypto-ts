@@ -1,10 +1,9 @@
-name: Test
+name: Publish
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -29,16 +28,25 @@ jobs:
       with:
        path: node_modules
        key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
+    
     - name: Install dependencies (if the cached directory was not found)
       if: steps.node-cache.outputs.cache-hit != 'true'
       run: npm ci
 
-    - run: npm run test -- --coverage
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+    - run: npm test
+    
+    - uses: JS-DevTools/npm-publish@v1
+      id: npm-publish
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        directory: ./coverage
-        flags: unittests
+        token: ${{ secrets.NPM_TOKEN }}
+        access: public
+
+    - if: steps.npm-publish.outputs.type != 'none'
+      name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
