@@ -1,4 +1,8 @@
-import { AES, Authentication, EC, KDF, RSA } from "./alg.js";
+import { Alg as AES } from "./aes/shared.js";
+import { Alg as EC } from "./ec/shared.js";
+import { Alg as Authentication } from "./hmac/index.js";
+import { Alg as KDF } from "./kdf/shared.js";
+import { Alg as RSA } from "./rsa/shared.js";
 
 export enum KeyFormats {
     raw = "raw",

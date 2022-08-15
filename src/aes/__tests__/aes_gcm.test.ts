@@ -1,12 +1,11 @@
-import * as alg from "../../alg.js";
-import { IV } from "../../iv.js";
+import * as Random from "../../random.js";
 import * as AES from "../index.js";
 
 describe("AES_GCM", () => {
     let iv: Uint8Array, key: AES.AesGcmCryptoKey;
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
-        iv = await IV.generate();
+        iv = await Random.IV.generate();
         key = await AES.AES_GCM.generateKey({ length: 256 });
     });
     it("should encrypt and decrypt", async () => {
@@ -62,7 +61,7 @@ describe("AES_GCM", () => {
         const unwrappedkey = (await AES.AES_GCM.unwrapKey(
             "raw",
             wrappedKey,
-            { name: alg.AES.Mode.AES_GCM },
+            { name: AES.Alg.Mode.AES_GCM },
             kek,
             { iv }
         )) as AES.AesGcmCryptoKey;

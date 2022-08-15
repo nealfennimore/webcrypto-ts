@@ -1,12 +1,11 @@
-import * as alg from "../../alg.js";
-import { IV } from "../../iv.js";
+import * as Random from "../../random.js";
 import * as AES from "../index.js";
 
 describe("AES_CTR", () => {
     let iv: Uint8Array, counter: Uint8Array, key: AES.AesCtrCryptoKey;
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
-        iv = await IV.generate();
+        iv = await Random.IV.generate();
         counter = await AES.AES_CTR.generateCounter();
         key = await AES.AES_CTR.generateKey();
     });
@@ -64,7 +63,7 @@ describe("AES_CTR", () => {
         const unwrappedkey = (await AES.AES_CTR.unwrapKey(
             "raw",
             wrappedKey,
-            { name: alg.AES.Mode.AES_CTR },
+            { name: AES.Alg.Mode.AES_CTR },
             kek,
             { counter, length: 8 }
         )) as AES.AesCtrCryptoKey;

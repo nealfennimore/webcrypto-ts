@@ -1,4 +1,3 @@
-import * as alg from "../../alg.js";
 import * as AES from "../index.js";
 
 describe("AES_KW", () => {
@@ -21,7 +20,7 @@ describe("AES_KW", () => {
             "raw",
             wrappedDek,
             {
-                name: alg.AES.Mode.AES_CBC,
+                name: AES.Alg.Mode.AES_CBC,
             },
             key
         );

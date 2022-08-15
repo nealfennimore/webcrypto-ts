@@ -1,5 +1,6 @@
-import * as alg from "../../alg.js";
+import * as Authentication from "../../hmac/index.js";
 import * as params from "../../params.js";
+import * as SHA from "../../sha/index.js";
 import * as EC from "../index.js";
 import { EcdhCryptoKeyPair } from "../shared.js";
 
@@ -53,8 +54,8 @@ describe("ECDH", () => {
     it("should derive keys", async () => {
         const otherKeyPair = await ECDH.generateKey();
         const hmacParams: params.EnforcedHmacKeyGenParams = {
-            name: alg.Authentication.Code.HMAC,
-            hash: alg.SHA.Variant.SHA_512,
+            name: Authentication.Alg.Code.HMAC,
+            hash: SHA.Alg.Variant.SHA_512,
             length: 512,
         };
         let key = await ECDH.deriveKey(

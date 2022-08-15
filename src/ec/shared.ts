@@ -1,6 +1,9 @@
-import { WebCrypto } from "../crypto.js";
+/**
+ * @module
+ */
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
+import * as WebCrypto from "../webcrypto.js";
 
 export interface EcdhCryptoKey extends CryptoKey {
     _ecdhCryptoKeyBrand: any;
@@ -21,7 +24,23 @@ export interface EcdsaCryptoKeyPair extends CryptoKeyPair {
 export type EcCryptoKeys = EcdhCryptoKey | EcdsaCryptoKey;
 export type EcCryptoKeyPairs = EcdhCryptoKeyPair | EcdsaCryptoKeyPair;
 
-export namespace SharedEc {
+export namespace Alg {
+    export enum Variant {
+        ECDSA = "ECDSA",
+        ECDH = "ECDH",
+    }
+    export type Variants = `${Variant}`;
+
+    export enum Curve {
+        P_256 = "P-256",
+        P_384 = "P-384",
+        P_521 = "P-521",
+    }
+
+    export type Curves = `${Curve}`;
+}
+
+export namespace EcShared {
     export async function generateKey<T extends EcCryptoKeyPairs>(
         algorithm: params.EnforcedEcKeyGenParams,
         extractable: boolean = true,

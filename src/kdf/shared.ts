@@ -1,9 +1,11 @@
+/**
+ * @module
+ */
 import type { AesCryptoKeys } from "../aes/index.js";
-import * as alg from "../alg.js";
-import { WebCrypto } from "../crypto.js";
 import { HmacCryptoKey } from "../hmac/index.js";
 import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
+import * as WebCrypto from "../webcrypto.js";
 
 export interface Pbkdf2KeyMaterial extends CryptoKey {
     _pbkdf2KeyMaterialBrand: any;
@@ -11,11 +13,20 @@ export interface Pbkdf2KeyMaterial extends CryptoKey {
 export interface HkdfKeyMaterial extends CryptoKey {
     _kkdfKeyMaterialBrand: any;
 }
+
+export namespace Alg {
+    export enum Variant {
+        PBKDF2 = "PBKDF2",
+        HKDF = "HKDF",
+    }
+    export type Variants = `${Variant}`;
+}
+
 export namespace KdfShared {
     export async function generateKeyMaterial<K extends CryptoKey>(
         format: KeyFormat,
         keyData: BufferSource,
-        algorithm: alg.KDF.Variants,
+        algorithm: Alg.Variants,
         extractable: boolean = false
     ): Promise<K> {
         return await WebCrypto.importKey(

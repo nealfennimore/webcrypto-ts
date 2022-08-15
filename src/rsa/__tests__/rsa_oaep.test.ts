@@ -1,5 +1,4 @@
 import * as AES from "../../aes/index.js";
-import * as alg from "../../alg.js";
 import * as RSA from "../index.js";
 
 const { RSA_OAEP } = RSA;
@@ -59,7 +58,7 @@ describe("RSA_OAEP", () => {
         const unwrappedAesKey = await RSA_OAEP.unwrapKey(
             "raw",
             wrappedAesKey,
-            { name: alg.AES.Mode.AES_CBC },
+            { name: AES.Alg.Mode.AES_CBC },
             keyPair.privateKey,
             {}
         );

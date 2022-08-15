@@ -1,6 +1,6 @@
-import { WebCrypto } from "../crypto.js";
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
+import * as WebCrypto from "../webcrypto.js";
 
 export interface RsaOaepCryptoKey extends CryptoKey {
     _rsaOaepCryptoKeyBrand: any;
@@ -38,6 +38,15 @@ export type RsaCryptoKeyPairs =
     | RsaOaepCryptoKeyPair
     | RsaPssCryptoKeyPair
     | RsassaPkcs1V15CryptoKeyPair;
+
+export namespace Alg {
+    export enum Variant {
+        RSA_OAEP = "RSA-OAEP",
+        RSA_PSS = "RSA-PSS",
+        RSASSA_PKCS1_v1_5 = "RSASSA-PKCS1-v1_5",
+    }
+    export type Variants = `${Variant}`;
+}
 
 export namespace RsaShared {
     export async function generateKey(

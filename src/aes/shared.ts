@@ -1,6 +1,11 @@
-import { WebCrypto } from "../crypto.js";
+/**
+ * Shared code for AES
+ * @module
+ */
+
 import { getKeyUsagePairsByAlg } from "../keyUsages.js";
 import * as params from "../params.js";
+import * as WebCrypto from "../webcrypto.js";
 
 export interface AesGcmCryptoKey extends CryptoKey {
     _aesGcmKeyBrand: any;
@@ -23,6 +28,17 @@ export type AesCryptoKeys =
     | AesKwCryptoKey
     | AesGcmCryptoKey
     | AesCtrCryptoKey;
+
+export namespace Alg {
+    export enum Mode {
+        AES_CBC = "AES-CBC",
+        AES_CTR = "AES-CTR",
+        AES_GCM = "AES-GCM",
+        AES_KW = "AES-KW",
+    }
+
+    export type Modes = `${Mode}`;
+}
 
 export namespace AesShared {
     export async function generateKey<T extends CryptoKey>(

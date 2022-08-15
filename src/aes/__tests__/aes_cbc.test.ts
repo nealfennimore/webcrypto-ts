@@ -1,12 +1,11 @@
-import * as alg from "../../alg.js";
-import { IV } from "../../iv.js";
+import * as Random from "../../random.js";
 import * as AES from "../index.js";
 
 describe("AES_CBC", () => {
     let iv: Uint8Array, key: AES.AesCbcCryptoKey;
     const text = "brown fox fox fox fox fox fox fox fox fox";
     beforeEach(async () => {
-        iv = await IV.generate();
+        iv = await Random.IV.generate();
         key = await AES.AES_CBC.generateKey();
     });
     it("should encrypt and decrypt", async () => {
@@ -62,7 +61,7 @@ describe("AES_CBC", () => {
         const unwrappedkey = (await AES.AES_CBC.unwrapKey(
             "raw",
             wrappedKey,
-            { name: alg.AES.Mode.AES_CBC },
+            { name: AES.Alg.Mode.AES_CBC },
             kek,
             { iv }
         )) as AES.AesCbcCryptoKey;

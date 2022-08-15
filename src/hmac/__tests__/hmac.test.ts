@@ -1,7 +1,7 @@
-import { HMAC, HmacCryptoKey } from "../index.js";
+import * as HMAC from "../index.js";
 
 describe("HMAC", () => {
-    let key: HmacCryptoKey;
+    let key: HMAC.HmacCryptoKey;
     beforeEach(async () => {
         key = await HMAC.generateKey();
     });

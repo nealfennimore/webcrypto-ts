@@ -1,7 +1,11 @@
-export { AES_CBC } from "./aes_cbc.js";
-export { AES_CTR } from "./aes_ctr.js";
-export { AES_GCM } from "./aes_gcm.js";
-export { AES_KW } from "./aes_kw.js";
+/**
+ * @module
+ */
+export * as AES_CBC from "./aes_cbc.js";
+export * as AES_CTR from "./aes_ctr.js";
+export * as AES_GCM from "./aes_gcm.js";
+export * as AES_KW from "./aes_kw.js";
+export { Alg } from "./shared.js";
 export type {
     AesCbcCryptoKey,
     AesCryptoKeys,

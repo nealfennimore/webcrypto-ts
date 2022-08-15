@@ -1,6 +1,8 @@
-import * as alg from "../../alg.js";
+import { Alg as AES } from "../../aes/shared.js";
+import { Alg as Authentication } from "../../hmac/index.js";
+import { Alg as SHA } from "../../sha/shared.js";
 import * as params from "../../params.js";
-import { Salt } from "../../salt.js";
+import * as Random from "../../random.js";
 import * as KDF from "../index.js";
 import type { HkdfKeyMaterial } from "../shared.js";
 
@@ -13,12 +15,12 @@ describe("HKDF", () => {
             new TextEncoder().encode("password")
         );
 
-        salt = await Salt.generate();
-        info = await Salt.generate();
+        salt = await Random.Salt.generate();
+        info = await Random.Salt.generate();
     });
     it("should derive bits", async () => {
         const bits = await HKDF.deriveBits(
-            { salt, info, hash: alg.SHA.Variant.SHA_512 },
+            { salt, info, hash: SHA.Variant.SHA_512 },
             keyMaterial,
             512
         );
@@ -26,15 +28,15 @@ describe("HKDF", () => {
 
         await expect(
             HKDF.deriveBits(
-                { salt, info, hash: alg.SHA.Variant.SHA_512 },
+                { salt, info, hash: SHA.Variant.SHA_512 },
                 keyMaterial,
                 511
             )
         ).rejects.toThrowError(RangeError);
     });
     it("should derive keys", async () => {
-        for (const [aesKey, aesVal] of Object.entries(alg.AES.Mode)) {
-            for (const [shaKey, shaVal] of Object.entries(alg.SHA.Variant)) {
+        for (const [aesKey, aesVal] of Object.entries(AES.Mode)) {
+            for (const [shaKey, shaVal] of Object.entries(SHA.Variant)) {
                 if (shaVal === "SHA-1") {
                     continue;
                 }
@@ -60,12 +62,12 @@ describe("HKDF", () => {
         }
 
         const hmacParams: params.EnforcedHmacKeyGenParams = {
-            name: alg.Authentication.Code.HMAC,
-            hash: alg.SHA.Variant.SHA_512,
+            name: Authentication.Code.HMAC,
+            hash: SHA.Variant.SHA_512,
             length: 512,
         };
         let key = await HKDF.deriveKey(
-            { salt, info, hash: alg.SHA.Variant.SHA_512 },
+            { salt, info, hash: SHA.Variant.SHA_512 },
             keyMaterial,
             hmacParams
         );
