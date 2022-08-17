@@ -36,7 +36,7 @@ export const generateKey = async (
  * Import an ECDSA public or private key
  * @example
  * ```ts
- * const key = await ECDSA.importKey("jwk", pubKey, { namedCurve: "P-521" }, true, ['encrypt']);
+ * const key = await ECDSA.importKey("jwk", pubKey, { namedCurve: "P-521" }, true, ['verify']);
  * ```
  */
 export const importKey = async (

@@ -101,7 +101,6 @@ export async function sign(
  * Verify a given signature
  * @example
  * ```ts
- * const message = new TextEncoder().encode("a message");
  * const isVerified = await HMAC.verify(key, signature, message);
  * ```
  */

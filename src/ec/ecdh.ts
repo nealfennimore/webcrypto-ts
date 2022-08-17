@@ -39,7 +39,7 @@ export const generateKey = async (
  * Import an ECDH public or private key
  * @example
  * ```ts
- * const key = await ECDH.importKey("jwk", pubKey, { namedCurve: "P-521" }, true, ['encrypt']);
+ * const key = await ECDH.importKey("jwk", pubKey, { namedCurve: "P-521" }, true, ['deriveKey', 'deriveBits']);
  * ```
  */
 export const importKey = async (
