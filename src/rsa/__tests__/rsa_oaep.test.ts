@@ -25,9 +25,9 @@ describe("RSA_OAEP", () => {
             ["encrypt"]
         )) as RSA.RsaOaepPubCryptoKey;
         const text = encode("a message");
-        const ciphertext = await RSA_OAEP.encrypt({ label }, pubKey, text);
+        const ciphertext = await RSA_OAEP.encrypt(undefined, pubKey, text);
         const plaintext = await RSA_OAEP.decrypt(
-            { label },
+            undefined,
             keyPair.privateKey,
             ciphertext
         );
