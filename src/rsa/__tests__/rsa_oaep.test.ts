@@ -1,9 +1,14 @@
 import * as AES from "../../aes/index.js";
+import * as Random from "../../random.js";
 import * as RSA from "../index.js";
 
 const { RSA_OAEP } = RSA;
 
 describe("RSA_OAEP", () => {
+    let label: BufferSource;
+    beforeEach(async () => {
+        label = await Random.getValues(8);
+    });
     it("should generate key", async () => {
         const key = await RSA_OAEP.generateKey();
         expect(key).toMatchSnapshot();
@@ -20,8 +25,9 @@ describe("RSA_OAEP", () => {
             ["encrypt"]
         )) as RSA.RsaOaepPubCryptoKey;
         const text = encode("a message");
-        const ciphertext = await RSA_OAEP.encrypt(pubKey, text);
+        const ciphertext = await RSA_OAEP.encrypt({ label }, pubKey, text);
         const plaintext = await RSA_OAEP.decrypt(
+            { label },
             keyPair.privateKey,
             ciphertext
         );
@@ -30,8 +36,13 @@ describe("RSA_OAEP", () => {
     it("should encrypt and decrypt", async () => {
         const keyPair = await RSA_OAEP.generateKey();
         const text = encode("a message");
-        const ciphertext = await RSA_OAEP.encrypt(keyPair.publicKey, text);
+        const ciphertext = await RSA_OAEP.encrypt(
+            { label },
+            keyPair.publicKey,
+            text
+        );
         const plaintext = await RSA_OAEP.decrypt(
+            { label },
             keyPair.privateKey,
             ciphertext
         );

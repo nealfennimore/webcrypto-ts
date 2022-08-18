@@ -79,39 +79,45 @@ export const exportKey = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const data = await RSA_OAEP.encrypt(keyPair.publicKey, message);
+ * const data = await RSA_OAEP.encrypt({label}, keyPair.publicKey, message);
  * ```
  */
 export async function encrypt(
+    algorithm: Omit<params.EnforcedRsaOaepParams, "name"> = {},
     key: RsaOaepPubCryptoKey,
-    data: BufferSource,
-    label?: params.EnforcedRsaOaepParams["label"]
+    data: BufferSource
 ): Promise<ArrayBuffer> {
-    const algorithm: params.EnforcedRsaOaepParams = {
-        name: Alg.Variant.RSA_OAEP,
-        label,
-    };
-    return await WebCrypto.encrypt(algorithm, key, data);
+    return await WebCrypto.encrypt(
+        {
+            ...algorithm,
+            name: Alg.Variant.RSA_OAEP,
+        },
+        key,
+        data
+    );
 }
 
 /**
  * Decrypt with an RSA_OAEP private key
  * @example
  * ```ts
- * const data = await RSA_OAEP.decrypt(keyPair.privateKey, data);
+ * const data = await RSA_OAEP.decrypt({label}, keyPair.privateKey, data);
  * ```
  */
 
 export async function decrypt(
+    algorithm: Omit<params.EnforcedRsaOaepParams, "name"> = {},
     key: RsaOaepPrivCryptoKey,
-    data: BufferSource,
-    label?: params.EnforcedRsaOaepParams["label"]
+    data: BufferSource
 ): Promise<ArrayBuffer> {
-    const algorithm: params.EnforcedRsaOaepParams = {
-        name: Alg.Variant.RSA_OAEP,
-        label,
-    };
-    return await WebCrypto.decrypt(algorithm, key, data);
+    return await WebCrypto.decrypt(
+        {
+            ...algorithm,
+            name: Alg.Variant.RSA_OAEP,
+        },
+        key,
+        data
+    );
 }
 
 /**
