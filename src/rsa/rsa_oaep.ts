@@ -49,14 +49,14 @@ export const generateKey = async (
  */
 export const importKey = async (
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
 ): Promise<RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey> =>
     await RsaShared.importKey(
         format,
-        keyData,
+        key,
         { ...algorithm, name: Alg.Variant.RSA_OAEP },
         extractable,
         keyUsages
@@ -71,47 +71,47 @@ export const importKey = async (
  */
 export const exportKey = async (
     format: KeyFormat,
-    keyData: RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey
-) => RsaShared.exportKey(format, keyData);
+    key: RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey
+) => RsaShared.exportKey(format, key);
 
 /**
  * Encrypt with an RSA_OAEP public key
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const ciphertext = await RSA_OAEP.encrypt(keyPair.publicKey, message);
+ * const data = await RSA_OAEP.encrypt(keyPair.publicKey, message);
  * ```
  */
 export async function encrypt(
-    keyData: RsaOaepPubCryptoKey,
-    plaintext: BufferSource,
+    key: RsaOaepPubCryptoKey,
+    data: BufferSource,
     label?: params.EnforcedRsaOaepParams["label"]
 ): Promise<ArrayBuffer> {
     const algorithm: params.EnforcedRsaOaepParams = {
         name: Alg.Variant.RSA_OAEP,
         label,
     };
-    return await WebCrypto.encrypt(algorithm, keyData, plaintext);
+    return await WebCrypto.encrypt(algorithm, key, data);
 }
 
 /**
  * Decrypt with an RSA_OAEP private key
  * @example
  * ```ts
- * const plaintext = await RSA_OAEP.decrypt(keyPair.privateKey, ciphertext);
+ * const data = await RSA_OAEP.decrypt(keyPair.privateKey, data);
  * ```
  */
 
 export async function decrypt(
-    keyData: RsaOaepPrivCryptoKey,
-    ciphertext: BufferSource,
+    key: RsaOaepPrivCryptoKey,
+    data: BufferSource,
     label?: params.EnforcedRsaOaepParams["label"]
 ): Promise<ArrayBuffer> {
     const algorithm: params.EnforcedRsaOaepParams = {
         name: Alg.Variant.RSA_OAEP,
         label,
     };
-    return await WebCrypto.decrypt(algorithm, keyData, ciphertext);
+    return await WebCrypto.decrypt(algorithm, key, data);
 }
 
 /**

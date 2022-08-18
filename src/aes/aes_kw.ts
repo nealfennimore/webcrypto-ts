@@ -38,13 +38,13 @@ export async function generateKey(
  */
 export async function importKey(
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
 ): Promise<AesKwCryptoKey> {
     return await AesShared.importKey(
         format as any,
-        keyData as any,
+        key as any,
         {
             name: Alg.Mode.AES_KW,
         },
@@ -60,8 +60,8 @@ export async function importKey(
  * const jwk = await AES_KW.exportKey("jwk", key);
  * ```
  */
-export const exportKey = async (format: KeyFormat, keyData: AesKwCryptoKey) =>
-    AesShared.exportKey(format, keyData);
+export const exportKey = async (format: KeyFormat, key: AesKwCryptoKey) =>
+    AesShared.exportKey(format, key);
 
 /**
  * Wrap another key with an AES_KW key

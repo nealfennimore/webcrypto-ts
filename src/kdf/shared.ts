@@ -26,13 +26,13 @@ export namespace Alg {
 export namespace KdfShared {
     export async function generateKeyMaterial<K extends CryptoKey>(
         format: KeyFormat,
-        keyData: BufferSource,
+        key: BufferSource,
         algorithm: Alg.Variants,
         extractable: boolean = false
     ): Promise<K> {
         return await WebCrypto.importKey(
             format as any,
-            keyData,
+            key,
             algorithm,
             extractable,
             DeriveKeyUsagePair

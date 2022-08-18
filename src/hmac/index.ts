@@ -49,14 +49,14 @@ export const generateKey = async (
  */
 export const importKey = async (
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.EnforcedHmacImportParams, "name">,
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
 ) =>
     await WebCrypto.importKey<HmacCryptoKey, params.EnforcedHmacImportParams>(
         format as any,
-        keyData as any,
+        key as any,
         { ...algorithm, name: Alg.Code.HMAC },
         extractable,
         keyUsages ?? getKeyUsagePairsByAlg(Alg.Code.HMAC)
@@ -71,9 +71,9 @@ export const importKey = async (
  */
 export async function exportKey(
     format: KeyFormat,
-    keyData: HmacCryptoKey
+    key: HmacCryptoKey
 ): Promise<JsonWebKey | ArrayBuffer> {
-    return await WebCrypto.exportKey<HmacCryptoKey>(format as any, keyData);
+    return await WebCrypto.exportKey<HmacCryptoKey>(format as any, key);
 }
 
 /**
@@ -85,14 +85,14 @@ export async function exportKey(
  * ```
  */
 export async function sign(
-    keyData: HmacCryptoKey,
+    key: HmacCryptoKey,
     data: BufferSource
 ): Promise<ArrayBuffer> {
     return await WebCrypto.sign<HmacCryptoKey, params.HmacKeyAlgorithm>(
         {
             name: Alg.Code.HMAC,
         },
-        keyData,
+        key,
         data
     );
 }
@@ -105,7 +105,7 @@ export async function sign(
  * ```
  */
 export async function verify(
-    keyData: HmacCryptoKey,
+    key: HmacCryptoKey,
     signature: BufferSource,
     data: BufferSource
 ): Promise<boolean> {
@@ -113,7 +113,7 @@ export async function verify(
         {
             name: Alg.Code.HMAC,
         },
-        keyData,
+        key,
         signature,
         data
     );

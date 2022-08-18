@@ -44,7 +44,7 @@ export const generateKey = async (
  */
 export const importKey = async (
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.EnforcedEcKeyImportParams, "name"> = {
         namedCurve: Alg.Curve.P_521,
     },
@@ -53,7 +53,7 @@ export const importKey = async (
 ): Promise<EcdhPubCryptoKey | EcdhPrivCryptoKey> =>
     await EcShared.importKey(
         format,
-        keyData,
+        key,
         { ...algorithm, name: Alg.Variant.ECDH },
         extractable,
         keyUsages
@@ -68,8 +68,8 @@ export const importKey = async (
  */
 export const exportKey = async (
     format: KeyFormat,
-    keyData: EcdhPubCryptoKey | EcdhPrivCryptoKey
-) => EcShared.exportKey(format, keyData);
+    key: EcdhPubCryptoKey | EcdhPrivCryptoKey
+) => EcShared.exportKey(format, key);
 
 /**
  * Derive a shared key between two ECDH key pairs

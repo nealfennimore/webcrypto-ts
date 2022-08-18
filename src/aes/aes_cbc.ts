@@ -40,14 +40,14 @@ export async function generateKey(
  */
 export async function importKey(
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.AesCbcKeyAlgorithm, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
 ): Promise<AesCbcCryptoKey> {
     return await AesShared.importKey(
         format as any,
-        keyData as any,
+        key as any,
         {
             ...algorithm,
             name: Alg.Mode.AES_CBC,
@@ -65,11 +65,11 @@ export async function importKey(
  * const jwk = await AES_CBC.exportKey("jwk", key);
  * ```
  */
-export const exportKey = async (format: KeyFormat, keyData: AesCbcCryptoKey) =>
-    AesShared.exportKey(format, keyData);
+export const exportKey = async (format: KeyFormat, key: AesCbcCryptoKey) =>
+    AesShared.exportKey(format, key);
 
 /**
- * Encrypt a payload with an AES_CBC key
+ * Encrypt payload with an AES_CBC key
  * @example
  * ```ts
  * const key = await AES_CBC.generateKey();
@@ -83,21 +83,21 @@ export const exportKey = async (format: KeyFormat, keyData: AesCbcCryptoKey) =>
  */
 export async function encrypt(
     algorithm: Omit<params.EnforcedAesCbcParams, "name">,
-    keyData: AesCbcCryptoKey,
-    plaintext: BufferSource
+    key: AesCbcCryptoKey,
+    data: BufferSource
 ): Promise<ArrayBuffer> {
     return await AesShared.encrypt(
         {
             ...algorithm,
             name: Alg.Mode.AES_CBC,
         },
-        keyData,
-        plaintext
+        key,
+        data
     );
 }
 
 /**
- * Decrypt a ciphertext with an AES_CBC key
+ * Decrypt data with an AES_CBC key
  * @example
  * ```ts
  * const plaintextBytes = await AES_CBC.decrypt(
@@ -109,16 +109,16 @@ export async function encrypt(
  */
 export async function decrypt(
     algorithm: Omit<params.EnforcedAesCbcParams, "name">,
-    keyData: AesCbcCryptoKey,
-    ciphertext: BufferSource
+    key: AesCbcCryptoKey,
+    data: BufferSource
 ): Promise<ArrayBuffer> {
     return await AesShared.decrypt(
         {
             ...algorithm,
             name: Alg.Mode.AES_CBC,
         },
-        keyData,
-        ciphertext
+        key,
+        data
     );
 }
 

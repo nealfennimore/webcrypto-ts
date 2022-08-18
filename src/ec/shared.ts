@@ -66,14 +66,14 @@ export namespace EcShared {
 
     export async function importKey<T extends EcCryptoKeys>(
         format: KeyFormat,
-        keyData: BufferSource | JsonWebKey,
+        key: BufferSource | JsonWebKey,
         algorithm: params.EnforcedEcKeyImportParams,
         extractable: boolean = true,
         keyUsages?: KeyUsage[]
     ): Promise<T> {
         return await WebCrypto.importKey<T, params.EnforcedEcKeyImportParams>(
             format as any,
-            keyData as any,
+            key as any,
             algorithm,
             extractable,
             keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
@@ -82,8 +82,8 @@ export namespace EcShared {
 
     export async function exportKey(
         format: KeyFormat,
-        keyData: EcCryptoKeys
+        key: EcCryptoKeys
     ): Promise<JsonWebKey | ArrayBuffer> {
-        return await WebCrypto.exportKey(format as any, keyData);
+        return await WebCrypto.exportKey(format as any, key);
     }
 }

@@ -38,14 +38,14 @@ export async function generateKey(
  */
 export async function importKey(
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.AesGcmKeyAlgorithm, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
 ): Promise<AesGcmCryptoKey> {
     return await AesShared.importKey(
         format as any,
-        keyData as any,
+        key as any,
         {
             ...algorithm,
             name: Alg.Mode.AES_GCM,
@@ -62,8 +62,8 @@ export async function importKey(
  * const jwk = await AES_GCM.exportKey("jwk", key);
  * ```
  */
-export const exportKey = async (format: KeyFormat, keyData: AesGcmCryptoKey) =>
-    AesShared.exportKey(format, keyData);
+export const exportKey = async (format: KeyFormat, key: AesGcmCryptoKey) =>
+    AesShared.exportKey(format, key);
 
 /**
  * Encrypt with an AES_GCM key
@@ -72,21 +72,21 @@ export const exportKey = async (format: KeyFormat, keyData: AesGcmCryptoKey) =>
  * const iv = await Random.IV.generate();
  * const key = await AES_GCM.generateKey();
  * const message = new TextEncoder().encode("a message");
- * const ciphertext = await AES_GCM.encrypt({iv}, key, message);
+ * const data = await AES_GCM.encrypt({iv}, key, message);
  * ```
  */
 export async function encrypt(
     algorithm: Omit<params.EnforcedAesGcmParams, "name">,
-    keyData: AesGcmCryptoKey,
-    plaintext: BufferSource
+    key: AesGcmCryptoKey,
+    data: BufferSource
 ): Promise<ArrayBuffer> {
     return await AesShared.encrypt(
         {
             ...algorithm,
             name: Alg.Mode.AES_GCM,
         },
-        keyData,
-        plaintext
+        key,
+        data
     );
 }
 
@@ -94,21 +94,21 @@ export async function encrypt(
  * Decrypt with an AES_GCM key
  * @example
  * ```ts
- * const plaintext = await AES_GCM.decrypt({iv}, key, ciphertext);
+ * const data = await AES_GCM.decrypt({iv}, key, data);
  * ```
  */
 export async function decrypt(
     algorithm: Omit<params.EnforcedAesGcmParams, "name">,
-    keyData: AesGcmCryptoKey,
-    ciphertext: BufferSource
+    key: AesGcmCryptoKey,
+    data: BufferSource
 ): Promise<ArrayBuffer> {
     return await AesShared.decrypt(
         {
             ...algorithm,
             name: Alg.Mode.AES_GCM,
         },
-        keyData,
-        ciphertext
+        key,
+        data
     );
 }
 

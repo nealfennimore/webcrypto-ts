@@ -58,14 +58,14 @@ export async function generateKey(
  */
 export async function importKey(
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.AesCtrKeyAlgorithm, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
 ): Promise<AesCtrCryptoKey> {
     return await AesShared.importKey(
         format as any,
-        keyData as any,
+        key as any,
         {
             ...algorithm,
             name: Alg.Mode.AES_CTR,
@@ -82,8 +82,8 @@ export async function importKey(
  * const jwk = await AES_CTR.exportKey("jwk", key);
  * ```
  */
-export const exportKey = async (format: KeyFormat, keyData: AesCtrCryptoKey) =>
-    AesShared.exportKey(format, keyData);
+export const exportKey = async (format: KeyFormat, key: AesCtrCryptoKey) =>
+    AesShared.exportKey(format, key);
 
 /**
  * Encrypt with an AES_CTR key
@@ -93,21 +93,21 @@ export const exportKey = async (format: KeyFormat, keyData: AesCtrCryptoKey) =>
  * const message = new TextEncoder().encode("a message");
  * const length = 8;
  * const counter = await AES_CTR.generateCounter(length);
- * const ciphertext = await AES_CTR.encrypt({length, counter}, key, message);
+ * const data = await AES_CTR.encrypt({length, counter}, key, message);
  * ```
  */
 export async function encrypt(
     algorithm: Omit<params.EnforcedAesCtrParams, "name">,
-    keyData: AesCtrCryptoKey,
-    plaintext: BufferSource
+    key: AesCtrCryptoKey,
+    data: BufferSource
 ): Promise<ArrayBuffer> {
     return await AesShared.encrypt(
         {
             ...algorithm,
             name: Alg.Mode.AES_CTR,
         },
-        keyData,
-        plaintext
+        key,
+        data
     );
 }
 
@@ -115,21 +115,21 @@ export async function encrypt(
  * Decrypt with an AES_CTR key
  * @example
  * ```ts
- * const plaintext = await AES_CTR.decrypt({length, counter}, key, ciphertext);
+ * const data = await AES_CTR.decrypt({length, counter}, key, data);
  * ```
  */
 export async function decrypt(
     algorithm: Omit<params.EnforcedAesCtrParams, "name">,
-    keyData: AesCtrCryptoKey,
-    ciphertext: BufferSource
+    key: AesCtrCryptoKey,
+    data: BufferSource
 ): Promise<ArrayBuffer> {
     return await AesShared.decrypt(
         {
             ...algorithm,
             name: Alg.Mode.AES_CTR,
         },
-        keyData,
-        ciphertext
+        key,
+        data
     );
 }
 

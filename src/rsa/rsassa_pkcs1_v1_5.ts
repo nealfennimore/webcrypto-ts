@@ -47,14 +47,14 @@ export const generateKey = async (
  */
 export const importKey = async (
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
 ): Promise<RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey> =>
     await RsaShared.importKey(
         format,
-        keyData,
+        key,
         { ...algorithm, name: Alg.Variant.RSASSA_PKCS1_v1_5 },
         extractable,
         keyUsages
@@ -69,8 +69,8 @@ export const importKey = async (
  */
 export const exportKey = async (
     format: KeyFormat,
-    keyData: RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey
-) => RsaShared.exportKey(format, keyData);
+    key: RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey
+) => RsaShared.exportKey(format, key);
 
 /**
  * Sign a given payload
@@ -81,14 +81,14 @@ export const exportKey = async (
  * ```
  */
 export const sign = async (
-    keyData: RsassaPkcs1V15PrivCryptoKey,
+    key: RsassaPkcs1V15PrivCryptoKey,
     data: BufferSource
 ) =>
     await RsaShared.sign(
         {
             name: Alg.Variant.RSASSA_PKCS1_v1_5,
         },
-        keyData,
+        key,
         data
     );
 
@@ -101,7 +101,7 @@ export const sign = async (
  * ```
  */
 export const verify = async (
-    keyData: RsassaPkcs1V15PubCryptoKey,
+    key: RsassaPkcs1V15PubCryptoKey,
     signature: BufferSource,
     data: BufferSource
 ) =>
@@ -109,7 +109,7 @@ export const verify = async (
         {
             name: Alg.Variant.RSASSA_PKCS1_v1_5,
         },
-        keyData,
+        key,
         signature,
         data
     );

@@ -194,7 +194,7 @@ export async function importKey<
         | AesKeyAlgorithm
 >(
     format: "jwk",
-    keyData: JsonWebKey,
+    key: JsonWebKey,
     algorithm: U,
     extractable: boolean,
     keyUsages: KeyUsage[]
@@ -209,7 +209,7 @@ export async function importKey<
         | AesKeyAlgorithm
 >(
     format: Exclude<KeyFormat, "jwk">,
-    keyData: BufferSource,
+    key: BufferSource,
     algorithm: U,
     extractable: boolean,
     keyUsages: KeyUsage[]
@@ -224,7 +224,7 @@ export async function importKey<
         | AesKeyAlgorithm
 >(
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: U,
     extractable: boolean,
     keyUsages: KeyUsage[]
@@ -234,7 +234,7 @@ export async function importKey<
             await _crypto
         ).subtle.importKey(
             format as "jwk",
-            keyData as JsonWebKey,
+            key as JsonWebKey,
             algorithm,
             extractable,
             keyUsages
@@ -245,7 +245,7 @@ export async function importKey<
         await _crypto
     ).subtle.importKey(
         format as Exclude<KeyFormat, "jwk">,
-        keyData as BufferSource,
+        key as BufferSource,
         algorithm,
         extractable,
         keyUsages

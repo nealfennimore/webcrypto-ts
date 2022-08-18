@@ -14,12 +14,12 @@ import { Alg, HkdfKeyMaterial, KdfShared } from "./shared.js";
  */
 export const generateKeyMaterial = (
     format: KeyFormat,
-    keyData: BufferSource,
+    key: BufferSource,
     extractable?: boolean
 ) =>
     KdfShared.generateKeyMaterial<HkdfKeyMaterial>(
         format,
-        keyData,
+        key,
         Alg.Variant.HKDF,
         extractable
     );

@@ -21,12 +21,12 @@ const hashIterations: Record<SHA.SecureVariants, number> = {
  */
 export const generateKeyMaterial = (
     format: KeyFormat,
-    keyData: BufferSource,
+    key: BufferSource,
     extractable?: boolean
 ) =>
     KdfShared.generateKeyMaterial<Pbkdf2KeyMaterial>(
         format,
-        keyData,
+        key,
         Alg.Variant.PBKDF2,
         extractable
     );

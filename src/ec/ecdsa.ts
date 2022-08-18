@@ -41,7 +41,7 @@ export const generateKey = async (
  */
 export const importKey = async (
     format: KeyFormat,
-    keyData: BufferSource | JsonWebKey,
+    key: BufferSource | JsonWebKey,
     algorithm: Omit<params.EnforcedEcKeyImportParams, "name"> = {
         namedCurve: Alg.Curve.P_521,
     },
@@ -50,7 +50,7 @@ export const importKey = async (
 ): Promise<EcdsaPubCryptoKey | EcdsaPrivCryptoKey> =>
     await EcShared.importKey(
         format,
-        keyData,
+        key,
         { ...algorithm, name: Alg.Variant.ECDSA },
         extractable,
         keyUsages
@@ -65,8 +65,8 @@ export const importKey = async (
  */
 export const exportKey = async (
     format: KeyFormat,
-    keyData: EcdsaPubCryptoKey | EcdsaPrivCryptoKey
-) => EcShared.exportKey(format, keyData);
+    key: EcdsaPubCryptoKey | EcdsaPrivCryptoKey
+) => EcShared.exportKey(format, key);
 
 /**
  * Sign a given payload
@@ -78,7 +78,7 @@ export const exportKey = async (
  */
 export async function sign(
     algorithm: Omit<params.EnforcedEcdsaParams, "name">,
-    keyData: EcdsaPrivCryptoKey,
+    key: EcdsaPrivCryptoKey,
     data: BufferSource
 ): Promise<ArrayBuffer> {
     return await WebCrypto.sign<EcdsaPrivCryptoKey, params.EnforcedEcdsaParams>(
@@ -86,7 +86,7 @@ export async function sign(
             ...algorithm,
             name: Alg.Variant.ECDSA,
         },
-        keyData,
+        key,
         data
     );
 }
@@ -101,7 +101,7 @@ export async function sign(
  */
 export async function verify(
     algorithm: Omit<params.EnforcedEcdsaParams, "name">,
-    keyData: EcdsaPubCryptoKey,
+    key: EcdsaPubCryptoKey,
     signature: BufferSource,
     data: BufferSource
 ): Promise<boolean> {
@@ -113,7 +113,7 @@ export async function verify(
             ...algorithm,
             name: Alg.Variant.ECDSA,
         },
-        keyData,
+        key,
         signature,
         data
     );
