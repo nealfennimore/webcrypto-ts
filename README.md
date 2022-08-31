@@ -8,3 +8,9 @@ Algorithms are split into their own modules, which enforces consumption of crypt
 
 -   [Documentation](https://neal.codes/webcrypto-ts/) 📖
 -   [Github](https://github.com/nealfennimore/webcrypto-ts) :octocat:
+
+## Usage
+
+```sh
+npm i @nfen/webcrypto-ts
+```
