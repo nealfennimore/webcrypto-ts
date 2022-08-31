@@ -42,3 +42,19 @@ export namespace Salt {
         return await getValues(length);
     }
 }
+
+/**
+ * UUID
+ */
+export namespace UUID {
+    /**
+     * Generate a UUID.
+     * @example
+     * ```ts
+     * const uuid = await UUID.generate();
+     * ```
+     */
+    export async function generate(): Promise<string> {
+        return await (await WebCrypto._crypto).randomUUID();
+    }
+}
