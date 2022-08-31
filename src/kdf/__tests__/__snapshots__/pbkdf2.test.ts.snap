@@ -619,7 +619,6 @@ CryptoKey {
   },
   Symbol(kAlgorithm): Object {
     "hash": Object {
-      "hash": undefined,
       "name": "SHA-512",
     },
     "length": 512,
