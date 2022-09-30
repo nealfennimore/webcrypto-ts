@@ -164,7 +164,7 @@ export async function unwrapKey<
 }
 
 export async function exportKey<T extends CryptoKey>(
-    format: "jwk",
+    format: Extract<KeyFormat, "jwk">,
     key: T
 ): Promise<JsonWebKey>;
 export async function exportKey<T extends CryptoKey>(
@@ -175,13 +175,10 @@ export async function exportKey<T extends CryptoKey>(
     format: KeyFormat,
     key: T
 ): Promise<JsonWebKey | ArrayBuffer> {
-    if (format === ("jwk" as KeyFormat)) {
-        return await (await _crypto).subtle.exportKey(format as "jwk", key);
-    } else {
-        return await (
-            await _crypto
-        ).subtle.exportKey(format as Exclude<KeyFormat, "jwk">, key);
+    if (format === "jwk") {
+        return await (await _crypto).subtle.exportKey(format, key);
     }
+    return await (await _crypto).subtle.exportKey(format, key);
 }
 
 export async function importKey<
@@ -193,7 +190,7 @@ export async function importKey<
         | HmacImportParams
         | AesKeyAlgorithm
 >(
-    format: "jwk",
+    format: Extract<KeyFormat, "jwk">,
     key: JsonWebKey,
     algorithm: U,
     extractable: boolean,
@@ -229,11 +226,11 @@ export async function importKey<
     extractable: boolean,
     keyUsages: KeyUsage[]
 ): Promise<T> {
-    if (format === ("jwk" as KeyFormat)) {
+    if (format === "jwk") {
         return (await (
             await _crypto
         ).subtle.importKey(
-            format as "jwk",
+            format,
             key as JsonWebKey,
             algorithm,
             extractable,
@@ -244,7 +241,7 @@ export async function importKey<
     return (await (
         await _crypto
     ).subtle.importKey(
-        format as Exclude<KeyFormat, "jwk">,
+        format,
         key as BufferSource,
         algorithm,
         extractable,
