@@ -33,7 +33,7 @@ export async function generateKey(
  * Import an AES_CBC key
  * @example
  * ```ts
- * const jwk await AES_CBC.importKey("jwk", jwk, {
+ * const jwk = await AES_CBC.importKey("jwk", jwk, {
  *     length: 256,
  * });
  * ```
