@@ -3,3 +3,6 @@ dist
 lib
 coverage
 docs
+shell.nix
+.envrc
+.direnv
