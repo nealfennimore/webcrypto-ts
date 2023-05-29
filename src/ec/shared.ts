@@ -4,6 +4,7 @@
  */
 import { getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface EcdhPubCryptoKey extends CryptoKey {
@@ -28,6 +29,36 @@ export interface EcdsaCryptoKeyPair extends CryptoKeyPair {
     publicKey: EcdsaPubCryptoKey;
     privateKey: EcdsaPrivCryptoKey;
 }
+
+export interface EcdsaProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<EcdsaPubCryptoKey> {
+    verify: (
+        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
+        signature: BufferSource,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface EcdsaProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<EcdsaPrivCryptoKey> {
+    sign: (
+        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface EcdsaProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        EcdsaCryptoKeyPair,
+        EcdsaPrivCryptoKey,
+        EcdsaProxiedPrivCryptoKey,
+        EcdsaPubCryptoKey,
+        EcdsaProxiedPubCryptoKey
+    > {}
+
 export type EcCryptoKeys =
     | EcdhPubCryptoKey
     | EcdhPrivCryptoKey
