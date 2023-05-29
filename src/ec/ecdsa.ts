@@ -3,6 +3,7 @@
  * @module
  */
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 import {
     Alg,
@@ -25,12 +26,19 @@ export const generateKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<EcdsaCryptoKeyPair> =>
-    await EcShared.generateKey(
+) => {
+    const keyPair = (await EcShared.generateKey(
         { ...algorithm, name: Alg.Variant.ECDSA },
         extractable,
         keyUsages
-    );
+    )) as EcdsaCryptoKeyPair;
+
+    return proxy.proxifyKeyPair<
+        EcdsaCryptoKeyPair,
+        EcdsaPrivCryptoKey,
+        EcdsaPubCryptoKey
+    >(keyPair);
+};
 
 /**
  * Import an ECDSA public or private key
