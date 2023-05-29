@@ -4,11 +4,37 @@
  */
 import { getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import { Alg as SHA } from "../sha/shared.js";
 import * as WebCrypto from "../webcrypto.js";
+
 export interface HmacCryptoKey extends CryptoKey {
     _hmacKeyBrand: any;
 }
+export interface HmacProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<HmacCryptoKey> {
+    sign: (data: BufferSource) => Promise<ArrayBuffer>;
+    verify: (signature: BufferSource, data: BufferSource) => Promise<boolean>;
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+const handler: ProxyHandler<HmacCryptoKey> = {
+    get(target: HmacCryptoKey, prop: string) {
+        switch (prop) {
+            case "self":
+                return target;
+            case "sign":
+                return (data: BufferSource) => sign(target, data);
+            case "verify":
+                return (signature: BufferSource, data: BufferSource) =>
+                    verify(target, signature, data);
+            case "exportKey":
+                return (format: KeyFormat) => exportKey(format, target);
+        }
+
+        return Reflect.get(target, prop);
+    },
+};
 
 export namespace Alg {
     export enum Code {
@@ -30,8 +56,11 @@ export const generateKey = async (
     },
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-) =>
-    await WebCrypto.generateKey<HmacCryptoKey, params.EnforcedHmacKeyGenParams>(
+): Promise<proxy.ProxiedCryptoKey<HmacCryptoKey>> => {
+    const key = await WebCrypto.generateKey<
+        HmacCryptoKey,
+        params.EnforcedHmacKeyGenParams
+    >(
         {
             ...algorithm,
             name: Alg.Code.HMAC,
@@ -39,6 +68,11 @@ export const generateKey = async (
         extractable,
         keyUsages ?? getKeyUsagePairsByAlg(Alg.Code.HMAC)
     );
+    return proxy.proxifyKey<
+        HmacCryptoKey,
+        proxy.ProxiedCryptoKey<HmacCryptoKey>
+    >(handler)(key);
+};
 
 /**
  * Import an HMAC key from the specified format
@@ -53,8 +87,11 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedHmacImportParams, "name">,
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-) =>
-    await WebCrypto.importKey<HmacCryptoKey, params.EnforcedHmacImportParams>(
+): Promise<proxy.ProxiedCryptoKey<HmacCryptoKey>> => {
+    const importedKey = await WebCrypto.importKey<
+        HmacCryptoKey,
+        params.EnforcedHmacImportParams
+    >(
         format as any,
         key as any,
         { ...algorithm, name: Alg.Code.HMAC },
@@ -62,11 +99,21 @@ export const importKey = async (
         keyUsages ?? getKeyUsagePairsByAlg(Alg.Code.HMAC)
     );
 
+    return proxy.proxifyKey<
+        HmacCryptoKey,
+        proxy.ProxiedCryptoKey<HmacCryptoKey>
+    >(handler)(importedKey);
+};
+
 /**
  * Export an HMAC key into the specified format
  * @example
  * ```ts
- * const jwk = await HMAC.exportKey("jwk", key);
+ * const jwk = await HMAC.exportKey("jwk", key.self);
+ * ```
+ * @example
+ * ```ts
+ * const jwk = await key.exportKey("jwk");
  * ```
  */
 export async function exportKey(
@@ -81,7 +128,11 @@ export async function exportKey(
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const signature = await HMAC.sign(key, message);
+ * const signature = await HMAC.sign(key.self, message);
+ * ```
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await key.sign(message);
  * ```
  */
 export async function sign(
@@ -102,6 +153,10 @@ export async function sign(
  * @example
  * ```ts
  * const isVerified = await HMAC.verify(key, signature, message);
+ * ```
+ * @example
+ * ```ts
+ * const isVerified = await key.verify(signature, message);
  * ```
  */
 export async function verify(

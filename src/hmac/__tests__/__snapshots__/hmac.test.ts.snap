@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`HMAC Original should generate key 1`] = `
+CryptoKey {
+  Symbol(kKeyObject): SecretKeyObject {
+    Symbol(kKeyType): "secret",
+  },
+  Symbol(kAlgorithm): Object {
+    "hash": Object {
+      "name": "SHA-512",
+    },
+    "length": 1024,
+    "name": "HMAC",
+  },
+  Symbol(kExtractable): true,
+  Symbol(kKeyUsages): Array [
+    "sign",
+    "verify",
+  ],
+}
+`;
+
+exports[`HMAC Proxied should generate key 1`] = `
+CryptoKey {
+  Symbol(kKeyObject): SecretKeyObject {
+    Symbol(kKeyType): "secret",
+  },
+  Symbol(kAlgorithm): Object {
+    "hash": Object {
+      "name": "SHA-512",
+    },
+    "length": 1024,
+    "name": "HMAC",
+  },
+  Symbol(kExtractable): true,
+  Symbol(kKeyUsages): Array [
+    "sign",
+    "verify",
+  ],
+}
+`;
+
 exports[`HMAC should generate key 1`] = `
 CryptoKey {
   Symbol(kKeyObject): SecretKeyObject {
