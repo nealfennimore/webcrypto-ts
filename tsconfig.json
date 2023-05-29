@@ -1,6 +1,7 @@
 {
   "exclude": [
-    "**/__tests__/*"
+    "**/__tests__/*",
+    "lib/**/*",
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */

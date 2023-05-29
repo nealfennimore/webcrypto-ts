@@ -29,7 +29,7 @@
     "exports": "./lib/index.js",
     "type": "module",
     "engines": {
-        "node": ">=16"
+        "node": ">=18"
     },
     "scripts": {
         "prepublishOnly": "npm run test && npm run build",
