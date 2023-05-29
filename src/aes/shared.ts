@@ -3,8 +3,9 @@
  * @module
  */
 
-import { getKeyUsagePairsByAlg } from "../key_usages.js";
+import * as usages from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface AesGcmCryptoKey extends CryptoKey {
@@ -40,6 +41,127 @@ export namespace Alg {
     export type Modes = `${Mode}`;
 }
 
+export interface AesProxiedCryptoKey<T extends AesCryptoKeys>
+    extends proxy.ProxiedCryptoKey<T> {
+    encrypt(
+        algorithm: Exclude<
+            params.EnforcedAesParams,
+            params.EnforcedAesKwParams
+        >,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Exclude<
+            params.EnforcedAesParams,
+            params.EnforcedAesKwParams
+        >,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: params.EnforcedAesParams
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: params.EnforcedAesParams,
+        extractable: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export const handler: ProxyHandler<AesCryptoKeys> = {
+    get(target: AesCryptoKeys, prop: string) {
+        switch (prop) {
+            case "self":
+                return target;
+
+            case "encrypt":
+                if (
+                    !target.usages.every((u) =>
+                        usages.EncryptionKeyUsagePair.includes(u)
+                    )
+                ) {
+                    throw new Error("encrypt is not supported");
+                }
+                return (
+                    algorithm: Exclude<
+                        params.EnforcedAesParams,
+                        params.EnforcedAesKwParams
+                    >,
+                    data: BufferSource
+                ) => AesShared.encrypt(algorithm, target, data);
+
+            case "decrypt":
+                if (
+                    !target.usages.every((u) =>
+                        usages.EncryptionKeyUsagePair.includes(u)
+                    )
+                ) {
+                    throw new Error("decrypt is not supported");
+                }
+                return (
+                    algorithm: Exclude<
+                        params.EnforcedAesParams,
+                        params.EnforcedAesKwParams
+                    >,
+                    data: BufferSource
+                ) => AesShared.decrypt(algorithm, target, data);
+
+            case "wrapKey":
+                if (
+                    !target.usages.every((u) =>
+                        usages.WrappingKeyUsagePair.includes(u)
+                    )
+                ) {
+                    throw new Error("wrapKey is not supported");
+                }
+                return (
+                    format: KeyFormat,
+                    key: CryptoKey,
+                    wrapAlgorithm: params.EnforcedAesParams
+                ) => AesShared.wrapKey(format, key, target, wrapAlgorithm);
+            case "unwrapKey":
+                if (
+                    !target.usages.every((u) =>
+                        usages.WrappingKeyUsagePair.includes(u)
+                    )
+                ) {
+                    throw new Error("unwrapKey is not supported");
+                }
+                return (
+                    format: KeyFormat,
+                    wrappedKey: BufferSource,
+                    wrappedKeyAlgorithm: params.EnforcedImportParams,
+                    unwrappingKeyAlgorithm: params.EnforcedAesParams,
+                    extractable?: boolean,
+                    keyUsages?: KeyUsage[]
+                ) =>
+                    AesShared.unwrapKey(
+                        format,
+                        wrappedKey,
+                        wrappedKeyAlgorithm,
+                        target,
+                        unwrappingKeyAlgorithm,
+                        extractable,
+                        keyUsages
+                    );
+            case "exportKey":
+                return (format: KeyFormat) =>
+                    AesShared.exportKey(format, target);
+        }
+
+        return Reflect.get(target, prop);
+    },
+};
+
 export namespace AesShared {
     export async function generateKey<T extends CryptoKey>(
         algorithm: params.EnforcedAesKeyGenParams,
@@ -49,7 +171,7 @@ export namespace AesShared {
         return await WebCrypto.generateKey<T, params.EnforcedAesKeyGenParams>(
             algorithm,
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages ?? usages.getKeyUsagePairsByAlg(algorithm.name)
         );
     }
 
@@ -65,7 +187,7 @@ export namespace AesShared {
             key as any,
             algorithm,
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages ?? usages.getKeyUsagePairsByAlg(algorithm.name)
         );
     }
 
@@ -127,7 +249,7 @@ export namespace AesShared {
             unwrappingKeyAlgorithm,
             wrappedKeyAlgorithm,
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(wrappedKeyAlgorithm.name)
+            keyUsages ?? usages.getKeyUsagePairsByAlg(wrappedKeyAlgorithm.name)
         );
     }
 }
