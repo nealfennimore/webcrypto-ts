@@ -9,7 +9,7 @@ CryptoKey {
     "hash": Object {
       "name": "SHA-512",
     },
-    "length": 512,
+    "length": 1024,
     "name": "HMAC",
   },
   Symbol(kExtractable): true,
