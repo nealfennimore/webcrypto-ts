@@ -2,6 +2,8 @@
  * Shared code for EC
  * @module
  */
+import { AesCryptoKeys } from "../aes/shared.js";
+import { HmacCryptoKey } from "../hmac/index.js";
 import { getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
@@ -57,6 +59,36 @@ export interface EcdsaProxiedCryptoKeyPair
         EcdsaProxiedPrivCryptoKey,
         EcdsaPubCryptoKey,
         EcdsaProxiedPubCryptoKey
+    > {}
+export interface EcdhProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<EcdhPubCryptoKey> {
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface EcdhProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<EcdhPrivCryptoKey> {
+    deriveKey: (
+        algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
+        derivedKeyType:
+            | params.EnforcedAesKeyGenParams
+            | params.EnforcedHmacKeyGenParams,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ) => Promise<HmacCryptoKey | AesCryptoKeys>;
+    deriveBits: (
+        algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
+        length: number
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface EcdhProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        EcdhCryptoKeyPair,
+        EcdhPrivCryptoKey,
+        EcdhProxiedPrivCryptoKey,
+        EcdhPubCryptoKey,
+        EcdhProxiedPubCryptoKey
     > {}
 
 export type EcCryptoKeys =
