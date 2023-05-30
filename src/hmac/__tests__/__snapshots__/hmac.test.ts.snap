@@ -39,23 +39,3 @@ CryptoKey {
   ],
 }
 `;
-
-exports[`HMAC should generate key 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
-    "hash": Object {
-      "name": "SHA-512",
-    },
-    "length": 1024,
-    "name": "HMAC",
-  },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
-    "sign",
-    "verify",
-  ],
-}
-`;
