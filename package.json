@@ -1,6 +1,6 @@
 {
     "name": "@nfen/webcrypto-ts",
-    "version": "0.0.12",
+    "version": "0.1.0",
     "description": "Enforced Webcrypto wrapper",
     "keywords": [
         "aes-cbc",
