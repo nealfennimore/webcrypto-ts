@@ -23,7 +23,7 @@ Many more examples in the [Documentation](https://neal.codes/webcrypto-ts/).
 ### ECDSA
 
 ```ts
-import ECDSA from "@nfen/webcrypto-ts/lib/ec/ecdsa";
+import * as ECDSA from "@nfen/webcrypto-ts/lib/ec/ecdsa";
 const keyPair = await ECDSA.generateKey();
 
 const message = new TextEncoder().encode("a message");
