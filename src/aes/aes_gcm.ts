@@ -3,7 +3,68 @@
  * @module
  */
 import * as params from "../params.js";
-import { AesGcmCryptoKey, AesShared, Alg } from "./shared.js";
+import * as proxy from "../proxy.js";
+import {
+    AesGcmCryptoKey,
+    AesGcmProxiedCryptoKey,
+    AesShared,
+    Alg,
+} from "./shared.js";
+
+const handler: ProxyHandler<AesGcmCryptoKey> = {
+    get(target: AesGcmCryptoKey, prop: string) {
+        switch (prop) {
+            case "self":
+                return target;
+
+            case "encrypt":
+                return (
+                    algorithm: Omit<params.EnforcedAesGcmParams, "name">,
+                    data: BufferSource
+                ) => encrypt(algorithm, target, data);
+
+            case "decrypt":
+                return (
+                    algorithm: Omit<params.EnforcedAesGcmParams, "name">,
+                    data: BufferSource
+                ) => decrypt(algorithm, target, data);
+
+            case "wrapKey":
+                return (
+                    format: KeyFormat,
+                    key: CryptoKey,
+                    wrapAlgorithm: Omit<params.EnforcedAesGcmParams, "name">
+                ) => wrapKey(format, key, target, wrapAlgorithm);
+
+            case "unwrapKey":
+                return (
+                    format: KeyFormat,
+                    wrappedKey: BufferSource,
+                    wrappedKeyAlgorithm: params.EnforcedImportParams,
+                    unwrappingKeyAlgorithm: Omit<
+                        params.EnforcedAesGcmParams,
+                        "name"
+                    >,
+                    extractable?: boolean,
+                    keyUsages?: KeyUsage[]
+                ) =>
+                    unwrapKey(
+                        format,
+                        wrappedKey,
+                        wrappedKeyAlgorithm,
+                        target,
+                        unwrappingKeyAlgorithm,
+                        extractable,
+                        keyUsages
+                    );
+
+            case "exportKey":
+                return (format: KeyFormat) => exportKey(format, target);
+        }
+
+        return Reflect.get(target, prop);
+    },
+};
 
 /**
  * Generate a new AES_GCM key
@@ -18,14 +79,17 @@ export async function generateKey(
     },
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-): Promise<AesGcmCryptoKey> {
-    return await AesShared.generateKey(
+): Promise<AesGcmProxiedCryptoKey> {
+    const key = await AesShared.generateKey<AesGcmCryptoKey>(
         {
             ...algorithm,
             name: Alg.Mode.AES_GCM,
         },
         extractable,
         keyUsages
+    );
+    return proxy.proxifyKey<AesGcmCryptoKey, AesGcmProxiedCryptoKey>(handler)(
+        key
     );
 }
 
@@ -42,8 +106,8 @@ export async function importKey(
     algorithm: Omit<params.AesGcmKeyAlgorithm, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<AesGcmCryptoKey> {
-    return await AesShared.importKey(
+): Promise<AesGcmProxiedCryptoKey> {
+    const importedKey = (await AesShared.importKey(
         format as any,
         key as any,
         {
@@ -52,6 +116,9 @@ export async function importKey(
         },
         extractable,
         keyUsages
+    )) as AesGcmCryptoKey;
+    return proxy.proxifyKey<AesGcmCryptoKey, AesGcmProxiedCryptoKey>(handler)(
+        importedKey
     );
 }
 
@@ -59,7 +126,13 @@ export async function importKey(
  * Export an AES_GCM key into the specified format
  * @example
  * ```ts
- * const jwk = await AES_GCM.exportKey("jwk", key);
+ * const key = await AES_GCM.generateKey();
+ * const jwk = await AES_GCM.exportKey("jwk", key.self);
+ * ```
+ * @example
+ * ```ts
+ * const key = await AES_GCM.generateKey();
+ * const jwk = await key.exportKey("jwk");
  * ```
  */
 export const exportKey = async (format: KeyFormat, key: AesGcmCryptoKey) =>
@@ -72,7 +145,14 @@ export const exportKey = async (format: KeyFormat, key: AesGcmCryptoKey) =>
  * const iv = await Random.IV.generate();
  * const key = await AES_GCM.generateKey();
  * const message = new TextEncoder().encode("a message");
- * const data = await AES_GCM.encrypt({iv}, key, message);
+ * const data = await AES_GCM.encrypt({iv}, key.self, message);
+ * ```
+ * @example
+ * ```ts
+ * const iv = await Random.IV.generate();
+ * const key = await AES_GCM.generateKey();
+ * const message = new TextEncoder().encode("a message");
+ * const data = await key.encrypt({iv}, message);
  * ```
  */
 export async function encrypt(
@@ -94,7 +174,13 @@ export async function encrypt(
  * Decrypt with an AES_GCM key
  * @example
  * ```ts
- * const data = await AES_GCM.decrypt({iv}, key, data);
+ * const key = await AES_GCM.generateKey();
+ * const data = await AES_GCM.decrypt({iv}, key.self, data);
+ * ```
+ * @example
+ * ```ts
+ * const key = await AES_GCM.generateKey();
+ * const data = await key.decrypt({iv}, data);
  * ```
  */
 export async function decrypt(
@@ -119,7 +205,14 @@ export async function decrypt(
  * const iv = await Random.IV.generate();
  * const kek = await AES_GCM.generateKey({length: 256}, true, ['wrapKey', 'unwrapKey']);
  * const dek = await AES_GCM.generateKey();
- * const wrappedKey = await AES_GCM.wrapKey("raw", dek, kek, {iv});
+ * const wrappedKey = await AES_GCM.wrapKey("raw", dek.self, kek.self, {iv});
+ * ```
+ * @example
+ * ```ts
+ * const iv = await Random.IV.generate();
+ * const kek = await AES_GCM.generateKey({length: 256}, true, ['wrapKey', 'unwrapKey']);
+ * const dek = await AES_GCM.generateKey();
+ * const wrappedKey = await kek.wrapKey("raw", dek.self, {iv});
  * ```
  */
 export async function wrapKey(
@@ -139,6 +232,10 @@ export async function wrapKey(
  * @example
  * ```ts
  * const dek = await AES_GCM.unwrapKey("raw", wrappedKey, {name: "AES_GCM"}, kek, {iv});
+ * ```
+ * @example
+ * ```ts
+ * const dek = await kek.unwrapKey("raw", wrappedKey, {name: "AES_GCM"}, {iv});
  * ```
  */
 export async function unwrapKey(

@@ -4,14 +4,53 @@
  */
 
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import { Alg as SHA } from "../sha/shared.js";
 import {
     Alg,
     RsaShared,
     RsassaPkcs1V15CryptoKeyPair,
     RsassaPkcs1V15PrivCryptoKey,
+    RsassaPkcs1V15ProxiedCryptoKeyPair,
+    RsassaPkcs1V15ProxiedPrivCryptoKey,
+    RsassaPkcs1V15ProxiedPubCryptoKey,
     RsassaPkcs1V15PubCryptoKey,
 } from "./shared.js";
+
+const handlers: proxy.ProxyKeyPairHandlers<
+    RsassaPkcs1V15PrivCryptoKey,
+    RsassaPkcs1V15PubCryptoKey
+> = {
+    privHandler: {
+        get(target: RsassaPkcs1V15PrivCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "sign":
+                    return (data: BufferSource) => sign(target, data);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+    pubHandler: {
+        get(target: RsassaPkcs1V15PubCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "verify":
+                    return (signature: BufferSource, data: BufferSource) =>
+                        verify(target, signature, data);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+};
 
 /**
  * Generate a new RSASSA_PKCS1_v1_5 keypair
@@ -28,8 +67,8 @@ export const generateKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-) =>
-    (await RsaShared.generateKey(
+): Promise<RsassaPkcs1V15ProxiedCryptoKeyPair> => {
+    const keyPair = (await RsaShared.generateKey(
         {
             ...algorithm,
             name: Alg.Variant.RSASSA_PKCS1_v1_5,
@@ -37,6 +76,14 @@ export const generateKey = async (
         extractable,
         keyUsages
     )) as RsassaPkcs1V15CryptoKeyPair;
+    return proxy.proxifyKeyPair<
+        RsassaPkcs1V15CryptoKeyPair,
+        RsassaPkcs1V15PrivCryptoKey,
+        RsassaPkcs1V15ProxiedPrivCryptoKey,
+        RsassaPkcs1V15PubCryptoKey,
+        RsassaPkcs1V15ProxiedPubCryptoKey
+    >(handlers)(keyPair);
+};
 
 /**
  * Import an RSASSA_PKCS1_v1_5 public or private key
@@ -51,8 +98,10 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<RsassaPkcs1V15PubCryptoKey | RsassaPkcs1V15PrivCryptoKey> =>
-    await RsaShared.importKey(
+): Promise<
+    RsassaPkcs1V15ProxiedPubCryptoKey | RsassaPkcs1V15ProxiedPrivCryptoKey
+> => {
+    const importedKey = await RsaShared.importKey(
         format,
         key,
         { ...algorithm, name: Alg.Variant.RSASSA_PKCS1_v1_5 },
@@ -60,11 +109,28 @@ export const importKey = async (
         keyUsages
     );
 
+    if (importedKey.type === "private") {
+        return proxy.proxifyPrivKey<
+            RsassaPkcs1V15PrivCryptoKey,
+            RsassaPkcs1V15ProxiedPrivCryptoKey
+        >(handlers.privHandler)(importedKey as RsassaPkcs1V15PrivCryptoKey);
+    } else {
+        return proxy.proxifyPubKey<
+            RsassaPkcs1V15PubCryptoKey,
+            RsassaPkcs1V15ProxiedPubCryptoKey
+        >(handlers.pubHandler)(importedKey as RsassaPkcs1V15PubCryptoKey);
+    }
+};
+
 /**
  * Export an RSASSA_PKCS1_v1_5 public or private key
  * @example
  * ```ts
- * const pubKeyJwk = await RSASSA_PKCS1_v1_5.importKey("jwk", keyPair.publicKey);
+ * const pubKeyJwk = await RSASSA_PKCS1_v1_5.importKey("jwk", keyPair.publicKey.self);
+ * ```
+ * @example
+ * ```ts
+ * const pubKeyJwk = await keyPair.publicKey.importKey("jwk");
  * ```
  */
 export const exportKey = async (
@@ -77,7 +143,12 @@ export const exportKey = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const signature = await RSASSA_PKCS1_v1_5.sign(keyPair.privateKey, message);
+ * const signature = await RSASSA_PKCS1_v1_5.sign(keyPair.privateKey.self, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await keyPair.privateKey.sign(message);
  * ```
  */
 export const sign = async (
@@ -97,7 +168,12 @@ export const sign = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const isVerified = await RSASSA_PKCS1_v1_5.verify(keyPair.publicKey, signature, message);
+ * const isVerified = await RSASSA_PKCS1_v1_5.verify(keyPair.publicKey.self, signature, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await keyPair.publicKey.verify( signature, message);
  * ```
  */
 export const verify = async (

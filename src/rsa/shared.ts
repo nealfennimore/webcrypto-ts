@@ -3,8 +3,9 @@
  * @module
  */
 
-import { getKeyUsagePairsByAlg } from "../key_usages.js";
+import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface RsaOaepPubCryptoKey extends CryptoKey {
@@ -129,3 +130,94 @@ export namespace RsaShared {
         return await WebCrypto.verify(algorithm, key, signature, data);
     }
 }
+
+export interface RsaOaepProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<RsaOaepPubCryptoKey> {
+    encrypt: (
+        algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+    wrapKey: (
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm?: Omit<params.EnforcedRsaOaepParams, "name">
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface RsaOaepProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<RsaOaepPrivCryptoKey> {
+    decrypt: (
+        algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+
+    unwrapKey: (
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        // unwrappingKey: RsaOaepPrivCryptoKey,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsagePairs
+    ) => Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface RsaOaepProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        RsaOaepCryptoKeyPair,
+        RsaOaepPrivCryptoKey,
+        RsaOaepProxiedPrivCryptoKey,
+        RsaOaepPubCryptoKey,
+        RsaOaepProxiedPubCryptoKey
+    > {}
+
+export interface RsaPssProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<RsaPssPubCryptoKey> {
+    verify: (
+        saltLength: number,
+        signature: BufferSource,
+        data: BufferSource
+    ) => Promise<boolean>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface RsaPssProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<RsaPssPrivCryptoKey> {
+    sign: (saltLength: number, data: BufferSource) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface RsaPssProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        RsaPssCryptoKeyPair,
+        RsaPssPrivCryptoKey,
+        RsaPssProxiedPrivCryptoKey,
+        RsaPssPubCryptoKey,
+        RsaPssProxiedPubCryptoKey
+    > {}
+
+export interface RsassaPkcs1V15ProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<RsassaPkcs1V15PubCryptoKey> {
+    verify: (signature: BufferSource, data: BufferSource) => Promise<boolean>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface RsassaPkcs1V15ProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<RsassaPkcs1V15PrivCryptoKey> {
+    sign: (data: BufferSource) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface RsassaPkcs1V15ProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        RsassaPkcs1V15CryptoKeyPair,
+        RsassaPkcs1V15PrivCryptoKey,
+        RsassaPkcs1V15ProxiedPrivCryptoKey,
+        RsassaPkcs1V15PubCryptoKey,
+        RsassaPkcs1V15ProxiedPubCryptoKey
+    > {}

@@ -2,8 +2,11 @@
  * Shared code for EC
  * @module
  */
+import { AesCryptoKeys } from "../aes/shared.js";
+import { HmacCryptoKey } from "../hmac/index.js";
 import { getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface EcdhPubCryptoKey extends CryptoKey {
@@ -28,6 +31,66 @@ export interface EcdsaCryptoKeyPair extends CryptoKeyPair {
     publicKey: EcdsaPubCryptoKey;
     privateKey: EcdsaPrivCryptoKey;
 }
+
+export interface EcdsaProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<EcdsaPubCryptoKey> {
+    verify: (
+        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
+        signature: BufferSource,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface EcdsaProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<EcdsaPrivCryptoKey> {
+    sign: (
+        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface EcdsaProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        EcdsaCryptoKeyPair,
+        EcdsaPrivCryptoKey,
+        EcdsaProxiedPrivCryptoKey,
+        EcdsaPubCryptoKey,
+        EcdsaProxiedPubCryptoKey
+    > {}
+export interface EcdhProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<EcdhPubCryptoKey> {
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface EcdhProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<EcdhPrivCryptoKey> {
+    deriveKey: (
+        algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
+        derivedKeyType:
+            | params.EnforcedAesKeyGenParams
+            | params.EnforcedHmacKeyGenParams,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ) => Promise<HmacCryptoKey | AesCryptoKeys>;
+    deriveBits: (
+        algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
+        length: number
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface EcdhProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        EcdhCryptoKeyPair,
+        EcdhPrivCryptoKey,
+        EcdhProxiedPrivCryptoKey,
+        EcdhPubCryptoKey,
+        EcdhProxiedPubCryptoKey
+    > {}
+
 export type EcCryptoKeys =
     | EcdhPubCryptoKey
     | EcdhPrivCryptoKey

@@ -3,8 +3,49 @@
  * @module
  */
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import { Alg as SHA } from "../sha/shared.js";
-import { Alg, KdfShared, Pbkdf2KeyMaterial } from "./shared.js";
+import {
+    Alg,
+    KdfShared,
+    Pbkdf2KeyMaterial,
+    Pbkdf2ProxiedKeyMaterial,
+} from "./shared.js";
+
+const handler: ProxyHandler<Pbkdf2KeyMaterial> = {
+    get(target: Pbkdf2KeyMaterial, prop: string) {
+        switch (prop) {
+            case "self":
+                return target;
+            case "deriveKey":
+                return (
+                    algorithm: Omit<
+                        params.EnforcedPbkdf2Params,
+                        "name" | "iterations"
+                    >,
+                    derivedKeyType:
+                        | params.EnforcedAesKeyGenParams
+                        | params.EnforcedHmacKeyGenParams,
+                    extractable?: boolean,
+                    keyUsages?: KeyUsage[]
+                ) =>
+                    deriveKey(
+                        algorithm,
+                        target,
+                        derivedKeyType,
+                        extractable,
+                        keyUsages
+                    );
+            case "deriveBits":
+                return (
+                    algorithm: Omit<params.EnforcedPbkdf2Params, "name">,
+                    length: number
+                ) => deriveBits(algorithm, target, length);
+        }
+
+        return Reflect.get(target, prop);
+    },
+};
 
 const hashIterations: Record<SHA.SecureVariants, number> = {
     "SHA-256": 310_000,
@@ -19,17 +60,22 @@ const hashIterations: Record<SHA.SecureVariants, number> = {
  * const keyMaterial = await PBKDF2.generateKeyMaterial("raw", new TextEncoder().encode("could_be_a_little_entropy"));
  * ```
  */
-export const generateKeyMaterial = (
+export const generateKeyMaterial = async (
     format: KeyFormat,
     key: BufferSource,
     extractable?: boolean
-) =>
-    KdfShared.generateKeyMaterial<Pbkdf2KeyMaterial>(
+): Promise<Pbkdf2ProxiedKeyMaterial> => {
+    const keyMaterial = await KdfShared.generateKeyMaterial<Pbkdf2KeyMaterial>(
         format,
         key,
         Alg.Variant.PBKDF2,
         extractable
     );
+
+    return proxy.proxifyKey<Pbkdf2KeyMaterial, Pbkdf2ProxiedKeyMaterial>(
+        handler
+    )(keyMaterial);
+};
 
 /**
  * Derive a shared key from PBKDF2 key material
@@ -41,7 +87,7 @@ export const generateKeyMaterial = (
  *      length: 512,
  * };
  * let key = await PBKDF2.deriveKey(
- *      { hash: "SHA-512" },
+ *      { hash: "SHA512" },
  *      keyMaterial,
  *      hmacParams
  * );

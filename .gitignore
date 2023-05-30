@@ -6,3 +6,4 @@ docs
 shell.nix
 .envrc
 .direnv
+scratchpad.js

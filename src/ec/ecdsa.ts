@@ -3,20 +3,73 @@
  * @module
  */
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 import {
     Alg,
+    EcShared,
     EcdsaCryptoKeyPair,
     EcdsaPrivCryptoKey,
+    EcdsaProxiedCryptoKeyPair,
+    EcdsaProxiedPrivCryptoKey,
+    EcdsaProxiedPubCryptoKey,
     EcdsaPubCryptoKey,
-    EcShared,
 } from "./shared.js";
+
+const handlers: proxy.ProxyKeyPairHandlers<
+    EcdsaPrivCryptoKey,
+    EcdsaPubCryptoKey
+> = {
+    privHandler: {
+        get(target: EcdsaPrivCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "sign":
+                    return (
+                        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
+                        data: BufferSource
+                    ) => sign(algorithm, target, data);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+    pubHandler: {
+        get(target: EcdsaPubCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "verify":
+                    return (
+                        algorithm: Omit<params.EnforcedEcdsaParams, "name">,
+                        signature: BufferSource,
+                        data: BufferSource
+                    ) => verify(algorithm, target, signature, data);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+};
 
 /**
  * Generate a new ECDSA keypair
  * @example
  * ```ts
  * const keyPair = await ECDSA.generateKey();
+ * ```
+ * @example
+ * ```ts
+ * const keyPair = await ECDSA.generateKey({ namedCurve: "P-256" }, false);
+ * ```
+ * @example
+ * ```ts
+ * const keyPair = await ECDSA.generateKey({ namedCurve: "P-256" }, true, ['sign', 'verify']);
  * ```
  */
 export const generateKey = async (
@@ -25,18 +78,31 @@ export const generateKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<EcdsaCryptoKeyPair> =>
-    await EcShared.generateKey(
+): Promise<EcdsaProxiedCryptoKeyPair> => {
+    const keyPair = (await EcShared.generateKey(
         { ...algorithm, name: Alg.Variant.ECDSA },
         extractable,
         keyUsages
-    );
+    )) as EcdsaCryptoKeyPair;
+
+    return proxy.proxifyKeyPair<
+        EcdsaCryptoKeyPair,
+        EcdsaPrivCryptoKey,
+        EcdsaProxiedPrivCryptoKey,
+        EcdsaPubCryptoKey,
+        EcdsaProxiedPubCryptoKey
+    >(handlers)(keyPair);
+};
 
 /**
  * Import an ECDSA public or private key
  * @example
  * ```ts
- * const key = await ECDSA.importKey("jwk", pubKey, { namedCurve: "P-521" }, true, ['verify']);
+ * const pubKey = await ECDSA.importKey("jwk", pubKeyJwk, { namedCurve: "P-521" }, true, ['verify']);
+ * ```
+ * @example
+ * ```ts
+ * const privKey = await ECDSA.importKey("jwk", privKeyJwk, { namedCurve: "P-521" }, true, ['sign']);
  * ```
  */
 export const importKey = async (
@@ -47,8 +113,8 @@ export const importKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<EcdsaPubCryptoKey | EcdsaPrivCryptoKey> =>
-    await EcShared.importKey(
+): Promise<EcdsaProxiedPubCryptoKey | EcdsaProxiedPrivCryptoKey> => {
+    const importedKey = await EcShared.importKey(
         format,
         key,
         { ...algorithm, name: Alg.Variant.ECDSA },
@@ -56,11 +122,35 @@ export const importKey = async (
         keyUsages
     );
 
+    if (importedKey.type === "private") {
+        return proxy.proxifyPrivKey<
+            EcdsaPrivCryptoKey,
+            EcdsaProxiedPrivCryptoKey
+        >(handlers.privHandler)(importedKey as EcdsaPrivCryptoKey);
+    } else {
+        return proxy.proxifyPubKey<EcdsaPubCryptoKey, EcdsaProxiedPubCryptoKey>(
+            handlers.pubHandler
+        )(importedKey as EcdsaPubCryptoKey);
+    }
+};
+
 /**
  * Export an ECDSA public or private key
  * @example
  * ```ts
- * const pubKeyJwk = await ECDSA.importKey("jwk", keyPair.publicKey);
+ * const pubKeyJwk = await ECDSA.exportKey("jwk", keyPair.publicKey.self);
+ * ```
+ * @example
+ * ```ts
+ * const privKeyJwk = await ECDSA.exportKey("jwk", keyPair.privateKey.self);
+ * ```
+ * @example
+ * ```ts
+ * const pubKeyJwk = await keyPair.publicKey.exportKey("jwk");
+ * ```
+ * @example
+ * ```ts
+ * const privKeyJwk = await keyPair.privateKey.exportKey("jwk");
  * ```
  */
 export const exportKey = async (
@@ -73,7 +163,12 @@ export const exportKey = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const signature = await ECDSA.sign({hash: "SHA-512"}, keyPair.privateKey, message);
+ * const signature = await ECDSA.sign({hash: "SHA-512"}, keyPair.privateKey.self, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await keyPair.privateKey.sign({hash: "SHA-512"}, message);
  * ```
  */
 export async function sign(
@@ -96,7 +191,12 @@ export async function sign(
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const isVerified = await ECDSA.verify({hash: "SHA-512"}, keyPair.publicKey, signature, message);
+ * const isVerified = await ECDSA.verify({hash: "SHA-512"}, keyPair.publicKey.self, signature, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await keyPair.publicKey.verify({hash: "SHA-512"}, signature, message);
  * ```
  */
 export async function verify(

@@ -1,6 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RSA_OAEP should generate key 1`] = `
+exports[`RSA_OAEP Original should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey {
+    Symbol(kKeyObject): PrivateKeyObject {
+      Symbol(kKeyType): "private",
+    },
+    Symbol(kAlgorithm): Object {
+      "hash": Object {
+        "name": "SHA-512",
+      },
+      "modulusLength": 4096,
+      "name": "RSA-OAEP",
+      "publicExponent": Uint8Array [
+        1,
+        0,
+        1,
+      ],
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "decrypt",
+    ],
+  },
+  "publicKey": CryptoKey {
+    Symbol(kKeyObject): PublicKeyObject {
+      Symbol(kKeyType): "public",
+    },
+    Symbol(kAlgorithm): Object {
+      "hash": Object {
+        "name": "SHA-512",
+      },
+      "modulusLength": 4096,
+      "name": "RSA-OAEP",
+      "publicExponent": Uint8Array [
+        1,
+        0,
+        1,
+      ],
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "encrypt",
+    ],
+  },
+}
+`;
+
+exports[`RSA_OAEP Proxied should generate key 1`] = `
 Object {
   "privateKey": CryptoKey {
     Symbol(kKeyObject): PrivateKeyObject {

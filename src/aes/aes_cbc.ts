@@ -4,7 +4,69 @@
  */
 
 import * as params from "../params.js";
-import { AesCbcCryptoKey, AesShared, Alg } from "./shared.js";
+import * as proxy from "../proxy.js";
+import {
+    AesCbcCryptoKey,
+    AesCbcProxiedCryptoKey,
+    AesShared,
+    Alg,
+} from "./shared.js";
+
+const handler: ProxyHandler<AesCbcCryptoKey> = {
+    get(target: AesCbcCryptoKey, prop: string) {
+        switch (prop) {
+            case "self":
+                return target;
+
+            case "encrypt":
+                return (
+                    algorithm: Omit<params.EnforcedAesCbcParams, "name">,
+                    data: BufferSource
+                ) => encrypt(algorithm, target, data);
+
+            case "decrypt":
+                return (
+                    algorithm: Omit<params.EnforcedAesCbcParams, "name">,
+                    data: BufferSource
+                ) => decrypt(algorithm, target, data);
+
+            case "wrapKey":
+                return (
+                    format: KeyFormat,
+                    key: CryptoKey,
+                    wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
+                ) => wrapKey(format, key, target, wrapAlgorithm);
+
+            case "unwrapKey":
+                return (
+                    format: KeyFormat,
+                    wrappedKey: BufferSource,
+                    wrappedKeyAlgorithm: params.EnforcedImportParams,
+                    unwrappingKeyAlgorithm: Omit<
+                        params.EnforcedAesCbcParams,
+                        "name"
+                    >,
+                    extractable?: boolean,
+                    keyUsages?: KeyUsage[]
+                ) =>
+                    unwrapKey(
+                        format,
+                        wrappedKey,
+                        wrappedKeyAlgorithm,
+                        target,
+                        unwrappingKeyAlgorithm,
+                        extractable,
+                        keyUsages
+                    );
+
+            case "exportKey":
+                return (format: KeyFormat) => exportKey(format, target);
+        }
+
+        return Reflect.get(target, prop);
+    },
+};
+
 /**
  * Generate a new AES_CBC key
  * @example
@@ -18,14 +80,17 @@ export async function generateKey(
     },
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-): Promise<AesCbcCryptoKey> {
-    return await AesShared.generateKey<AesCbcCryptoKey>(
+): Promise<AesCbcProxiedCryptoKey> {
+    const key = await AesShared.generateKey<AesCbcCryptoKey>(
         {
             ...algorithm,
             name: Alg.Mode.AES_CBC,
         },
         extractable,
         keyUsages
+    );
+    return proxy.proxifyKey<AesCbcCryptoKey, AesCbcProxiedCryptoKey>(handler)(
+        key
     );
 }
 
@@ -44,8 +109,8 @@ export async function importKey(
     algorithm: Omit<params.AesCbcKeyAlgorithm, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<AesCbcCryptoKey> {
-    return await AesShared.importKey(
+): Promise<AesCbcProxiedCryptoKey> {
+    const importedKey = (await AesShared.importKey(
         format as any,
         key as any,
         {
@@ -54,6 +119,9 @@ export async function importKey(
         },
         extractable,
         keyUsages
+    )) as AesCbcCryptoKey;
+    return proxy.proxifyKey<AesCbcCryptoKey, AesCbcProxiedCryptoKey>(handler)(
+        importedKey
     );
 }
 
@@ -62,7 +130,12 @@ export async function importKey(
  * @example
  * ```ts
  * const key = await AES_CBC.generateKey();
- * const jwk = await AES_CBC.exportKey("jwk", key);
+ * const jwk = await AES_CBC.exportKey("jwk", key.self);
+ * ```
+ * @example
+ * ```ts
+ * const key = await AES_CBC.generateKey();
+ * const jwk = await key.exportKey("jwk");
  * ```
  */
 export const exportKey = async (format: KeyFormat, key: AesCbcCryptoKey) =>
@@ -76,7 +149,16 @@ export const exportKey = async (format: KeyFormat, key: AesCbcCryptoKey) =>
  * const iv = await IV.generate();
  * const ciphertextBytes = await AES_CBC.encrypt(
  *     { iv },
- *    key,
+ *    key.self,
+ *    new TextEncoder().encode('message')
+ * );
+ * ```
+ * @example
+ * ```ts
+ * const key = await AES_CBC.generateKey();
+ * const iv = await IV.generate();
+ * const ciphertextBytes = await key.encrypt(
+ *     { iv },
  *    new TextEncoder().encode('message')
  * );
  * ```
@@ -102,7 +184,14 @@ export async function encrypt(
  * ```ts
  * const plaintextBytes = await AES_CBC.decrypt(
  *    { iv },
- *    key,
+ *    key.self,
+ *    ciphertextBytes
+ * );
+ * ```
+ * @example
+ * ```ts
+ * const plaintextBytes = await key.decrypt(
+ *    { iv },
  *    ciphertextBytes
  * );
  * ```
@@ -138,6 +227,19 @@ export async function decrypt(
  *     iv,
  * });
  * ```
+ * ```ts
+ * const kek = await AES_CBC.generateKey({ length: 256 }, true, [
+ *    "wrapKey",
+ *    "unwrapKey",
+ * ]);
+ * const dek: AesCbcCryptoKey = await AES_CBC.generateKey({
+ *    length: 256,
+ * });
+ * const iv = await IV.generate();
+ * const wrappedKey = await kek.wrapKey("raw", dek.self, {
+ *     iv,
+ * });
+ * ```
  */
 export async function wrapKey(
     format: KeyFormat,
@@ -155,14 +257,26 @@ export async function wrapKey(
  * Unwrap a wrapped key using the key encryption key
  * @example
  * ```ts
- * const wrappedKey = await AES_CBC.wrapKey("raw", dek, kek, {
+ * const wrappedKey = await AES_CBC.wrapKey("raw", dek.self, kek.self, {
  *     iv,
  * });
- * const unwrappedkey = await AES_CBC.unwrapKey(
+ * const unwrappedKey = await AES_CBC.unwrapKey(
  *    "raw",
  *    wrappedKey,
  *    { name: Alg.Mode.AES_CBC },
- *    kek,
+ *    kek.self,
+ *    { iv }
+ * );
+ * ```
+ * @example
+ * ```ts
+ * const wrappedKey = await AES_CBC.wrapKey("raw", dek.self, kek.self, {
+ *     iv,
+ * });
+ * const unwrappedKey = await kek.unwrapKey(
+ *    "raw",
+ *    wrappedKey,
+ *    { name: Alg.Mode.AES_CBC },
  *    { iv }
  * );
  * ```

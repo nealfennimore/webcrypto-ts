@@ -3,7 +3,46 @@
  * @module
  */
 import * as params from "../params.js";
-import { AesKwCryptoKey, AesShared, Alg } from "./shared.js";
+import * as proxy from "../proxy.js";
+import {
+    AesKwCryptoKey,
+    AesKwProxiedCryptoKey,
+    AesShared,
+    Alg,
+} from "./shared.js";
+
+const handler: ProxyHandler<AesKwCryptoKey> = {
+    get(target: AesKwCryptoKey, prop: string) {
+        switch (prop) {
+            case "self":
+                return target;
+
+            case "wrapKey":
+                return (format: KeyFormat, key: CryptoKey) =>
+                    wrapKey(format, key, target);
+            case "unwrapKey":
+                return (
+                    format: KeyFormat,
+                    wrappedKey: BufferSource,
+                    wrappedKeyAlgorithm: params.EnforcedImportParams,
+                    extractable?: boolean,
+                    keyUsages?: KeyUsage[]
+                ) =>
+                    unwrapKey(
+                        format,
+                        wrappedKey,
+                        wrappedKeyAlgorithm,
+                        target,
+                        extractable,
+                        keyUsages
+                    );
+            case "exportKey":
+                return (format: KeyFormat) => exportKey(format, target);
+        }
+
+        return Reflect.get(target, prop);
+    },
+};
 
 /**
  * Generate a new AES_KW key
@@ -18,14 +57,17 @@ export async function generateKey(
     },
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-): Promise<AesKwCryptoKey> {
-    return await AesShared.generateKey(
+): Promise<AesKwProxiedCryptoKey> {
+    const key = (await AesShared.generateKey(
         {
             ...algorithm,
             name: Alg.Mode.AES_KW,
         },
         extractable,
         keyUsages
+    )) as AesKwCryptoKey;
+    return proxy.proxifyKey<AesKwCryptoKey, AesKwProxiedCryptoKey>(handler)(
+        key
     );
 }
 
@@ -41,8 +83,8 @@ export async function importKey(
     key: BufferSource | JsonWebKey,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<AesKwCryptoKey> {
-    return await AesShared.importKey(
+): Promise<AesKwProxiedCryptoKey> {
+    const importedKey = (await AesShared.importKey(
         format as any,
         key as any,
         {
@@ -50,6 +92,9 @@ export async function importKey(
         },
         extractable,
         keyUsages
+    )) as AesKwCryptoKey;
+    return proxy.proxifyKey<AesKwCryptoKey, AesKwProxiedCryptoKey>(handler)(
+        importedKey
     );
 }
 
@@ -57,7 +102,11 @@ export async function importKey(
  * Export an AES_KW key into the specified format
  * @example
  * ```ts
- * const jwk = await AES_KW.exportKey("jwk", key);
+ * const jwk = await AES_KW.exportKey("jwk", key.self);
+ * ```
+ * @example
+ * ```ts
+ * const jwk = await key.exportKey("jwk");
  * ```
  */
 export const exportKey = async (format: KeyFormat, key: AesKwCryptoKey) =>
@@ -69,7 +118,13 @@ export const exportKey = async (format: KeyFormat, key: AesKwCryptoKey) =>
  * ```ts
  * const kek = await AES_KW.generateKey({length: 256}, true, ['wrapKey', 'unwrapKey']);
  * const dek = await AES_GCM.generateKey();
- * const wrappedKey = await AES_GCM.wrapKey("raw", dek, kek);
+ * const wrappedKey = await AES_KW.wrapKey("raw", dek.self, kek.self);
+ * ```
+ * @example
+ * ```ts
+ * const kek = await AES_KW.generateKey({length: 256}, true, ['wrapKey', 'unwrapKey']);
+ * const dek = await AES_GCM.generateKey();
+ * const wrappedKey = await kek.wrapKey("raw", dek.self);
  * ```
  */
 export async function wrapKey(
@@ -86,7 +141,11 @@ export async function wrapKey(
  * Unwrap a wrapped key using the key encryption key
  * @example
  * ```ts
- * const dek = await AES_GCM.unwrapKey("raw", wrappedKey, {name: "AES_GCM"}, kek);
+ * const dek = await AES_KW.unwrapKey("raw", wrappedKey, {name: "AES_GCM"}, kek.self);
+ * ```
+ * @example
+ * ```ts
+ * const dek = await kek.unwrapKey("raw", wrappedKey, {name: "AES_GCM"});
  * ```
  */
 export async function unwrapKey(

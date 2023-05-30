@@ -3,8 +3,9 @@
  * @module
  */
 
-import { getKeyUsagePairsByAlg } from "../key_usages.js";
+import * as usages from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface AesGcmCryptoKey extends CryptoKey {
@@ -49,7 +50,7 @@ export namespace AesShared {
         return await WebCrypto.generateKey<T, params.EnforcedAesKeyGenParams>(
             algorithm,
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages ?? usages.getKeyUsagePairsByAlg(algorithm.name)
         );
     }
 
@@ -65,7 +66,7 @@ export namespace AesShared {
             key as any,
             algorithm,
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
+            keyUsages ?? usages.getKeyUsagePairsByAlg(algorithm.name)
         );
     }
 
@@ -127,7 +128,112 @@ export namespace AesShared {
             unwrappingKeyAlgorithm,
             wrappedKeyAlgorithm,
             extractable,
-            keyUsages ?? getKeyUsagePairsByAlg(wrappedKeyAlgorithm.name)
+            keyUsages ?? usages.getKeyUsagePairsByAlg(wrappedKeyAlgorithm.name)
         );
     }
+}
+
+export interface AesCbcProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesCbcCryptoKey> {
+    encrypt(
+        algorithm: Omit<params.EnforcedAesCbcParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Omit<params.EnforcedAesCbcParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedAesCbcParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface AesCtrProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesCtrCryptoKey> {
+    encrypt(
+        algorithm: Omit<params.EnforcedAesCtrParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Omit<params.EnforcedAesCtrParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: Omit<params.EnforcedAesCtrParams, "name">
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedAesCtrParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface AesGcmProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesGcmCryptoKey> {
+    encrypt(
+        algorithm: Omit<params.EnforcedAesGcmParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Omit<params.EnforcedAesGcmParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: Omit<params.EnforcedAesGcmParams, "name">
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedAesGcmParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface AesKwProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesKwCryptoKey> {
+    wrapKey(format: KeyFormat, key: CryptoKey): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }

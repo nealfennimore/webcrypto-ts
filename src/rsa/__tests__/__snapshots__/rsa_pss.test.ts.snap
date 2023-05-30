@@ -1,6 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RSA_PSS should generate key 1`] = `
+exports[`RSA_PSS Original should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey {
+    Symbol(kKeyObject): PrivateKeyObject {
+      Symbol(kKeyType): "private",
+    },
+    Symbol(kAlgorithm): Object {
+      "hash": Object {
+        "name": "SHA-512",
+      },
+      "modulusLength": 4096,
+      "name": "RSA-PSS",
+      "publicExponent": Uint8Array [
+        1,
+        0,
+        1,
+      ],
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey {
+    Symbol(kKeyObject): PublicKeyObject {
+      Symbol(kKeyType): "public",
+    },
+    Symbol(kAlgorithm): Object {
+      "hash": Object {
+        "name": "SHA-512",
+      },
+      "modulusLength": 4096,
+      "name": "RSA-PSS",
+      "publicExponent": Uint8Array [
+        1,
+        0,
+        1,
+      ],
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "verify",
+    ],
+  },
+}
+`;
+
+exports[`RSA_PSS Proxied should generate key 1`] = `
 Object {
   "privateKey": CryptoKey {
     Symbol(kKeyObject): PrivateKeyObject {

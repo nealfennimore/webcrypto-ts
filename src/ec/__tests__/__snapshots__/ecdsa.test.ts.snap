@@ -1,6 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ECDSA should generate key 1`] = `
+exports[`ECDSA Original should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey {
+    Symbol(kKeyObject): PrivateKeyObject {
+      Symbol(kKeyType): "private",
+    },
+    Symbol(kAlgorithm): Object {
+      "name": "ECDSA",
+      "namedCurve": "P-521",
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey {
+    Symbol(kKeyObject): PublicKeyObject {
+      Symbol(kKeyType): "public",
+    },
+    Symbol(kAlgorithm): Object {
+      "name": "ECDSA",
+      "namedCurve": "P-521",
+    },
+    Symbol(kExtractable): true,
+    Symbol(kKeyUsages): Array [
+      "verify",
+    ],
+  },
+}
+`;
+
+exports[`ECDSA Proxied should generate key 1`] = `
 Object {
   "privateKey": CryptoKey {
     Symbol(kKeyObject): PrivateKeyObject {
