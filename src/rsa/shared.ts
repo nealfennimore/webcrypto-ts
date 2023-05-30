@@ -173,3 +173,29 @@ export interface RsaOaepProxiedCryptoKeyPair
         RsaOaepPubCryptoKey,
         RsaOaepProxiedPubCryptoKey
     > {}
+
+export interface RsaPssProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<RsaPssPubCryptoKey> {
+    verify: (
+        saltLength: number,
+        signature: BufferSource,
+        data: BufferSource
+    ) => Promise<boolean>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface RsaPssProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<RsaPssPrivCryptoKey> {
+    sign: (saltLength: number, data: BufferSource) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface RsaPssProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        RsaPssCryptoKeyPair,
+        RsaPssPrivCryptoKey,
+        RsaPssProxiedPrivCryptoKey,
+        RsaPssPubCryptoKey,
+        RsaPssProxiedPubCryptoKey
+    > {}

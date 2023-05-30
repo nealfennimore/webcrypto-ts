@@ -4,14 +4,57 @@
  */
 
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import { Alg as SHA } from "../sha/shared.js";
 import {
     Alg,
     RsaPssCryptoKeyPair,
     RsaPssPrivCryptoKey,
+    RsaPssProxiedCryptoKeyPair,
+    RsaPssProxiedPrivCryptoKey,
+    RsaPssProxiedPubCryptoKey,
     RsaPssPubCryptoKey,
     RsaShared,
 } from "./shared.js";
+
+const handlers: proxy.ProxyKeyPairHandlers<
+    RsaPssPrivCryptoKey,
+    RsaPssPubCryptoKey
+> = {
+    privHandler: {
+        get(target: RsaPssPrivCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "sign":
+                    return (saltLength: number, data: BufferSource) =>
+                        sign(saltLength, target, data);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+    pubHandler: {
+        get(target: RsaPssPubCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "verify":
+                    return (
+                        saltLength: number,
+                        signature: BufferSource,
+                        data: BufferSource
+                    ) => verify(saltLength, target, signature, data);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+};
 
 /**
  * Generate a new RSA_PSS keypair
@@ -28,8 +71,8 @@ export const generateKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-) =>
-    (await RsaShared.generateKey(
+): Promise<RsaPssProxiedCryptoKeyPair> => {
+    const keyPair = (await RsaShared.generateKey(
         {
             ...algorithm,
             name: Alg.Variant.RSA_PSS,
@@ -37,6 +80,15 @@ export const generateKey = async (
         extractable,
         keyUsages
     )) as RsaPssCryptoKeyPair;
+
+    return proxy.proxifyKeyPair<
+        RsaPssCryptoKeyPair,
+        RsaPssPrivCryptoKey,
+        RsaPssProxiedPrivCryptoKey,
+        RsaPssPubCryptoKey,
+        RsaPssProxiedPubCryptoKey
+    >(handlers)(keyPair);
+};
 
 /**
  * Import an RSA_PSS public or private key
@@ -51,14 +103,27 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<RsaPssPrivCryptoKey | RsaPssPubCryptoKey> =>
-    await RsaShared.importKey(
+): Promise<RsaPssProxiedPrivCryptoKey | RsaPssProxiedPubCryptoKey> => {
+    const importedKey = await RsaShared.importKey(
         format,
         key,
         { ...algorithm, name: Alg.Variant.RSA_PSS },
         extractable,
         keyUsages
     );
+
+    if (importedKey.type === "private") {
+        return proxy.proxifyPrivKey<
+            RsaPssPrivCryptoKey,
+            RsaPssProxiedPrivCryptoKey
+        >(handlers.privHandler)(importedKey as RsaPssPrivCryptoKey);
+    } else {
+        return proxy.proxifyPubKey<
+            RsaPssPubCryptoKey,
+            RsaPssProxiedPubCryptoKey
+        >(handlers.pubHandler)(importedKey as RsaPssPubCryptoKey);
+    }
+};
 
 /**
  * Export an RSA_PSS public or private key
