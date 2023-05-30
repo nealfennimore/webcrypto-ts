@@ -126,7 +126,11 @@ export const importKey = async (
  * Export an RSASSA_PKCS1_v1_5 public or private key
  * @example
  * ```ts
- * const pubKeyJwk = await RSASSA_PKCS1_v1_5.importKey("jwk", keyPair.publicKey);
+ * const pubKeyJwk = await RSASSA_PKCS1_v1_5.importKey("jwk", keyPair.publicKey.self);
+ * ```
+ * @example
+ * ```ts
+ * const pubKeyJwk = await keyPair.publicKey.importKey("jwk");
  * ```
  */
 export const exportKey = async (
@@ -139,7 +143,12 @@ export const exportKey = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const signature = await RSASSA_PKCS1_v1_5.sign(keyPair.privateKey, message);
+ * const signature = await RSASSA_PKCS1_v1_5.sign(keyPair.privateKey.self, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await keyPair.privateKey.sign(message);
  * ```
  */
 export const sign = async (
@@ -159,7 +168,12 @@ export const sign = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const isVerified = await RSASSA_PKCS1_v1_5.verify(keyPair.publicKey, signature, message);
+ * const isVerified = await RSASSA_PKCS1_v1_5.verify(keyPair.publicKey.self, signature, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await keyPair.publicKey.verify( signature, message);
  * ```
  */
 export const verify = async (

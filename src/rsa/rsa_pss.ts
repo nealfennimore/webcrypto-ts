@@ -129,7 +129,11 @@ export const importKey = async (
  * Export an RSA_PSS public or private key
  * @example
  * ```ts
- * const pubKeyJwk = await RSA_PSS.importKey("jwk", keyPair.publicKey);
+ * const pubKeyJwk = await RSA_PSS.importKey("jwk", keyPair.publicKey.self);
+ * ```
+ * @example
+ * ```ts
+ * const pubKeyJwk = await keyPair.publicKey.importKey("jwk");
  * ```
  */
 export const exportKey = async (
@@ -142,7 +146,12 @@ export const exportKey = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const signature = await RSA_PSS.sign(128, keyPair.privateKey, message);
+ * const signature = await RSA_PSS.sign(128, keyPair.privateKey.self, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const signature = await keyPair.privateKey.sign(128, message);
  * ```
  */
 export const sign = async (
@@ -164,7 +173,12 @@ export const sign = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const isVerified = await ECDSA.verify(128, keyPair.publicKey, signature, message);
+ * const isVerified = await ECDSA.verify(128, keyPair.publicKey.self, signature, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const isVerified = await keyPair.publicKey.verify(128, signature, message);
  * ```
  */
 export const verify = async (
