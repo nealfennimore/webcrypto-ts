@@ -41,7 +41,7 @@ const isVerified = await someOtherKeypair.publicKey.verify(
 ```ts
 import * as RSA_OAEP from "@nfen/webcrypto-ts/lib/rsa/rsa_oaep";
 import * as AES_CBC from "@nfen/webcrypto-ts/lib/aes/aes_cbc";
-import * as Random from "@nfen/webcrypto-ts/random";
+import * as Random from "@nfen/webcrypto-ts/lib/random";
 
 const kek = await RSA_OAEP.generateKey(
     {
