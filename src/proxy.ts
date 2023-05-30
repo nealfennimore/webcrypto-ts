@@ -32,9 +32,6 @@ export function proxifyKey<
     };
 }
 
-export const proxifyPubKey = proxifyKey;
-export const proxifyPrivKey = proxifyKey;
-
 export interface ProxyKeyPairHandlers<
     TPrivKey extends CryptoKey,
     TPubKey extends CryptoKey
@@ -66,11 +63,11 @@ export function proxifyKeyPair<
                     case "self":
                         return target;
                     case "privateKey":
-                        return proxifyPrivKey<TPrivKey, TProxPrivKey>(
-                            privHandler
-                        )(target.privateKey as TPrivKey);
+                        return proxifyKey<TPrivKey, TProxPrivKey>(privHandler)(
+                            target.privateKey as TPrivKey
+                        );
                     case "publicKey":
-                        return proxifyPubKey<TPubKey, TProxPubKey>(pubHandler)(
+                        return proxifyKey<TPubKey, TProxPubKey>(pubHandler)(
                             target.publicKey as TPubKey
                         );
                 }

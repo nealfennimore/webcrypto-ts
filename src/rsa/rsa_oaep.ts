@@ -146,12 +146,12 @@ export const importKey = async (
     );
 
     if (importedKey.type === "private") {
-        return proxy.proxifyPrivKey<
+        return proxy.proxifyKey<
             RsaOaepPrivCryptoKey,
             RsaOaepProxiedPrivCryptoKey
         >(handlers.privHandler)(importedKey as RsaOaepPrivCryptoKey);
     } else {
-        return proxy.proxifyPubKey<
+        return proxy.proxifyKey<
             RsaOaepPubCryptoKey,
             RsaOaepProxiedPubCryptoKey
         >(handlers.pubHandler)(importedKey as RsaOaepPubCryptoKey);

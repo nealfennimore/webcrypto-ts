@@ -139,12 +139,11 @@ export const importKey = async (
         keyUsages
     );
     if (importedKey.type === "private") {
-        return proxy.proxifyPrivKey<
-            EcdhPrivCryptoKey,
-            EcdhProxiedPrivCryptoKey
-        >(handlers.privHandler)(importedKey as EcdhPrivCryptoKey);
+        return proxy.proxifyKey<EcdhPrivCryptoKey, EcdhProxiedPrivCryptoKey>(
+            handlers.privHandler
+        )(importedKey as EcdhPrivCryptoKey);
     } else {
-        return proxy.proxifyPubKey<EcdhPubCryptoKey, EcdhProxiedPubCryptoKey>(
+        return proxy.proxifyKey<EcdhPubCryptoKey, EcdhProxiedPubCryptoKey>(
             handlers.pubHandler
         )(importedKey as EcdhPubCryptoKey);
     }
