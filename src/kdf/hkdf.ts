@@ -83,6 +83,7 @@ export const generateKeyMaterial = async (
  *      keyMaterial,
  *      hmacParams
  * );
+ * ```
  * @example
  * ```ts
  * const hmacParams: params.EnforcedHmacKeyGenParams = {

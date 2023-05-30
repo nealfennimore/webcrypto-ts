@@ -92,6 +92,18 @@ export const generateKeyMaterial = async (
  *      hmacParams
  * );
  * ```
+ * @example
+ * ```ts
+ * const hmacParams: params.EnforcedHmacKeyGenParams = {
+ *      name: Authentication.Alg.Code.HMAC,
+ *      hash: SHA.Alg.Variant.SHA_512,
+ *      length: 512,
+ * };
+ * let key = await keyMaterial.deriveKey(
+ *      { hash: "SHA512" },
+ *      hmacParams
+ * );
+ * ```
  */
 export const deriveKey = (
     algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
@@ -123,6 +135,13 @@ export const deriveKey = (
  * const bits = await PBKDF2.deriveBits(
  *      { hash: "SHA-512" },
  *      keyMaterial,
+ *      128
+ * );
+ * ```
+ * @example
+ * ```ts
+ * const bits = await keyMaterial.deriveBits(
+ *      { hash: "SHA-512" },
  *      128
  * );
  * ```
