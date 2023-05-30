@@ -132,11 +132,10 @@ describe("AES_GCM", () => {
             const wrappedKey = await kek.wrapKey("raw", dek.self, {
                 iv,
             });
-            const unwrappedKey = (await AES.AES_GCM.unwrapKey(
+            const unwrappedKey = (await kek.unwrapKey(
                 "raw",
                 wrappedKey,
                 { name: AES.Alg.Mode.AES_GCM },
-                kek.self,
                 { iv }
             )) as AES.AesGcmCryptoKey;
 

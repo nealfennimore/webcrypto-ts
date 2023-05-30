@@ -97,20 +97,25 @@ describe("RSA_OAEP", () => {
 
         it("should import and export key", async () => {
             const keyPair = await RSA_OAEP.generateKey();
-            const jwk = await keyPair.publicKey.exportKey("jwk");
+            const pubJwk = await keyPair.publicKey.exportKey("jwk");
+            const privJwk = await keyPair.privateKey.exportKey("jwk");
             const pubKey = (await RSA_OAEP.importKey(
                 "jwk",
-                jwk,
+                pubJwk,
                 { hash: "SHA-512" },
                 false,
                 ["encrypt"]
             )) as RsaOaepProxiedPubCryptoKey;
             const text = encode("a message");
             const ciphertext = await pubKey.encrypt({ label }, text);
-            const plaintext = await keyPair.privateKey.decrypt(
-                { label },
-                ciphertext
-            );
+            const privKey = (await RSA_OAEP.importKey(
+                "jwk",
+                privJwk,
+                { hash: "SHA-512" },
+                false,
+                ["decrypt"]
+            )) as RSA.RsaOaepProxiedPrivCryptoKey;
+            const plaintext = await privKey.decrypt({ label }, ciphertext);
             expect(decode(plaintext)).toEqual(decode(text));
         });
         it("should encrypt and decrypt", async () => {
