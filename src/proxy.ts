@@ -5,6 +5,10 @@
 
 export interface ProxiedCryptoKey<T extends CryptoKey> {
     self: T;
+    readonly algorithm: T["algorithm"];
+    readonly extractable: T["extractable"];
+    readonly type: T["type"];
+    readonly usages: T["usages"];
 }
 export interface ProxiedPubCryptoKey<T extends CryptoKey>
     extends ProxiedCryptoKey<T> {}
