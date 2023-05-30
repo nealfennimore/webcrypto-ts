@@ -132,7 +132,7 @@ export namespace RsaShared {
 }
 
 export interface RsaOaepProxiedPubCryptoKey
-    extends proxy.ProxiedPubCryptoKey<RsaOaepPubCryptoKey> {
+    extends proxy.ProxiedCryptoKey<RsaOaepPubCryptoKey> {
     encrypt: (
         algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
         data: BufferSource
@@ -146,7 +146,7 @@ export interface RsaOaepProxiedPubCryptoKey
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
 export interface RsaOaepProxiedPrivCryptoKey
-    extends proxy.ProxiedPrivCryptoKey<RsaOaepPrivCryptoKey> {
+    extends proxy.ProxiedCryptoKey<RsaOaepPrivCryptoKey> {
     decrypt: (
         algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
         data: BufferSource
@@ -175,7 +175,7 @@ export interface RsaOaepProxiedCryptoKeyPair
     > {}
 
 export interface RsaPssProxiedPubCryptoKey
-    extends proxy.ProxiedPubCryptoKey<RsaPssPubCryptoKey> {
+    extends proxy.ProxiedCryptoKey<RsaPssPubCryptoKey> {
     verify: (
         saltLength: number,
         signature: BufferSource,
@@ -185,7 +185,7 @@ export interface RsaPssProxiedPubCryptoKey
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
 export interface RsaPssProxiedPrivCryptoKey
-    extends proxy.ProxiedPrivCryptoKey<RsaPssPrivCryptoKey> {
+    extends proxy.ProxiedCryptoKey<RsaPssPrivCryptoKey> {
     sign: (saltLength: number, data: BufferSource) => Promise<ArrayBuffer>;
 
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
@@ -201,13 +201,13 @@ export interface RsaPssProxiedCryptoKeyPair
     > {}
 
 export interface RsassaPkcs1V15ProxiedPubCryptoKey
-    extends proxy.ProxiedPubCryptoKey<RsassaPkcs1V15PubCryptoKey> {
+    extends proxy.ProxiedCryptoKey<RsassaPkcs1V15PubCryptoKey> {
     verify: (signature: BufferSource, data: BufferSource) => Promise<boolean>;
 
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
 export interface RsassaPkcs1V15ProxiedPrivCryptoKey
-    extends proxy.ProxiedPrivCryptoKey<RsassaPkcs1V15PrivCryptoKey> {
+    extends proxy.ProxiedCryptoKey<RsassaPkcs1V15PrivCryptoKey> {
     sign: (data: BufferSource) => Promise<ArrayBuffer>;
 
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;

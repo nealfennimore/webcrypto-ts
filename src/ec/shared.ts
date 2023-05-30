@@ -33,7 +33,7 @@ export interface EcdsaCryptoKeyPair extends CryptoKeyPair {
 }
 
 export interface EcdsaProxiedPubCryptoKey
-    extends proxy.ProxiedPubCryptoKey<EcdsaPubCryptoKey> {
+    extends proxy.ProxiedCryptoKey<EcdsaPubCryptoKey> {
     verify: (
         algorithm: Omit<params.EnforcedEcdsaParams, "name">,
         signature: BufferSource,
@@ -43,7 +43,7 @@ export interface EcdsaProxiedPubCryptoKey
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
 export interface EcdsaProxiedPrivCryptoKey
-    extends proxy.ProxiedPrivCryptoKey<EcdsaPrivCryptoKey> {
+    extends proxy.ProxiedCryptoKey<EcdsaPrivCryptoKey> {
     sign: (
         algorithm: Omit<params.EnforcedEcdsaParams, "name">,
         data: BufferSource
@@ -61,11 +61,11 @@ export interface EcdsaProxiedCryptoKeyPair
         EcdsaProxiedPubCryptoKey
     > {}
 export interface EcdhProxiedPubCryptoKey
-    extends proxy.ProxiedPubCryptoKey<EcdhPubCryptoKey> {
+    extends proxy.ProxiedCryptoKey<EcdhPubCryptoKey> {
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
 export interface EcdhProxiedPrivCryptoKey
-    extends proxy.ProxiedPrivCryptoKey<EcdhPrivCryptoKey> {
+    extends proxy.ProxiedCryptoKey<EcdhPrivCryptoKey> {
     deriveKey: (
         algorithm: Omit<params.EnforcedEcdhKeyDeriveParams, "name">,
         derivedKeyType:

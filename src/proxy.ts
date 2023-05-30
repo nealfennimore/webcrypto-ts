@@ -10,18 +10,13 @@ export interface ProxiedCryptoKey<T extends CryptoKey> {
     readonly type: T["type"];
     readonly usages: T["usages"];
 }
-export interface ProxiedPubCryptoKey<T extends CryptoKey>
-    extends ProxiedCryptoKey<T> {}
-
-export interface ProxiedPrivCryptoKey<T extends CryptoKey>
-    extends ProxiedCryptoKey<T> {}
 
 export interface ProxiedCryptoKeyPair<
     TKeyPair extends CryptoKeyPair,
     TPrivKey extends CryptoKey,
-    TProxPrivKey extends ProxiedPrivCryptoKey<TPrivKey>,
+    TProxPrivKey extends ProxiedCryptoKey<TPrivKey>,
     TPubKey extends CryptoKey,
-    TProxPubKey extends ProxiedPubCryptoKey<TPubKey>
+    TProxPubKey extends ProxiedCryptoKey<TPubKey>
 > {
     self: TKeyPair;
     privateKey: TProxPrivKey;
@@ -47,9 +42,9 @@ export interface ProxyKeyPairHandlers<
 export function proxifyKeyPair<
     TKeyPair extends CryptoKeyPair,
     TPrivKey extends CryptoKey,
-    TProxPrivKey extends ProxiedPrivCryptoKey<TPrivKey>,
+    TProxPrivKey extends ProxiedCryptoKey<TPrivKey>,
     TPubKey extends CryptoKey,
-    TProxPubKey extends ProxiedPubCryptoKey<TPubKey>
+    TProxPubKey extends ProxiedCryptoKey<TPubKey>
 >({ privHandler, pubHandler }: ProxyKeyPairHandlers<TPrivKey, TPubKey>) {
     return function _proxifyKeyPair(keyPair: TKeyPair) {
         return new Proxy<
