@@ -214,7 +214,6 @@ export async function encrypt(
  * const data = await keyPair.privateKey.decrypt({label}, data);
  * ```
  */
-
 export async function decrypt(
     algorithm: Omit<params.EnforcedRsaOaepParams, "name"> = {},
     key: RsaOaepPrivCryptoKey,
@@ -236,13 +235,15 @@ export async function decrypt(
  * ```ts
  * const kek = await RSA_OAEP.generateKey(undefined, true, ['wrapKey', 'unwrapKey']);
  * const dek = await RSA_OAEP.generateKey();
- * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek.self, kek.self, {iv});
+ * const label = await Random.getValues(8);
+ * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek.self, kek.self, {label});
  * ```
  * @example
  * ```ts
  * const kek = await RSA_OAEP.generateKey(undefined, true, ['wrapKey', 'unwrapKey']);
  * const dek = await RSA_OAEP.generateKey();
- * const wrappedKey = await kek.wrapKey("raw", dek.self, {iv});
+ * const label = await Random.getValues(8);
+ * const wrappedKey = await kek.wrapKey("raw", dek.self, {label});
  * ```
  */
 export async function wrapKey(
