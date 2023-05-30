@@ -1,5 +1,7 @@
 import * as HMAC from "../index.js";
 
+const skipIf = process.env.NODE_VERSION === "16.x" ? it.skip : it;
+
 describe("HMAC", () => {
     describe("Original", () => {
         let proxiedKey: HMAC.HmacProxiedCryptoKey;
@@ -9,7 +11,7 @@ describe("HMAC", () => {
             proxiedKey = await HMAC.generateKey();
             key = proxiedKey.self;
         });
-        it("should generate key", async () => {
+        skipIf("should generate key", async () => {
             expect(key).toMatchSnapshot();
         });
         it("should import and export key", async () => {
@@ -32,10 +34,9 @@ describe("HMAC", () => {
     describe("Proxied", () => {
         let key: HMAC.HmacProxiedCryptoKey;
         beforeEach(async () => {
-            // @ts-ignore
             key = await HMAC.generateKey();
         });
-        it("should generate key", async () => {
+        skipIf("should generate key", async () => {
             expect(key).toMatchSnapshot();
         });
         it("should import and export key", async () => {

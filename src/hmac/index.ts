@@ -56,7 +56,7 @@ export const generateKey = async (
     },
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-): Promise<proxy.ProxiedCryptoKey<HmacCryptoKey>> => {
+): Promise<HmacProxiedCryptoKey> => {
     const key = await WebCrypto.generateKey<
         HmacCryptoKey,
         params.EnforcedHmacKeyGenParams
@@ -68,10 +68,7 @@ export const generateKey = async (
         extractable,
         keyUsages ?? getKeyUsagePairsByAlg(Alg.Code.HMAC)
     );
-    return proxy.proxifyKey<
-        HmacCryptoKey,
-        proxy.ProxiedCryptoKey<HmacCryptoKey>
-    >(handler)(key);
+    return proxy.proxifyKey<HmacCryptoKey, HmacProxiedCryptoKey>(handler)(key);
 };
 
 /**
@@ -87,7 +84,7 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedHmacImportParams, "name">,
     extractable: boolean = true,
     keyUsages?: KeyUsage[]
-): Promise<proxy.ProxiedCryptoKey<HmacCryptoKey>> => {
+): Promise<HmacProxiedCryptoKey> => {
     const importedKey = await WebCrypto.importKey<
         HmacCryptoKey,
         params.EnforcedHmacImportParams
@@ -99,10 +96,9 @@ export const importKey = async (
         keyUsages ?? getKeyUsagePairsByAlg(Alg.Code.HMAC)
     );
 
-    return proxy.proxifyKey<
-        HmacCryptoKey,
-        proxy.ProxiedCryptoKey<HmacCryptoKey>
-    >(handler)(importedKey);
+    return proxy.proxifyKey<HmacCryptoKey, HmacProxiedCryptoKey>(handler)(
+        importedKey
+    );
 };
 
 /**
