@@ -1,12 +1,11 @@
 import * as Random from "../../random.js";
-import { AesCtrProxiedCryptoKey } from "../aes_ctr.js";
 import * as AES from "../index.js";
 
 describe("AES_CTR", () => {
     describe("Original", () => {
         let iv: Uint8Array,
             counter: Uint8Array,
-            proxiedKey: AesCtrProxiedCryptoKey,
+            proxiedKey: AES.AesCtrProxiedCryptoKey,
             key: AES.AesCtrCryptoKey;
         const text = "brown fox fox fox fox fox fox fox fox fox";
         beforeEach(async () => {
@@ -88,7 +87,9 @@ describe("AES_CTR", () => {
         });
     });
     describe("Proxied", () => {
-        let iv: Uint8Array, counter: Uint8Array, key: AesCtrProxiedCryptoKey;
+        let iv: Uint8Array,
+            counter: Uint8Array,
+            key: AES.AesCtrProxiedCryptoKey;
         const text = "brown fox fox fox fox fox fox fox fox fox";
         beforeEach(async () => {
             iv = await Random.IV.generate();

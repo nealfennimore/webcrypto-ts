@@ -1,11 +1,10 @@
 import * as Random from "../../random.js";
-import { AesGcmProxiedCryptoKey } from "../aes_gcm.js";
 import * as AES from "../index.js";
 
 describe("AES_GCM", () => {
     describe("Original", () => {
         let iv: Uint8Array,
-            proxiedKey: AesGcmProxiedCryptoKey,
+            proxiedKey: AES.AesGcmProxiedCryptoKey,
             key: AES.AesGcmCryptoKey;
         const text = "brown fox fox fox fox fox fox fox fox fox";
         beforeEach(async () => {
@@ -85,7 +84,7 @@ describe("AES_GCM", () => {
         });
     });
     describe("Proxied", () => {
-        let iv: Uint8Array, key: AesGcmProxiedCryptoKey;
+        let iv: Uint8Array, key: AES.AesGcmProxiedCryptoKey;
         const text = "brown fox fox fox fox fox fox fox fox fox";
         beforeEach(async () => {
             iv = await Random.IV.generate();

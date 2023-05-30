@@ -6,37 +6,12 @@
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
 import { getValues } from "../random.js";
-import { AesCtrCryptoKey, AesShared, Alg } from "./shared.js";
-
-export interface AesCtrProxiedCryptoKey
-    extends proxy.ProxiedCryptoKey<AesCtrCryptoKey> {
-    encrypt(
-        algorithm: Omit<params.EnforcedAesCtrParams, "name">,
-        data: BufferSource
-    ): Promise<ArrayBuffer>;
-
-    decrypt(
-        algorithm: Omit<params.EnforcedAesCtrParams, "name">,
-        data: BufferSource
-    ): Promise<ArrayBuffer>;
-
-    wrapKey(
-        format: KeyFormat,
-        key: CryptoKey,
-        wrapAlgorithm: Omit<params.EnforcedAesCtrParams, "name">
-    ): Promise<ArrayBuffer>;
-
-    unwrapKey(
-        format: KeyFormat,
-        wrappedKey: BufferSource,
-        wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKeyAlgorithm: Omit<params.EnforcedAesCtrParams, "name">,
-        extractable?: boolean,
-        keyUsages?: KeyUsage[]
-    ): Promise<CryptoKey>;
-
-    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
-}
+import {
+    AesCtrCryptoKey,
+    AesCtrProxiedCryptoKey,
+    AesShared,
+    Alg,
+} from "./shared.js";
 
 const handler: ProxyHandler<AesCtrCryptoKey> = {
     get(target: AesCtrCryptoKey, prop: string) {

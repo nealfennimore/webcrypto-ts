@@ -4,8 +4,7 @@ import * as params from "../../params.js";
 import * as Random from "../../random.js";
 import { Alg as SHA } from "../../sha/shared.js";
 import * as KDF from "../index.js";
-import { Pbkdf2ProxiedKeyMaterial } from "../pbkdf.js";
-import { Pbkdf2KeyMaterial } from "../shared.js";
+import { Pbkdf2KeyMaterial, Pbkdf2ProxiedKeyMaterial } from "../shared.js";
 
 const { PBKDF2 } = KDF;
 

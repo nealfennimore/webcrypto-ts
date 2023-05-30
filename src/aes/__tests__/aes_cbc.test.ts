@@ -1,11 +1,10 @@
 import * as Random from "../../random.js";
-import { AesCbcProxiedCryptoKey } from "../aes_cbc.js";
 import * as AES from "../index.js";
 
 describe("AES_CBC", () => {
     describe("Original", () => {
         let iv: Uint8Array,
-            proxiedKey: AesCbcProxiedCryptoKey,
+            proxiedKey: AES.AesCbcProxiedCryptoKey,
             key: AES.AesCbcCryptoKey;
         const text = "brown fox fox fox fox fox fox fox fox fox";
         beforeEach(async () => {
@@ -85,7 +84,7 @@ describe("AES_CBC", () => {
         });
     });
     describe("Proxied", () => {
-        let iv: Uint8Array, key: AesCbcProxiedCryptoKey;
+        let iv: Uint8Array, key: AES.AesCbcProxiedCryptoKey;
         const text = "brown fox fox fox fox fox fox fox fox fox";
         beforeEach(async () => {
             iv = await Random.IV.generate();

@@ -2,29 +2,14 @@
  * Code related to HKDF
  * @module
  */
-import type { AesCryptoKeys } from "../aes/index.js";
-import { HmacCryptoKey } from "../hmac/index.js";
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
-import { Alg, HkdfKeyMaterial, KdfShared } from "./shared.js";
-
-export interface HkdfProxiedKeyMaterial
-    extends proxy.ProxiedCryptoKey<HkdfKeyMaterial> {
-    deriveKey(
-        algorithm: Omit<params.EnforcedHkdfParams, "name">,
-        derivedKeyType:
-            | params.EnforcedAesKeyGenParams
-            | params.EnforcedHmacKeyGenParams,
-        extractable?: boolean,
-        keyUsages?: KeyUsage[]
-    ): Promise<AesCryptoKeys | HmacCryptoKey>;
-
-    deriveBits(
-        algorithm: Omit<params.EnforcedHkdfParams, "name">,
-        length: number
-    ): Promise<ArrayBuffer>;
-    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
-}
+import {
+    Alg,
+    HkdfKeyMaterial,
+    HkdfProxiedKeyMaterial,
+    KdfShared,
+} from "./shared.js";
 
 const handler: ProxyHandler<HkdfKeyMaterial> = {
     get(target: HkdfKeyMaterial, prop: string) {

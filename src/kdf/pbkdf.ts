@@ -2,29 +2,15 @@
  * Code related to PBKDF2
  * @module
  */
-import type { AesCryptoKeys } from "../aes/index.js";
-import { HmacCryptoKey } from "../hmac/index.js";
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
 import { Alg as SHA } from "../sha/shared.js";
-import { Alg, KdfShared, Pbkdf2KeyMaterial } from "./shared.js";
-
-export interface Pbkdf2ProxiedKeyMaterial
-    extends proxy.ProxiedCryptoKey<Pbkdf2KeyMaterial> {
-    deriveKey(
-        algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
-        derivedKeyType:
-            | params.EnforcedAesKeyGenParams
-            | params.EnforcedHmacKeyGenParams,
-        extractable?: boolean,
-        keyUsages?: KeyUsage[]
-    ): Promise<AesCryptoKeys | HmacCryptoKey>;
-    deriveBits(
-        algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
-        length: number
-    ): Promise<ArrayBuffer>;
-    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
-}
+import {
+    Alg,
+    KdfShared,
+    Pbkdf2KeyMaterial,
+    Pbkdf2ProxiedKeyMaterial,
+} from "./shared.js";
 
 const handler: ProxyHandler<Pbkdf2KeyMaterial> = {
     get(target: Pbkdf2KeyMaterial, prop: string) {

@@ -1,9 +1,8 @@
-import { AesKwProxiedCryptoKey } from "../aes_kw.js";
 import * as AES from "../index.js";
 
 describe("AES_KW", () => {
     describe("Original", () => {
-        let proxiedKey: AesKwProxiedCryptoKey;
+        let proxiedKey: AES.AesKwProxiedCryptoKey;
         let key: AES.AesKwCryptoKey;
         beforeEach(async () => {
             proxiedKey = await AES.AES_KW.generateKey();
@@ -38,7 +37,7 @@ describe("AES_KW", () => {
         });
     });
     describe("Proxied", () => {
-        let key: AesKwProxiedCryptoKey;
+        let key: AES.AesKwProxiedCryptoKey;
         beforeEach(async () => {
             key = await AES.AES_KW.generateKey();
         });

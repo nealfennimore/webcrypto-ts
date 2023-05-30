@@ -5,37 +5,12 @@
 
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
-import { AesCbcCryptoKey, AesShared, Alg } from "./shared.js";
-
-export interface AesCbcProxiedCryptoKey
-    extends proxy.ProxiedCryptoKey<AesCbcCryptoKey> {
-    encrypt(
-        algorithm: Omit<params.EnforcedAesCbcParams, "name">,
-        data: BufferSource
-    ): Promise<ArrayBuffer>;
-
-    decrypt(
-        algorithm: Omit<params.EnforcedAesCbcParams, "name">,
-        data: BufferSource
-    ): Promise<ArrayBuffer>;
-
-    wrapKey(
-        format: KeyFormat,
-        key: CryptoKey,
-        wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
-    ): Promise<ArrayBuffer>;
-
-    unwrapKey(
-        format: KeyFormat,
-        wrappedKey: BufferSource,
-        wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKeyAlgorithm: Omit<params.EnforcedAesCbcParams, "name">,
-        extractable?: boolean,
-        keyUsages?: KeyUsage[]
-    ): Promise<CryptoKey>;
-
-    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
-}
+import {
+    AesCbcCryptoKey,
+    AesCbcProxiedCryptoKey,
+    AesShared,
+    Alg,
+} from "./shared.js";
 
 const handler: ProxyHandler<AesCbcCryptoKey> = {
     get(target: AesCbcCryptoKey, prop: string) {

@@ -6,6 +6,7 @@ import type { AesCryptoKeys } from "../aes/index.js";
 import { HmacCryptoKey } from "../hmac/index.js";
 import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface Pbkdf2KeyMaterial extends CryptoKey {
@@ -67,4 +68,39 @@ export namespace KdfShared {
     ): Promise<ArrayBuffer> {
         return await WebCrypto.deriveBits(algorithm, baseKey, length);
     }
+}
+
+export interface HkdfProxiedKeyMaterial
+    extends proxy.ProxiedCryptoKey<HkdfKeyMaterial> {
+    deriveKey(
+        algorithm: Omit<params.EnforcedHkdfParams, "name">,
+        derivedKeyType:
+            | params.EnforcedAesKeyGenParams
+            | params.EnforcedHmacKeyGenParams,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<AesCryptoKeys | HmacCryptoKey>;
+
+    deriveBits(
+        algorithm: Omit<params.EnforcedHkdfParams, "name">,
+        length: number
+    ): Promise<ArrayBuffer>;
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface Pbkdf2ProxiedKeyMaterial
+    extends proxy.ProxiedCryptoKey<Pbkdf2KeyMaterial> {
+    deriveKey(
+        algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
+        derivedKeyType:
+            | params.EnforcedAesKeyGenParams
+            | params.EnforcedHmacKeyGenParams,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<AesCryptoKeys | HmacCryptoKey>;
+    deriveBits(
+        algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
+        length: number
+    ): Promise<ArrayBuffer>;
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }

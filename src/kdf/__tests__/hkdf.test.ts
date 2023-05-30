@@ -3,9 +3,8 @@ import { Alg as Authentication } from "../../hmac/index.js";
 import * as params from "../../params.js";
 import * as Random from "../../random.js";
 import { Alg as SHA } from "../../sha/shared.js";
-import { HkdfProxiedKeyMaterial } from "../hkdf.js";
 import * as KDF from "../index.js";
-import type { HkdfKeyMaterial } from "../shared.js";
+import type { HkdfKeyMaterial, HkdfProxiedKeyMaterial } from "../shared.js";
 
 const { HKDF } = KDF;
 describe("HKDF", () => {

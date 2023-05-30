@@ -9,7 +9,13 @@ export type {
     EcCryptoKeyPairs,
     EcCryptoKeys,
     EcdhPrivCryptoKey,
+    EcdhProxiedCryptoKeyPair,
+    EcdhProxiedPrivCryptoKey,
+    EcdhProxiedPubCryptoKey,
     EcdhPubCryptoKey,
     EcdsaPrivCryptoKey,
+    EcdsaProxiedCryptoKeyPair,
+    EcdsaProxiedPrivCryptoKey,
+    EcdsaProxiedPubCryptoKey,
     EcdsaPubCryptoKey,
 } from "./shared.js";

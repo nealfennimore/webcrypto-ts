@@ -4,22 +4,12 @@
  */
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
-import { AesKwCryptoKey, AesShared, Alg } from "./shared.js";
-
-export interface AesKwProxiedCryptoKey
-    extends proxy.ProxiedCryptoKey<AesKwCryptoKey> {
-    wrapKey(format: KeyFormat, key: CryptoKey): Promise<ArrayBuffer>;
-
-    unwrapKey(
-        format: KeyFormat,
-        wrappedKey: BufferSource,
-        wrappedKeyAlgorithm: params.EnforcedImportParams,
-        extractable?: boolean,
-        keyUsages?: KeyUsage[]
-    ): Promise<CryptoKey>;
-
-    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
-}
+import {
+    AesKwCryptoKey,
+    AesKwProxiedCryptoKey,
+    AesShared,
+    Alg,
+} from "./shared.js";
 
 const handler: ProxyHandler<AesKwCryptoKey> = {
     get(target: AesKwCryptoKey, prop: string) {

@@ -41,127 +41,6 @@ export namespace Alg {
     export type Modes = `${Mode}`;
 }
 
-export interface AesProxiedCryptoKey<T extends AesCryptoKeys>
-    extends proxy.ProxiedCryptoKey<T> {
-    encrypt(
-        algorithm: Exclude<
-            params.EnforcedAesParams,
-            params.EnforcedAesKwParams
-        >,
-        data: BufferSource
-    ): Promise<ArrayBuffer>;
-
-    decrypt(
-        algorithm: Exclude<
-            params.EnforcedAesParams,
-            params.EnforcedAesKwParams
-        >,
-        data: BufferSource
-    ): Promise<ArrayBuffer>;
-
-    wrapKey(
-        format: KeyFormat,
-        key: CryptoKey,
-        wrapAlgorithm: params.EnforcedAesParams
-    ): Promise<ArrayBuffer>;
-
-    unwrapKey(
-        format: KeyFormat,
-        wrappedKey: BufferSource,
-        wrappedKeyAlgorithm: params.EnforcedImportParams,
-        unwrappingKeyAlgorithm: params.EnforcedAesParams,
-        extractable: boolean,
-        keyUsages?: KeyUsage[]
-    ): Promise<CryptoKey>;
-
-    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
-}
-
-export const handler: ProxyHandler<AesCryptoKeys> = {
-    get(target: AesCryptoKeys, prop: string) {
-        switch (prop) {
-            case "self":
-                return target;
-
-            case "encrypt":
-                if (
-                    !target.usages.every((u) =>
-                        usages.EncryptionKeyUsagePair.includes(u)
-                    )
-                ) {
-                    throw new Error("encrypt is not supported");
-                }
-                return (
-                    algorithm: Exclude<
-                        params.EnforcedAesParams,
-                        params.EnforcedAesKwParams
-                    >,
-                    data: BufferSource
-                ) => AesShared.encrypt(algorithm, target, data);
-
-            case "decrypt":
-                if (
-                    !target.usages.every((u) =>
-                        usages.EncryptionKeyUsagePair.includes(u)
-                    )
-                ) {
-                    throw new Error("decrypt is not supported");
-                }
-                return (
-                    algorithm: Exclude<
-                        params.EnforcedAesParams,
-                        params.EnforcedAesKwParams
-                    >,
-                    data: BufferSource
-                ) => AesShared.decrypt(algorithm, target, data);
-
-            case "wrapKey":
-                if (
-                    !target.usages.every((u) =>
-                        usages.WrappingKeyUsagePair.includes(u)
-                    )
-                ) {
-                    throw new Error("wrapKey is not supported");
-                }
-                return (
-                    format: KeyFormat,
-                    key: CryptoKey,
-                    wrapAlgorithm: params.EnforcedAesParams
-                ) => AesShared.wrapKey(format, key, target, wrapAlgorithm);
-            case "unwrapKey":
-                if (
-                    !target.usages.every((u) =>
-                        usages.WrappingKeyUsagePair.includes(u)
-                    )
-                ) {
-                    throw new Error("unwrapKey is not supported");
-                }
-                return (
-                    format: KeyFormat,
-                    wrappedKey: BufferSource,
-                    wrappedKeyAlgorithm: params.EnforcedImportParams,
-                    unwrappingKeyAlgorithm: params.EnforcedAesParams,
-                    extractable?: boolean,
-                    keyUsages?: KeyUsage[]
-                ) =>
-                    AesShared.unwrapKey(
-                        format,
-                        wrappedKey,
-                        wrappedKeyAlgorithm,
-                        target,
-                        unwrappingKeyAlgorithm,
-                        extractable,
-                        keyUsages
-                    );
-            case "exportKey":
-                return (format: KeyFormat) =>
-                    AesShared.exportKey(format, target);
-        }
-
-        return Reflect.get(target, prop);
-    },
-};
-
 export namespace AesShared {
     export async function generateKey<T extends CryptoKey>(
         algorithm: params.EnforcedAesKeyGenParams,
@@ -252,4 +131,109 @@ export namespace AesShared {
             keyUsages ?? usages.getKeyUsagePairsByAlg(wrappedKeyAlgorithm.name)
         );
     }
+}
+
+export interface AesCbcProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesCbcCryptoKey> {
+    encrypt(
+        algorithm: Omit<params.EnforcedAesCbcParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Omit<params.EnforcedAesCbcParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedAesCbcParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface AesCtrProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesCtrCryptoKey> {
+    encrypt(
+        algorithm: Omit<params.EnforcedAesCtrParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Omit<params.EnforcedAesCtrParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: Omit<params.EnforcedAesCtrParams, "name">
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedAesCtrParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface AesGcmProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesGcmCryptoKey> {
+    encrypt(
+        algorithm: Omit<params.EnforcedAesGcmParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    decrypt(
+        algorithm: Omit<params.EnforcedAesGcmParams, "name">,
+        data: BufferSource
+    ): Promise<ArrayBuffer>;
+
+    wrapKey(
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm: Omit<params.EnforcedAesGcmParams, "name">
+    ): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedAesGcmParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface AesKwProxiedCryptoKey
+    extends proxy.ProxiedCryptoKey<AesKwCryptoKey> {
+    wrapKey(format: KeyFormat, key: CryptoKey): Promise<ArrayBuffer>;
+
+    unwrapKey(
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        extractable?: boolean,
+        keyUsages?: KeyUsage[]
+    ): Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }

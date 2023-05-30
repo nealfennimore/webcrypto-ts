@@ -9,8 +9,12 @@ export * as AES_KW from "./aes_kw.js";
 export { Alg } from "./shared.js";
 export type {
     AesCbcCryptoKey,
+    AesCbcProxiedCryptoKey,
     AesCryptoKeys,
     AesCtrCryptoKey,
+    AesCtrProxiedCryptoKey,
     AesGcmCryptoKey,
+    AesGcmProxiedCryptoKey,
     AesKwCryptoKey,
+    AesKwProxiedCryptoKey,
 } from "./shared.js";
