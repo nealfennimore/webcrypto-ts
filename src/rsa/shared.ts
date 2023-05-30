@@ -3,8 +3,9 @@
  * @module
  */
 
-import { getKeyUsagePairsByAlg } from "../key_usages.js";
+import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import * as WebCrypto from "../webcrypto.js";
 
 export interface RsaOaepPubCryptoKey extends CryptoKey {
@@ -129,3 +130,46 @@ export namespace RsaShared {
         return await WebCrypto.verify(algorithm, key, signature, data);
     }
 }
+
+export interface RsaOaepProxiedPubCryptoKey
+    extends proxy.ProxiedPubCryptoKey<RsaOaepPubCryptoKey> {
+    encrypt: (
+        algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+    wrapKey: (
+        format: KeyFormat,
+        key: CryptoKey,
+        wrapAlgorithm?: Omit<params.EnforcedRsaOaepParams, "name">
+    ) => Promise<ArrayBuffer>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+export interface RsaOaepProxiedPrivCryptoKey
+    extends proxy.ProxiedPrivCryptoKey<RsaOaepPrivCryptoKey> {
+    decrypt: (
+        algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+        data: BufferSource
+    ) => Promise<ArrayBuffer>;
+
+    unwrapKey: (
+        format: KeyFormat,
+        wrappedKey: BufferSource,
+        wrappedKeyAlgorithm: params.EnforcedImportParams,
+        // unwrappingKey: RsaOaepPrivCryptoKey,
+        unwrappingKeyAlgorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+        extractable?: boolean,
+        keyUsages?: KeyUsagePairs
+    ) => Promise<CryptoKey>;
+
+    exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
+}
+
+export interface RsaOaepProxiedCryptoKeyPair
+    extends proxy.ProxiedCryptoKeyPair<
+        RsaOaepCryptoKeyPair,
+        RsaOaepPrivCryptoKey,
+        RsaOaepProxiedPrivCryptoKey,
+        RsaOaepPubCryptoKey,
+        RsaOaepProxiedPubCryptoKey
+    > {}

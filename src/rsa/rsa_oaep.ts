@@ -5,15 +5,89 @@
 
 import { getKeyUsagePairsByAlg, KeyUsagePairs } from "../key_usages.js";
 import * as params from "../params.js";
+import * as proxy from "../proxy.js";
 import { Alg as SHA } from "../sha/shared.js";
 import * as WebCrypto from "../webcrypto.js";
 import {
     Alg,
     RsaOaepCryptoKeyPair,
     RsaOaepPrivCryptoKey,
+    RsaOaepProxiedCryptoKeyPair,
+    RsaOaepProxiedPrivCryptoKey,
+    RsaOaepProxiedPubCryptoKey,
     RsaOaepPubCryptoKey,
     RsaShared,
 } from "./shared.js";
+
+const handlers: proxy.ProxyKeyPairHandlers<
+    RsaOaepPrivCryptoKey,
+    RsaOaepPubCryptoKey
+> = {
+    privHandler: {
+        get(target: RsaOaepPrivCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "decrypt":
+                    return (
+                        algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+                        data: BufferSource
+                    ) => decrypt(algorithm, target, data);
+                case "unwrapKey":
+                    return (
+                        format: KeyFormat,
+                        wrappedKey: BufferSource,
+                        wrappedKeyAlgorithm: params.EnforcedImportParams,
+                        unwrappingKeyAlgorithm: Omit<
+                            params.EnforcedRsaOaepParams,
+                            "name"
+                        >,
+                        extractable?: boolean,
+                        keyUsages?: KeyUsagePairs
+                    ) =>
+                        unwrapKey(
+                            format,
+                            wrappedKey,
+                            wrappedKeyAlgorithm,
+                            target,
+                            unwrappingKeyAlgorithm,
+                            extractable,
+                            keyUsages
+                        );
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+    pubHandler: {
+        get(target: RsaOaepPubCryptoKey, prop: string) {
+            switch (prop) {
+                case "self":
+                    return target;
+                case "encrypt":
+                    return (
+                        algorithm: Omit<params.EnforcedRsaOaepParams, "name">,
+                        data: BufferSource
+                    ) => encrypt(algorithm, target, data);
+                case "wrapKey":
+                    return (
+                        format: KeyFormat,
+                        key: CryptoKey,
+                        wrapAlgorithm?: Omit<
+                            params.EnforcedRsaOaepParams,
+                            "name"
+                        >
+                    ) => wrapKey(format, key, target, wrapAlgorithm);
+                case "exportKey":
+                    return (format: KeyFormat) => exportKey(format, target);
+            }
+
+            return Reflect.get(target, prop);
+        },
+    },
+};
 
 /**
  * Generate a new RSA_OAEP keypair
@@ -30,8 +104,8 @@ export const generateKey = async (
     },
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-) =>
-    (await RsaShared.generateKey(
+): Promise<RsaOaepProxiedCryptoKeyPair> => {
+    const keyPair = (await RsaShared.generateKey(
         {
             ...algorithm,
             name: Alg.Variant.RSA_OAEP,
@@ -39,6 +113,15 @@ export const generateKey = async (
         extractable,
         keyUsages
     )) as RsaOaepCryptoKeyPair;
+
+    return proxy.proxifyKeyPair<
+        RsaOaepCryptoKeyPair,
+        RsaOaepPrivCryptoKey,
+        RsaOaepProxiedPrivCryptoKey,
+        RsaOaepPubCryptoKey,
+        RsaOaepProxiedPubCryptoKey
+    >(handlers)(keyPair);
+};
 
 /**
  * Import an RSA_OAEP public or private key
@@ -53,8 +136,8 @@ export const importKey = async (
     algorithm: Omit<params.EnforcedRsaHashedImportParams, "name">,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-): Promise<RsaOaepPrivCryptoKey | RsaOaepPubCryptoKey> =>
-    await RsaShared.importKey(
+): Promise<RsaOaepProxiedPrivCryptoKey | RsaOaepProxiedPubCryptoKey> => {
+    const importedKey = await RsaShared.importKey(
         format,
         key,
         { ...algorithm, name: Alg.Variant.RSA_OAEP },
@@ -62,11 +145,29 @@ export const importKey = async (
         keyUsages
     );
 
+    if (importedKey.type === "private") {
+        return proxy.proxifyPrivKey<
+            RsaOaepPrivCryptoKey,
+            RsaOaepProxiedPrivCryptoKey
+        >(handlers.privHandler)(importedKey as RsaOaepPrivCryptoKey);
+    } else {
+        return proxy.proxifyPubKey<
+            RsaOaepPubCryptoKey,
+            RsaOaepProxiedPubCryptoKey
+        >(handlers.pubHandler)(importedKey as RsaOaepPubCryptoKey);
+    }
+};
+
 /**
  * Export an RSA_OAEP public or private key
  * @example
  * ```ts
- * const pubKeyJwk = await RSA_OAEP.importKey("jwk", keyPair.publicKey);
+ * const pubKeyJwk = await RSA_OAEP.exportKey("jwk", keyPair.publicKey.self);
+ * ```
+ * @example
+ * ```ts
+ * const pubKeyJwk = await keyPair.publicKey.exportKey("jwk");
+ * const privKeyJwk = await keyPair.privateKey.exportKey("jwk");
  * ```
  */
 export const exportKey = async (
@@ -79,7 +180,12 @@ export const exportKey = async (
  * @example
  * ```ts
  * const message = new TextEncoder().encode("a message");
- * const data = await RSA_OAEP.encrypt({label}, keyPair.publicKey, message);
+ * const data = await RSA_OAEP.encrypt({label}, keyPair.publicKey.self, message);
+ * ```
+ * @example
+ * ```ts
+ * const message = new TextEncoder().encode("a message");
+ * const data = await keyPair.publicKey.encrypt({label}, message);
  * ```
  */
 export async function encrypt(
@@ -101,7 +207,11 @@ export async function encrypt(
  * Decrypt with an RSA_OAEP private key
  * @example
  * ```ts
- * const data = await RSA_OAEP.decrypt({label}, keyPair.privateKey, data);
+ * const data = await RSA_OAEP.decrypt({label}, keyPair.privateKey.self, data);
+ * ```
+ * @example
+ * ```ts
+ * const data = await keyPair.privateKey.decrypt({label}, data);
  * ```
  */
 
@@ -126,7 +236,13 @@ export async function decrypt(
  * ```ts
  * const kek = await RSA_OAEP.generateKey(undefined, true, ['wrapKey', 'unwrapKey']);
  * const dek = await RSA_OAEP.generateKey();
- * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek, kek, {iv});
+ * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek.self, kek.self, {iv});
+ * ```
+ * @example
+ * ```ts
+ * const kek = await RSA_OAEP.generateKey(undefined, true, ['wrapKey', 'unwrapKey']);
+ * const dek = await RSA_OAEP.generateKey();
+ * const wrappedKey = await kek.wrapKey("raw", dek.self, {iv});
  * ```
  */
 export async function wrapKey(
@@ -151,12 +267,20 @@ export async function wrapKey(
  * Unwrap a wrapped key using the key encryption key
  * @example
  * ```ts
- * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek, kek);
- * const unwrappedkey = await RSA_OAEP.unwrapKey(
+ * const wrappedKey = await RSA_OAEP.wrapKey("raw", dek.self, kek.self);
+ * const unwrappedKey = await RSA_OAEP.unwrapKey(
  *    "raw",
  *    wrappedKey,
  *    { name: Alg.Mode.RSA_OAEP },
- *    kek,
+ *    kek.self,
+ * );
+ * ```
+ * ```ts
+ * const wrappedKey = await kek.wrapKey("raw", dek.self);
+ * const unwrappedKey = await kek.unwrapKey(
+ *    "raw",
+ *    wrappedKey,
+ *    { name: Alg.Mode.RSA_OAEP },
  * );
  * ```
  */
