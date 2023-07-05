@@ -86,6 +86,16 @@ export const generateKey = async (
 };
 
 /**
+ * Generate a new RSASSA_PKCS1_v1_5 keypair
+ * @alias generateKey
+ * @example
+ * ```ts
+ * const keyPair = await RSASSA_PKCS1_v1_5.generateKeyPair();
+ * ```
+ */
+export const generateKeyPair = generateKey;
+
+/**
  * Import an RSASSA_PKCS1_v1_5 public or private key
  * @example
  * ```ts

@@ -93,6 +93,23 @@ export const generateKey = async (
         EcdsaProxiedPubCryptoKey
     >(handlers)(keyPair);
 };
+/**
+ * Generate a new ECDSA keypair
+ * @alias generateKey
+ * @example
+ * ```ts
+ * const keyPair = await ECDSA.generateKeyPair();
+ * ```
+ * @example
+ * ```ts
+ * const keyPair = await ECDSA.generateKeyPair({ namedCurve: "P-256" }, false);
+ * ```
+ * @example
+ * ```ts
+ * const keyPair = await ECDSA.generateKeyPair({ namedCurve: "P-256" }, true, ['sign', 'verify']);
+ * ```
+ */
+export const generateKeyPair = generateKey;
 
 /**
  * Import an ECDSA public or private key

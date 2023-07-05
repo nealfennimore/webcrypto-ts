@@ -124,6 +124,16 @@ export const generateKey = async (
 };
 
 /**
+ * Generate a new RSA_OAEP keypair
+ * @alias generateKey
+ * @example
+ * ```ts
+ * const keyPair = await RSA_OAEP.generateKeyPair();
+ * ```
+ */
+export const generateKeyPair = generateKey;
+
+/**
  * Import an RSA_OAEP public or private key
  * @example
  * ```ts

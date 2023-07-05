@@ -91,6 +91,16 @@ export const generateKey = async (
 };
 
 /**
+ * Generate a new RSA_PSS keypair
+ * @alias generateKey
+ * @example
+ * ```ts
+ * const keyPair = await RSA_PSS.generateKeyPair();
+ * ```
+ */
+export const generateKeyPai = generateKey;
+
+/**
  * Import an RSA_PSS public or private key
  * @example
  * ```ts

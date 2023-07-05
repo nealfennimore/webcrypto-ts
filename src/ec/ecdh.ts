@@ -110,6 +110,22 @@ export const generateKey = async (
         EcdhProxiedPubCryptoKey
     >(handlers)(keyPair);
 };
+/**
+ * Generate a new ECDH keypair
+ * @alias generateKey
+ * @example
+ * ```ts
+ * const keyPair = await ECDH.generateKeyPair();
+ * ```
+ * @example
+ * ```ts
+ * const keyPair = await ECDH.generateKeyPair({ namedCurve: "P-256" }, false);
+ * ```
+ * @example
+ * ```ts
+ * const keyPair = await ECDH.generateKeyPair({ namedCurve: "P-256" }, true, ['deriveKey', 'deriveBits']);
+ */
+export const generateKeyPair = generateKey;
 
 /**
  * Import an ECDH public or private key
