@@ -29,7 +29,16 @@ const keyPair = await ECDSA.generateKey();
 const message = new TextEncoder().encode("a message");
 const signature = await keyPair.privateKey.sign({ hash: "SHA-512" }, message);
 
-const isVerified = await someOtherKeypair.publicKey.verify(
+const pubJwk = await keyPair.publicKey.exportKey("jwk");
+const publicKey = await ECDSA.importKey(
+    "jwk",
+    jwk,
+    { namedCurve: "P-512" },
+    true,
+    ["verify"]
+);
+
+const isVerified = await publicKey.verify(
     { hash: "SHA-512" },
     signature,
     message
@@ -54,7 +63,7 @@ const kek = await RSA_OAEP.generateKey(
 );
 const dek = await AES_CBC.generateKey();
 const label = await Random.getValues(8);
-const wrappedCbcKey = await kek.wrapKey("raw", dek.self, { label });
+const wrappedCbcKey = await kek.publicKey.wrapKey("raw", dek.self, { label });
 ```
 
 ### AES-GCM
