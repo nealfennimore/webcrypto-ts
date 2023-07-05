@@ -32,7 +32,7 @@ const signature = await keyPair.privateKey.sign({ hash: "SHA-512" }, message);
 const pubJwk = await keyPair.publicKey.exportKey("jwk");
 const publicKey = await ECDSA.importKey(
     "jwk",
-    jwk,
+    pubJwk,
     { namedCurve: "P-512" },
     true,
     ["verify"]
