@@ -1,6 +1,6 @@
 # Webcrypto TS
 
-[![codecov](https://codecov.io/gh/nealfennimore/webcrypto-ts/branch/main/graph/badge.svg?token=DGUV5J0QPR)](https://codecov.io/gh/nealfennimore/webcrypto-ts)
+[![Test](https://github.com/nealfennimore/webcrypto-ts/actions/workflows/test.yml/badge.svg)](https://github.com/nealfennimore/webcrypto-ts/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/nealfennimore/webcrypto-ts/branch/main/graph/badge.svg?token=DGUV5J0QPR)](https://codecov.io/gh/nealfennimore/webcrypto-ts)
 
 A minimal ESM based, no dependency, typescript wrapper for the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API). Supports both nodejs and browser Web Crypto.
 
