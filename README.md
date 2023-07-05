@@ -24,7 +24,7 @@ Many more examples in the [Documentation](https://neal.codes/webcrypto-ts/).
 
 ```ts
 import * as ECDSA from "@nfen/webcrypto-ts/lib/ec/ecdsa";
-const keyPair = await ECDSA.generateKey();
+const keyPair = await ECDSA.generateKeyPair();
 
 const message = new TextEncoder().encode("a message");
 const signature = await keyPair.privateKey.sign({ hash: "SHA-512" }, message);
@@ -52,7 +52,7 @@ import * as RSA_OAEP from "@nfen/webcrypto-ts/lib/rsa/rsa_oaep";
 import * as AES_CBC from "@nfen/webcrypto-ts/lib/aes/aes_cbc";
 import * as Random from "@nfen/webcrypto-ts/lib/random";
 
-const kek = await RSA_OAEP.generateKey(
+const kek = await RSA_OAEP.generateKeyPair(
     {
         hash: "SHA-512",
         modulusLength: 4096,
