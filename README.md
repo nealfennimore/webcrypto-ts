@@ -18,7 +18,7 @@ npm i @nfen/webcrypto-ts
 
 ## Proxied Keys and Methods
 
-All generated keys are wrapped in a [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object, which allows for executing methods specific to each key within a [small wrapper](./src/proxy.ts).
+All generated keys are wrapped in a [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object, which allows for executing methods specific to each key within a [small wrapper](https://github.com/nealfennimore/webcrypto-ts/blob/main/src/proxy.ts).
 
 For example, we can generate an ECDSA keypair and `sign` directly off the `privateKey`.
 
