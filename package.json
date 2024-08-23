@@ -50,7 +50,7 @@
         "lib/**/*"
     ],
     "devDependencies": {
-        "@nfen/typedoc-theme-oxide": "^0.1.8",
+        "@nfen/typedoc-theme-oxide": "^0.1.11",
         "@types/jest": "^28.1.6",
         "@types/webcrypto": "^0.0.28",
         "jest": "^28.1.3",
