@@ -20,19 +20,19 @@ npm i @nfen/webcrypto-ts
 
 All generated keys are wrapped in a [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object, which allows for executing methods specific to each key within a [small wrapper](./src/proxy.ts).
 
-For example, we can generate an ECDSA keypair and are able to `sign` directly off the `privateKey`.
+For example, we can generate an ECDSA keypair and `sign` directly off the `privateKey`.
 
 ```ts
 import * as ECDSA from "@nfen/webcrypto-ts/lib/ec/ecdsa";
 const keyPair = await ECDSA.generateKeyPair();
-const signature = await keyPair.privateKey.sign({ hash: "SHA-512" }, new TextEncoder().encode("a message"));
+const message = new TextEncoder().encode("a message");
+const signature = await keyPair.privateKey.sign({ hash: "SHA-512" });
 ```
 
 We can still use the WebCrypto based API too. Access any CryptoKey or CryptoKeyPair by using `self` on the key.
 
 ```ts
-const keyPair = await ECDSA.generateKeyPair();
-const signature = await ECDSA.sign(keyPair.privateKey.self, { hash: "SHA-512" }, new TextEncoder().encode("a message"));
+const signature = await ECDSA.sign(keyPair.privateKey.self, { hash: "SHA-512" }, message);
 ```
 
 ## Examples
