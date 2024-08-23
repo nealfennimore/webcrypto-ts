@@ -26,7 +26,7 @@ For example, we can generate an ECDSA keypair and `sign` directly off the `priva
 import * as ECDSA from "@nfen/webcrypto-ts/lib/ec/ecdsa";
 const keyPair = await ECDSA.generateKeyPair();
 const message = new TextEncoder().encode("a message");
-const signature = await keyPair.privateKey.sign({ hash: "SHA-512" });
+const signature = await keyPair.privateKey.sign({ hash: "SHA-512" }, message);
 ```
 
 We can still use the WebCrypto based API too. Access any CryptoKey or CryptoKeyPair by using `self` on the key.
