@@ -3,7 +3,8 @@
  * @module
  */
 import type { AesCryptoKeys } from "../aes/index.js";
-import { HmacCryptoKey } from "../hmac/index.js";
+import { AesProxiedCryptoKeys } from "../aes/shared.js";
+import { HmacCryptoKey, HmacProxiedCryptoKey } from "../hmac/index.js";
 import { DeriveKeyUsagePair, getKeyUsagePairsByAlg } from "../key_usages.js";
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
@@ -79,7 +80,7 @@ export interface HkdfProxiedKeyMaterial
             | params.EnforcedHmacKeyGenParams,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ): Promise<AesCryptoKeys | HmacCryptoKey>;
+    ): Promise<AesProxiedCryptoKeys | HmacProxiedCryptoKey>;
 
     deriveBits(
         algorithm: Omit<params.EnforcedHkdfParams, "name">,
@@ -97,7 +98,7 @@ export interface Pbkdf2ProxiedKeyMaterial
             | params.EnforcedHmacKeyGenParams,
         extractable?: boolean,
         keyUsages?: KeyUsage[]
-    ): Promise<AesCryptoKeys | HmacCryptoKey>;
+    ): Promise<AesProxiedCryptoKeys | HmacProxiedCryptoKey>;
     deriveBits(
         algorithm: Omit<params.EnforcedPbkdf2Params, "name" | "iterations">,
         length: number
