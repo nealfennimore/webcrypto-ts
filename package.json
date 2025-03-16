@@ -26,7 +26,16 @@
     ],
     "types": "./lib/index.d.js",
     "main": "./lib/index.js",
-    "exports": "./lib/index.js",
+    "exports": {
+        ".": "./lib/index.js",
+        "./lib/*": "./lib/*.js",
+        "./lib/aes/*": "./lib/aes/*.js",
+        "./lib/ec/*": "./lib/ec/*.js",
+        "./lib/hmac/*": "./lib/hmac/*.js",
+        "./lib/kdf/*": "./lib/kdf/*.js",
+        "./lib/rsa/*": "./lib/rsa/*.js",
+        "./lib/sha/*": "./lib/sha/*.js"
+    },
     "type": "module",
     "engines": {
         "node": ">=18"
