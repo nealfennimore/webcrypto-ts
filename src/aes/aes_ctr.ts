@@ -13,7 +13,7 @@ import {
     Alg,
 } from "./shared.js";
 
-const handler: ProxyHandler<AesCtrCryptoKey> = {
+export const handler: ProxyHandler<AesCtrCryptoKey> = {
     get(target: AesCtrCryptoKey, prop: string) {
         switch (prop) {
             case "self":

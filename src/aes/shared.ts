@@ -237,3 +237,9 @@ export interface AesKwProxiedCryptoKey
 
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
+
+export type AesProxiedCryptoKeys =
+    | AesCbcProxiedCryptoKey
+    | AesKwProxiedCryptoKey
+    | AesGcmProxiedCryptoKey
+    | AesCtrProxiedCryptoKey;

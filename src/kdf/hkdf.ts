@@ -2,6 +2,28 @@
  * Code related to HKDF
  * @module
  */
+import { handler as AesCbcHandler } from "../aes/aes_cbc.js";
+import { handler as AesCtrHandler } from "../aes/aes_ctr.js";
+import { handler as AesGcmHandler } from "../aes/aes_gcm.js";
+import { handler as AesKwHandler } from "../aes/aes_kw.js";
+import {
+    Alg as AesAlg,
+    AesCbcCryptoKey,
+    AesCbcProxiedCryptoKey,
+    AesCtrCryptoKey,
+    AesCtrProxiedCryptoKey,
+    AesGcmCryptoKey,
+    AesGcmProxiedCryptoKey,
+    AesKwCryptoKey,
+    AesKwProxiedCryptoKey,
+    AesProxiedCryptoKeys,
+} from "../aes/shared.js";
+import {
+    Alg as HmacAlg,
+    HmacCryptoKey,
+    HmacProxiedCryptoKey,
+    handler as hmacHandler,
+} from "../hmac/index.js";
 import * as params from "../params.js";
 import * as proxy from "../proxy.js";
 import {
@@ -98,8 +120,38 @@ export const generateKeyMaterial = async (
  *      hmacParams
  * );
  * ```
+ * @example
+ * ```ts
+ * const keyMaterial = await HKDF.generateKeyMaterial(
+ *     "raw",
+ *     await Random.getValues(16)
+ * );
+ * let key = await HKDF.deriveKey(
+ *     {
+ *         hash: "SHA-256",
+ *         salt,
+ *     },
+ *     keyMaterial.self,
+ *     {
+ *         name: "AES-GCM",
+ *         length: 256,
+ *     }
+ * );
+ * ```
+ * @example
+ * ```ts
+ * const key = await keyMaterial.deriveKey(
+ *     {
+ *         hash: "SHA-256",
+ *         salt,
+ *     },
+ *     {
+ *         name: "AES-GCM",
+ *         length: 256,
+ *     }
+ * );
  */
-export const deriveKey = (
+export const deriveKey = async (
     algorithm: Omit<params.EnforcedHkdfParams, "name">,
     baseKey: HkdfKeyMaterial,
     derivedKeyType:
@@ -107,8 +159,8 @@ export const deriveKey = (
         | params.EnforcedHmacKeyGenParams,
     extractable?: boolean,
     keyUsages?: KeyUsage[]
-) =>
-    KdfShared.deriveKey(
+): Promise<HmacProxiedCryptoKey | AesProxiedCryptoKeys> => {
+    const derived = await KdfShared.deriveKey(
         {
             ...algorithm,
             name: Alg.Variant.HKDF,
@@ -118,6 +170,32 @@ export const deriveKey = (
         extractable,
         keyUsages
     );
+
+    switch (derivedKeyType.name) {
+        case HmacAlg.Code.HMAC:
+            return proxy.proxifyKey<HmacCryptoKey, HmacProxiedCryptoKey>(
+                hmacHandler
+            )(derived as HmacCryptoKey);
+        case AesAlg.Mode.AES_CBC:
+            return proxy.proxifyKey<AesCbcCryptoKey, AesCbcProxiedCryptoKey>(
+                AesCbcHandler
+            )(derived as AesCbcCryptoKey);
+        case AesAlg.Mode.AES_CTR:
+            return proxy.proxifyKey<AesCtrCryptoKey, AesCtrProxiedCryptoKey>(
+                AesCtrHandler
+            )(derived as AesCtrCryptoKey);
+        case AesAlg.Mode.AES_GCM:
+            return proxy.proxifyKey<AesGcmCryptoKey, AesGcmProxiedCryptoKey>(
+                AesGcmHandler
+            )(derived as AesGcmCryptoKey);
+        case AesAlg.Mode.AES_KW:
+            return proxy.proxifyKey<AesKwCryptoKey, AesKwProxiedCryptoKey>(
+                AesKwHandler
+            )(derived as AesKwCryptoKey);
+    }
+
+    throw new Error("Invalid alg");
+};
 
 /**
  * Derive a number bits with a given key material
