@@ -47,7 +47,8 @@
         "url": "https://github.com/nealfennimore/webcrypto-ts.git"
     },
     "files": [
-        "lib/**/*"
+        "lib/**/*",
+        "src/**/*"
     ],
     "devDependencies": {
         "@nfen/typedoc-theme-oxide": "^0.1.11",
