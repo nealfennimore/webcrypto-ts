@@ -41,9 +41,6 @@ describe("PBKDF2", () => {
         it("should derive keys", async () => {
             for (const [aesKey, aesVal] of Object.entries(AES.Mode)) {
                 for (const [shaKey, shaVal] of Object.entries(SHA.Variant)) {
-                    if (shaVal === "SHA-1") {
-                        continue;
-                    }
                     for (const aesLength of [128, 192, 256]) {
                         const aesParams: params.EnforcedAesKeyGenParams = {
                             name: aesVal,
@@ -103,9 +100,6 @@ describe("PBKDF2", () => {
         it("should derive keys", async () => {
             for (const [aesKey, aesVal] of Object.entries(AES.Mode)) {
                 for (const [shaKey, shaVal] of Object.entries(SHA.Variant)) {
-                    if (shaVal === "SHA-1") {
-                        continue;
-                    }
                     for (const aesLength of [128, 192, 256]) {
                         const aesParams: params.EnforcedAesKeyGenParams = {
                             name: aesVal,
