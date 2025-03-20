@@ -111,8 +111,8 @@ export interface EnforcedHkdfParams extends HkdfParams {
 }
 export interface EnforcedPbkdf2Params extends Pbkdf2Params {
     name: KDF.Variant.PBKDF2;
-    hash: SHA.SecureVariants;
-    iterations: 720_000 | 310_000 | 310_000 | 120_000;
+    hash: SHA.Variants;
+    iterations: 1_300_000 | 600_000 | 600_000 | 210_000;
 }
 
 export interface HmacKeyAlgorithm extends KeyAlgorithm {

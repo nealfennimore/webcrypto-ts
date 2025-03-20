@@ -69,10 +69,11 @@ const handler: ProxyHandler<Pbkdf2KeyMaterial> = {
     },
 };
 
-const hashIterations: Record<SHA.SecureVariants, number> = {
-    "SHA-256": 310_000,
-    "SHA-384": 310_000,
-    "SHA-512": 120_000,
+const hashIterations: Record<SHA.Variants, number> = {
+    "SHA-1": 1_300_000,
+    "SHA-256": 600_000,
+    "SHA-384": 600_000,
+    "SHA-512": 210_000,
 };
 
 /**
