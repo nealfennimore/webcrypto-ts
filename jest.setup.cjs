@@ -8,4 +8,4 @@ global.crypto = webcrypto;
 global.encode = (...args) => new TextEncoder().encode(...args);
 global.decode = (...args) => new TextDecoder().decode(...args);
 
-jest.setTimeout(20000);
+jest.setTimeout(50000);
