@@ -11,6 +11,7 @@ import {
     Alg,
 } from "./shared.js";
 
+/** @hidden */
 export const handler: ProxyHandler<AesGcmCryptoKey> = {
     get(target: AesGcmCryptoKey, prop: string) {
         switch (prop) {

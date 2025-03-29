@@ -11,6 +11,7 @@ import {
     Alg,
 } from "./shared.js";
 
+/** @hidden */
 export const handler: ProxyHandler<AesKwCryptoKey> = {
     get(target: AesKwCryptoKey, prop: string) {
         switch (prop) {

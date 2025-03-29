@@ -18,6 +18,7 @@ export interface HmacProxiedCryptoKey
     exportKey: (format: KeyFormat) => Promise<JsonWebKey | ArrayBuffer>;
 }
 
+/** @hidden */
 export const handler: ProxyHandler<HmacCryptoKey> = {
     get(target: HmacCryptoKey, prop: string) {
         switch (prop) {
