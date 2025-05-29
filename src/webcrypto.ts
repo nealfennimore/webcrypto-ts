@@ -174,6 +174,10 @@ export async function exportKey<T extends CryptoKey>(
 export async function exportKey<T extends CryptoKey>(
     format: KeyFormat,
     key: T
+): Promise<JsonWebKey | ArrayBuffer>;
+export async function exportKey<T extends CryptoKey>(
+    format: KeyFormat,
+    key: T
 ): Promise<JsonWebKey | ArrayBuffer> {
     if (format === "jwk") {
         return await (await _crypto).subtle.exportKey(format, key);
@@ -207,6 +211,21 @@ export async function importKey<
 >(
     format: Exclude<KeyFormat, "jwk">,
     key: BufferSource,
+    algorithm: U,
+    extractable: boolean,
+    keyUsages: KeyUsage[]
+): Promise<T>;
+export async function importKey<
+    T extends CryptoKey,
+    U extends
+        | AlgorithmIdentifier
+        | RsaHashedImportParams
+        | EcKeyImportParams
+        | HmacImportParams
+        | AesKeyAlgorithm
+>(
+    format: KeyFormat,
+    key: BufferSource | JsonWebKey,
     algorithm: U,
     extractable: boolean,
     keyUsages: KeyUsage[]

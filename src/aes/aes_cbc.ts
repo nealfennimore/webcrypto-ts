@@ -112,8 +112,8 @@ export async function importKey(
     keyUsages?: KeyUsage[]
 ): Promise<AesCbcProxiedCryptoKey> {
     const importedKey = (await AesShared.importKey(
-        format as any,
-        key as any,
+        format,
+        key,
         {
             ...algorithm,
             name: Alg.Mode.AES_CBC,
@@ -248,7 +248,7 @@ export async function wrapKey(
     wrappingkey: AesCbcCryptoKey,
     wrapAlgorithm: Omit<params.EnforcedAesCbcParams, "name">
 ): Promise<ArrayBuffer> {
-    return await AesShared.wrapKey(format as any, key, wrappingkey, {
+    return await AesShared.wrapKey(format, key, wrappingkey, {
         ...wrapAlgorithm,
         name: Alg.Mode.AES_CBC,
     });

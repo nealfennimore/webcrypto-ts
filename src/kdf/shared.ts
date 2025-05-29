@@ -33,7 +33,7 @@ export namespace KdfShared {
         extractable: boolean = false
     ): Promise<K> {
         return await WebCrypto.importKey(
-            format as any,
+            format,
             key,
             algorithm,
             extractable,

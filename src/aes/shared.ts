@@ -62,8 +62,8 @@ export namespace AesShared {
         keyUsages?: KeyUsage[]
     ): Promise<T> {
         return await WebCrypto.importKey<T, params.EnforcedAesKeyAlgorithms>(
-            format as any,
-            key as any,
+            format,
+            key,
             algorithm,
             extractable,
             keyUsages ?? usages.getKeyUsagePairsByAlg(algorithm.name)
@@ -74,7 +74,7 @@ export namespace AesShared {
         format: KeyFormat,
         key: T
     ): Promise<JsonWebKey | ArrayBuffer> {
-        return await WebCrypto.exportKey(format as any, key);
+        return await WebCrypto.exportKey(format, key);
     }
 
     export async function encrypt<T extends CryptoKey>(
@@ -105,12 +105,7 @@ export namespace AesShared {
         wrappingkey: T,
         wrapAlgorithm: params.EnforcedAesParams
     ): Promise<ArrayBuffer> {
-        return await WebCrypto.wrapKey(
-            format as any,
-            key,
-            wrappingkey,
-            wrapAlgorithm
-        );
+        return await WebCrypto.wrapKey(format, key, wrappingkey, wrapAlgorithm);
     }
     export async function unwrapKey<T extends CryptoKey>(
         format: KeyFormat,
@@ -122,7 +117,7 @@ export namespace AesShared {
         keyUsages?: KeyUsage[]
     ): Promise<CryptoKey> {
         return await WebCrypto.unwrapKey(
-            format as any,
+            format,
             wrappedKey,
             unwrappingKey,
             unwrappingKeyAlgorithm,

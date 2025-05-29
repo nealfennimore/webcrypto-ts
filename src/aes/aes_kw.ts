@@ -86,8 +86,8 @@ export async function importKey(
     keyUsages?: KeyUsage[]
 ): Promise<AesKwProxiedCryptoKey> {
     const importedKey = (await AesShared.importKey(
-        format as any,
-        key as any,
+        format,
+        key,
         {
             name: Alg.Mode.AES_KW,
         },
@@ -133,7 +133,7 @@ export async function wrapKey(
     key: CryptoKey,
     wrappingkey: AesKwCryptoKey
 ): Promise<ArrayBuffer> {
-    return await AesShared.wrapKey(format as any, key, wrappingkey, {
+    return await AesShared.wrapKey(format, key, wrappingkey, {
         name: Alg.Mode.AES_KW,
     });
 }

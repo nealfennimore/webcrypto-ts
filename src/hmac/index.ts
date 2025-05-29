@@ -90,8 +90,8 @@ export const importKey = async (
         HmacCryptoKey,
         params.EnforcedHmacImportParams
     >(
-        format as any,
-        key as any,
+        format,
+        key,
         { ...algorithm, name: Alg.Code.HMAC },
         extractable,
         keyUsages ?? getKeyUsagePairsByAlg(Alg.Code.HMAC)
@@ -117,7 +117,7 @@ export async function exportKey(
     format: KeyFormat,
     key: HmacCryptoKey
 ): Promise<JsonWebKey | ArrayBuffer> {
-    return await WebCrypto.exportKey<HmacCryptoKey>(format as any, key);
+    return await WebCrypto.exportKey<HmacCryptoKey>(format, key);
 }
 
 /**

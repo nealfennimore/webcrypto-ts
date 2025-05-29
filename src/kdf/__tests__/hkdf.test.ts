@@ -45,10 +45,12 @@ describe("HKDF", () => {
                     if (shaVal === "SHA-1") {
                         continue;
                     }
-                    for (const aesLength of [128, 192, 256]) {
+                    for (const aesLength of [
+                        128, 192, 256,
+                    ] as params.AesBlockSize[]) {
                         const aesParams: params.EnforcedAesKeyGenParams = {
                             name: aesVal,
-                            length: aesLength as any,
+                            length: aesLength,
                         };
                         try {
                             let key = await HKDF.deriveKey(
@@ -112,10 +114,12 @@ describe("HKDF", () => {
                     if (shaVal === "SHA-1") {
                         continue;
                     }
-                    for (const aesLength of [128, 192, 256]) {
+                    for (const aesLength of [
+                        128, 192, 256,
+                    ] as params.AesBlockSize[]) {
                         const aesParams: params.EnforcedAesKeyGenParams = {
                             name: aesVal,
-                            length: aesLength as any,
+                            length: aesLength,
                         };
                         try {
                             let key = await keyMaterial.deriveKey(

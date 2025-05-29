@@ -266,12 +266,7 @@ export async function wrapKey(
         ...wrapAlgorithm,
         name: Alg.Variant.RSA_OAEP,
     };
-    return await WebCrypto.wrapKey(
-        format as any,
-        key,
-        wrappingkey,
-        _wrapAlgorithm
-    );
+    return await WebCrypto.wrapKey(format, key, wrappingkey, _wrapAlgorithm);
 }
 
 /**
@@ -309,7 +304,7 @@ export async function unwrapKey(
         name: Alg.Variant.RSA_OAEP,
     };
     return await WebCrypto.unwrapKey(
-        format as any,
+        format,
         wrappedKey,
         unwrappingKey,
         _unwrappingKeyAlgorithm,

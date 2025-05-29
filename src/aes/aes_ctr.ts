@@ -129,8 +129,8 @@ export async function importKey(
     keyUsages?: KeyUsage[]
 ): Promise<AesCtrProxiedCryptoKey> {
     const importedKey = (await AesShared.importKey(
-        format as any,
-        key as any,
+        format,
+        key,
         {
             ...algorithm,
             name: Alg.Mode.AES_CTR,
@@ -244,7 +244,7 @@ export async function wrapKey(
     wrappingkey: AesCtrCryptoKey,
     wrapAlgorithm: Omit<params.EnforcedAesCtrParams, "name">
 ): Promise<ArrayBuffer> {
-    return await AesShared.wrapKey(format as any, key, wrappingkey, {
+    return await AesShared.wrapKey(format, key, wrappingkey, {
         ...wrapAlgorithm,
         name: Alg.Mode.AES_CTR,
     });

@@ -41,10 +41,12 @@ describe("PBKDF2", () => {
         it("should derive keys", async () => {
             for (const [aesKey, aesVal] of Object.entries(AES.Mode)) {
                 for (const [shaKey, shaVal] of Object.entries(SHA.Variant)) {
-                    for (const aesLength of [128, 192, 256]) {
+                    for (const aesLength of [
+                        128, 192, 256,
+                    ] as params.AesBlockSize[]) {
                         const aesParams: params.EnforcedAesKeyGenParams = {
                             name: aesVal,
-                            length: aesLength as any,
+                            length: aesLength,
                         };
                         try {
                             let key = await PBKDF2.deriveKey(
@@ -100,10 +102,12 @@ describe("PBKDF2", () => {
         it("should derive keys", async () => {
             for (const [aesKey, aesVal] of Object.entries(AES.Mode)) {
                 for (const [shaKey, shaVal] of Object.entries(SHA.Variant)) {
-                    for (const aesLength of [128, 192, 256]) {
+                    for (const aesLength of [
+                        128, 192, 256,
+                    ] as params.AesBlockSize[]) {
                         const aesParams: params.EnforcedAesKeyGenParams = {
                             name: aesVal,
-                            length: aesLength as any,
+                            length: aesLength,
                         };
                         try {
                             let key = await keyMaterial.deriveKey(

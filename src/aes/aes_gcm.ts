@@ -109,8 +109,8 @@ export async function importKey(
     keyUsages?: KeyUsage[]
 ): Promise<AesGcmProxiedCryptoKey> {
     const importedKey = (await AesShared.importKey(
-        format as any,
-        key as any,
+        format,
+        key,
         {
             ...algorithm,
             name: Alg.Mode.AES_GCM,
@@ -222,7 +222,7 @@ export async function wrapKey(
     wrappingkey: AesGcmCryptoKey,
     wrapAlgorithm: Omit<params.EnforcedAesGcmParams, "name">
 ): Promise<ArrayBuffer> {
-    return await AesShared.wrapKey(format as any, key, wrappingkey, {
+    return await AesShared.wrapKey(format, key, wrappingkey, {
         ...wrapAlgorithm,
         name: Alg.Mode.AES_GCM,
     });

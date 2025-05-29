@@ -94,8 +94,8 @@ export namespace RsaShared {
             T,
             params.EnforcedRsaHashedImportParams
         >(
-            format as any,
-            key as any,
+            format,
+            key,
             algorithm,
             extractable,
             keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
@@ -106,7 +106,7 @@ export namespace RsaShared {
         format: KeyFormat,
         key: T
     ): Promise<JsonWebKey | ArrayBuffer> {
-        return await WebCrypto.exportKey(format as any, key);
+        return await WebCrypto.exportKey(format, key);
     }
 
     export async function sign(

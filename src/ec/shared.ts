@@ -135,8 +135,8 @@ export namespace EcShared {
         keyUsages?: KeyUsage[]
     ): Promise<T> {
         return await WebCrypto.importKey<T, params.EnforcedEcKeyImportParams>(
-            format as any,
-            key as any,
+            format,
+            key,
             algorithm,
             extractable,
             keyUsages ?? getKeyUsagePairsByAlg(algorithm.name)
@@ -147,6 +147,6 @@ export namespace EcShared {
         format: KeyFormat,
         key: EcCryptoKeys
     ): Promise<JsonWebKey | ArrayBuffer> {
-        return await WebCrypto.exportKey(format as any, key);
+        return await WebCrypto.exportKey(format, key);
     }
 }
