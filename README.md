@@ -99,6 +99,6 @@ const cipherText = await key.encrypt(
     new TextEncoder().encode("a message")
 );
 console.assert(
-    new TextDecoder().decode(await key.decrypt({ iv }, message)) === message
+    new TextDecoder().decode(await key.decrypt({ iv }, cipherText)) === message
 );
 ```
