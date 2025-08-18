@@ -10,9 +10,9 @@ class CryptoLoader {
         // @ts-ignore
         return typeof crypto !== "undefined" // Should match node which includes crypto and window.crypto
             ? Promise.resolve(crypto)
-            : await (
+            : ((await (
                   await import("node:crypto")
-              ).webcrypto;
+              ).webcrypto) as Crypto);
     }
 }
 
