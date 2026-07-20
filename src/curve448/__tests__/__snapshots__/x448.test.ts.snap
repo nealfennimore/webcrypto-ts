@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`X448 Non-proxied should derive keys 1`] = `
+CryptoKey Object {
+  "algorithm": Object {
+    "length": 256,
+    "name": "AES-GCM",
+  },
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
+    "encrypt",
+    "decrypt",
+  ],
+}
+`;
+
+exports[`X448 Non-proxied should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "X448",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "deriveKey",
+      "deriveBits",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "X448",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [],
+  },
+}
+`;
+
+exports[`X448 Proxied should derive keys 1`] = `
+CryptoKey Object {
+  "algorithm": Object {
+    "length": 256,
+    "name": "AES-GCM",
+  },
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
+    "encrypt",
+    "decrypt",
+  ],
+}
+`;
+
+exports[`X448 Proxied should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "X448",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "deriveKey",
+      "deriveBits",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "X448",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [],
+  },
+}
+`;

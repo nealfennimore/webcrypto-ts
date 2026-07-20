@@ -96,6 +96,77 @@ const key = await keyPair.privateKey.deriveKey(
 );
 ```
 
+### ML-DSA (post-quantum signatures)
+
+Requires Node.js `>= 24.7.0` (or a browser implementing [Modern Algorithms in the Web Cryptography API](https://wicg.github.io/webcrypto-modern-algos/)). Variants: `ML_DSA_44`, `ML_DSA_65`, `ML_DSA_87`.
+
+```ts
+import * as ML_DSA_65 from "@nfen/webcrypto-ts/lib/ml_dsa/ml_dsa_65";
+
+const keyPair = await ML_DSA_65.generateKeyPair();
+
+const message = new TextEncoder().encode("a message");
+const signature = await keyPair.privateKey.sign(message);
+
+const pubKeyBytes = await keyPair.publicKey.exportKey("raw-public");
+const publicKey = await ML_DSA_65.importKey("raw-public", pubKeyBytes, true, [
+    "verify",
+]);
+
+const isVerified = await publicKey.verify(signature, message);
+```
+
+### ML-KEM (post-quantum key encapsulation)
+
+Requires Node.js `>= 24.7.0`. Variants: `ML_KEM_512`, `ML_KEM_768`, `ML_KEM_1024`.
+
+```ts
+import * as ML_KEM_768 from "@nfen/webcrypto-ts/lib/ml_kem/ml_kem_768";
+
+const keyPair = await ML_KEM_768.generateKeyPair();
+
+// Sender: encapsulate a shared AES key for the recipient
+const { sharedKey, ciphertext } = await keyPair.publicKey.encapsulateKey({
+    name: "AES-GCM",
+    length: 256,
+});
+
+// Recipient: recover the same AES key from the ciphertext
+const recovered = await keyPair.privateKey.decapsulateKey(ciphertext, {
+    name: "AES-GCM",
+    length: 256,
+});
+
+// Or work with raw shared secrets (32 bytes) instead of CryptoKeys
+const bits = await keyPair.publicKey.encapsulateBits();
+const secret = await keyPair.privateKey.decapsulateBits(bits.ciphertext);
+```
+
+### KMAC
+
+Requires Node.js `>= 24.8.0`. Variants: `KMAC128`, `KMAC256`.
+
+```ts
+import * as KMAC256 from "@nfen/webcrypto-ts/lib/kmac/kmac_256";
+
+const key = await KMAC256.generateKey();
+
+const message = new TextEncoder().encode("a message");
+const customization = new TextEncoder().encode("my-protocol");
+// outputLength is in bits — a 256-bit (32-byte) MAC
+const signature = await key.sign({ outputLength: 256, customization }, message);
+
+const isVerified = await key.verify(
+    { outputLength: 256, customization },
+    signature,
+    message
+);
+```
+
+### Ed448 / X448
+
+Same API as [Ed25519](#ed25519) and [X25519](#x25519), from `@nfen/webcrypto-ts/lib/curve448/ed448` and `@nfen/webcrypto-ts/lib/curve448/x448`. `Ed448.sign`/`verify` additionally accept an optional `{ context }` (non-empty context requires Node.js `>= 24.8.0`).
+
 ### RSA-OAEP
 
 ```ts

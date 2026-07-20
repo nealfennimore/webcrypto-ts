@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ML-DSA ML-DSA-44 should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-DSA-44",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-DSA-44",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "verify",
+    ],
+  },
+}
+`;
+
+exports[`ML-DSA ML-DSA-65 should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-DSA-65",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-DSA-65",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "verify",
+    ],
+  },
+}
+`;
+
+exports[`ML-DSA ML-DSA-87 should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-DSA-87",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-DSA-87",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "verify",
+    ],
+  },
+}
+`;

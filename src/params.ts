@@ -7,9 +7,13 @@ import {
     Alg as CURVE25519,
     X25519PubCryptoKey,
 } from "./curve25519/shared.js";
+import { Alg as CURVE448, X448PubCryptoKey } from "./curve448/shared.js";
 import { Alg as EC, EcdhPubCryptoKey } from "./ec/shared.js";
 import { Alg as Authentication } from "./hmac/index.js";
 import { Alg as KDF } from "./kdf/shared.js";
+import { Alg as KMAC } from "./kmac/shared.js";
+import { Alg as MLDSA } from "./ml_dsa/shared.js";
+import { Alg as MLKEM } from "./ml_kem/shared.js";
 import { Alg as RSA } from "./rsa/shared.js";
 import { Alg as SHA } from "./sha/shared.js";
 
@@ -28,6 +32,27 @@ export interface EnforcedEcKeyGenParams extends EcKeyGenParams {
 
 export interface EnforcedCurve25519KeyGenParams extends Algorithm {
     name: CURVE25519.Variants;
+}
+
+export interface EnforcedCurve448KeyGenParams extends Algorithm {
+    name: CURVE448.Variants;
+}
+
+export interface EnforcedMlDsaKeyGenParams extends Algorithm {
+    name: MLDSA.Variants;
+}
+
+export interface EnforcedMlKemKeyGenParams extends Algorithm {
+    name: MLKEM.Variants;
+}
+
+export interface EnforcedKmacKeyGenParams extends Algorithm {
+    name: KMAC.Codes;
+    /**
+     * The number of bits in the generated KMAC key. If omitted, the
+     * length is determined by the KMAC algorithm used.
+     */
+    length?: number;
 }
 
 export interface EnforcedAesKeyGenParams extends AesKeyGenParams {
@@ -53,6 +78,27 @@ export interface EnforcedEcKeyImportParams extends EcKeyImportParams {
 
 export interface EnforcedCurve25519KeyImportParams extends Algorithm {
     name: CURVE25519.Variants;
+}
+
+export interface EnforcedCurve448KeyImportParams extends Algorithm {
+    name: CURVE448.Variants;
+}
+
+export interface EnforcedMlDsaImportParams extends Algorithm {
+    name: MLDSA.Variants;
+}
+
+export interface EnforcedMlKemImportParams extends Algorithm {
+    name: MLKEM.Variants;
+}
+
+export interface EnforcedKmacImportParams extends Algorithm {
+    name: KMAC.Codes;
+    /**
+     * The number of bits in the KMAC key. This is optional and should
+     * be omitted for most cases.
+     */
+    length?: number;
 }
 
 export interface EnforcedHmacImportParams extends HmacImportParams {
@@ -89,6 +135,46 @@ export interface EnforcedEd25519Params extends Algorithm {
 export interface EnforcedX25519KeyDeriveParams extends EcdhKeyDeriveParams {
     name: CURVE25519.Variant.X25519;
     public: X25519PubCryptoKey;
+}
+
+export interface EnforcedEd448Params extends Algorithm {
+    name: CURVE448.Variant.Ed448;
+    /**
+     * Optional context data to associate with the message.
+     * Non-empty context requires Node.js 24.8.0 or higher.
+     */
+    context?: BufferSource;
+}
+
+export interface EnforcedX448KeyDeriveParams extends EcdhKeyDeriveParams {
+    name: CURVE448.Variant.X448;
+    public: X448PubCryptoKey;
+}
+
+export interface EnforcedMlDsaSignParams extends Algorithm {
+    name: MLDSA.Variants;
+    /**
+     * Optional context data to associate with the message.
+     */
+    context?: BufferSource;
+}
+
+export interface EnforcedMlKemEncapsulateParams extends Algorithm {
+    name: MLKEM.Variants;
+}
+
+export interface EnforcedKmacParams extends Algorithm {
+    name: KMAC.Codes;
+    /**
+     * The length of the MAC output in bits. Must be a multiple of 8.
+     * Note that the Node.js docs claim bytes, but the implementation
+     * treats it as bits (`outputLength / 8` bytes are produced).
+     */
+    outputLength: number;
+    /**
+     * Optional customization string.
+     */
+    customization?: BufferSource;
 }
 
 export interface AesGcmKeyAlgorithm extends AesKeyAlgorithm {
@@ -158,16 +244,25 @@ export type EnforcedImportParams =
     | EnforcedRsaHashedImportParams
     | EnforcedEcKeyImportParams
     | EnforcedCurve25519KeyImportParams
+    | EnforcedCurve448KeyImportParams
+    | EnforcedMlDsaImportParams
+    | EnforcedMlKemImportParams
     | EnforcedHmacImportParams
+    | EnforcedKmacImportParams
     | EnforcedAesKeyAlgorithmNames;
 export type EnforcedKeyGenParams =
     | EnforcedRsaHashedKeyGenParams
     | EnforcedEcKeyGenParams
     | EnforcedCurve25519KeyGenParams
+    | EnforcedCurve448KeyGenParams
+    | EnforcedMlDsaKeyGenParams
+    | EnforcedMlKemKeyGenParams
     | EnforcedHmacKeyGenParams
+    | EnforcedKmacKeyGenParams
     | EnforcedAesKeyGenParams;
 export type EnforcedKeyDeriveParams =
     | EnforcedEcdhKeyDeriveParams
     | EnforcedX25519KeyDeriveParams
+    | EnforcedX448KeyDeriveParams
     | EnforcedHkdfParams
     | EnforcedPbkdf2Params;

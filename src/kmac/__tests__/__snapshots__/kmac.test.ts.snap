@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KMAC KMAC128 should generate key 1`] = `
+CryptoKey Object {
+  "algorithm": Object {
+    "length": 128,
+    "name": "KMAC128",
+  },
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
+    "sign",
+    "verify",
+  ],
+}
+`;
+
+exports[`KMAC KMAC256 should generate key 1`] = `
+CryptoKey Object {
+  "algorithm": Object {
+    "length": 256,
+    "name": "KMAC256",
+  },
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
+    "sign",
+    "verify",
+  ],
+}
+`;

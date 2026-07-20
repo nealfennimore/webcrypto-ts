@@ -3,7 +3,66 @@
  * @module
  */
 
+import type { ExtendedKeyFormat, ExtendedKeyUsage } from "./key_usages.js";
 import { Alg as SHA } from "./sha/shared.js";
+
+/**
+ * Result of `encapsulateBits` — a temporary shared secret for the sender and
+ * the ciphertext to transmit to the recipient.
+ * Requires Node.js 24.7.0 or higher.
+ */
+export interface EncapsulatedBits {
+    sharedKey: ArrayBuffer;
+    ciphertext: ArrayBuffer;
+}
+
+/**
+ * Result of `encapsulateKey` — a temporary shared secret (as a CryptoKey) for
+ * the sender and the ciphertext to transmit to the recipient.
+ * Requires Node.js 24.7.0 or higher.
+ */
+export interface EncapsulatedKey<T extends CryptoKey = CryptoKey> {
+    sharedKey: T;
+    ciphertext: ArrayBuffer;
+}
+
+/**
+ * SubtleCrypto including the key encapsulation methods from the Modern
+ * Algorithms in the Web Cryptography API spec, which are not yet part of
+ * the bundled TypeScript DOM types.
+ */
+interface ExtendedSubtleCrypto extends SubtleCrypto {
+    encapsulateBits(
+        encapsulationAlgorithm: AlgorithmIdentifier,
+        encapsulationKey: CryptoKey
+    ): Promise<EncapsulatedBits>;
+    encapsulateKey(
+        encapsulationAlgorithm: AlgorithmIdentifier,
+        encapsulationKey: CryptoKey,
+        sharedKeyAlgorithm:
+            | AlgorithmIdentifier
+            | HmacImportParams
+            | AesDerivedKeyParams,
+        extractable: boolean,
+        usages: KeyUsage[]
+    ): Promise<EncapsulatedKey>;
+    decapsulateBits(
+        decapsulationAlgorithm: AlgorithmIdentifier,
+        decapsulationKey: CryptoKey,
+        ciphertext: BufferSource
+    ): Promise<ArrayBuffer>;
+    decapsulateKey(
+        decapsulationAlgorithm: AlgorithmIdentifier,
+        decapsulationKey: CryptoKey,
+        ciphertext: BufferSource,
+        sharedKeyAlgorithm:
+            | AlgorithmIdentifier
+            | HmacImportParams
+            | AesDerivedKeyParams,
+        extractable: boolean,
+        usages: KeyUsage[]
+    ): Promise<CryptoKey>;
+}
 
 class CryptoLoader {
     static async load(): Promise<Crypto> {
@@ -81,7 +140,7 @@ export async function deriveKey<
     key: CryptoKey,
     derivedKeyType: U,
     extractable: boolean,
-    keyUsages: KeyUsage[]
+    keyUsages: ExtendedKeyUsage[]
 ): Promise<T> {
     return (await (
         await _crypto
@@ -90,7 +149,7 @@ export async function deriveKey<
         key,
         derivedKeyType,
         extractable,
-        keyUsages
+        keyUsages as KeyUsage[]
     )) as T;
 }
 
@@ -148,7 +207,7 @@ export async function unwrapKey<
     unwrapAlgorithm: U,
     unwrappedKeyAlgorithm: V,
     extractable: boolean,
-    keyUsages: KeyUsage[]
+    keyUsages: ExtendedKeyUsage[]
 ): Promise<CryptoKey> {
     return await (
         await _crypto
@@ -159,30 +218,32 @@ export async function unwrapKey<
         unwrapAlgorithm,
         unwrappedKeyAlgorithm,
         extractable,
-        keyUsages
+        keyUsages as KeyUsage[]
     );
 }
 
 export async function exportKey<T extends CryptoKey>(
-    format: Extract<KeyFormat, "jwk">,
+    format: Extract<ExtendedKeyFormat, "jwk">,
     key: T
 ): Promise<JsonWebKey>;
 export async function exportKey<T extends CryptoKey>(
-    format: Exclude<KeyFormat, "jwk">,
+    format: Exclude<ExtendedKeyFormat, "jwk">,
     key: T
 ): Promise<ArrayBuffer>;
 export async function exportKey<T extends CryptoKey>(
-    format: KeyFormat,
+    format: ExtendedKeyFormat,
     key: T
 ): Promise<JsonWebKey | ArrayBuffer>;
 export async function exportKey<T extends CryptoKey>(
-    format: KeyFormat,
+    format: ExtendedKeyFormat,
     key: T
 ): Promise<JsonWebKey | ArrayBuffer> {
     if (format === "jwk") {
         return await (await _crypto).subtle.exportKey(format, key);
     }
-    return await (await _crypto).subtle.exportKey(format, key);
+    return await (
+        await _crypto
+    ).subtle.exportKey(format as Exclude<KeyFormat, "jwk">, key);
 }
 
 export async function importKey<
@@ -194,11 +255,11 @@ export async function importKey<
         | HmacImportParams
         | AesKeyAlgorithm
 >(
-    format: Extract<KeyFormat, "jwk">,
+    format: Extract<ExtendedKeyFormat, "jwk">,
     key: JsonWebKey,
     algorithm: U,
     extractable: boolean,
-    keyUsages: KeyUsage[]
+    keyUsages: ExtendedKeyUsage[]
 ): Promise<T>;
 export async function importKey<
     T extends CryptoKey,
@@ -209,11 +270,11 @@ export async function importKey<
         | HmacImportParams
         | AesKeyAlgorithm
 >(
-    format: Exclude<KeyFormat, "jwk">,
+    format: Exclude<ExtendedKeyFormat, "jwk">,
     key: BufferSource,
     algorithm: U,
     extractable: boolean,
-    keyUsages: KeyUsage[]
+    keyUsages: ExtendedKeyUsage[]
 ): Promise<T>;
 export async function importKey<
     T extends CryptoKey,
@@ -224,11 +285,11 @@ export async function importKey<
         | HmacImportParams
         | AesKeyAlgorithm
 >(
-    format: KeyFormat,
+    format: ExtendedKeyFormat,
     key: BufferSource | JsonWebKey,
     algorithm: U,
     extractable: boolean,
-    keyUsages: KeyUsage[]
+    keyUsages: ExtendedKeyUsage[]
 ): Promise<T>;
 export async function importKey<
     T extends CryptoKey,
@@ -239,11 +300,11 @@ export async function importKey<
         | HmacImportParams
         | AesKeyAlgorithm
 >(
-    format: KeyFormat,
+    format: ExtendedKeyFormat,
     key: BufferSource | JsonWebKey,
     algorithm: U,
     extractable: boolean,
-    keyUsages: KeyUsage[]
+    keyUsages: ExtendedKeyUsage[]
 ): Promise<T> {
     if (format === "jwk") {
         return (await (
@@ -253,18 +314,18 @@ export async function importKey<
             key as JsonWebKey,
             algorithm,
             extractable,
-            keyUsages
+            keyUsages as KeyUsage[]
         )) as T;
     }
 
     return (await (
         await _crypto
     ).subtle.importKey(
-        format,
+        format as Exclude<KeyFormat, "jwk">,
         key as BufferSource,
         algorithm,
         extractable,
-        keyUsages
+        keyUsages as KeyUsage[]
     )) as T;
 }
 
@@ -277,10 +338,14 @@ export async function generateKey<
         | HmacKeyGenParams
         | Pbkdf2Params
         | AlgorithmIdentifier
->(algorithm: U, extractable: boolean, keyUsages: KeyUsage[]): Promise<T> {
+>(
+    algorithm: U,
+    extractable: boolean,
+    keyUsages: ExtendedKeyUsage[]
+): Promise<T> {
     return (await (
         await _crypto
-    ).subtle.generateKey(algorithm, extractable, keyUsages)) as T;
+    ).subtle.generateKey(algorithm, extractable, keyUsages as KeyUsage[])) as T;
 }
 
 export async function digest<T extends ArrayBuffer>(
@@ -288,4 +353,86 @@ export async function digest<T extends ArrayBuffer>(
     data: BufferSource
 ): Promise<T> {
     return (await (await _crypto).subtle.digest(algorithm, data)) as T;
+}
+
+/**
+ * Requires Node.js 24.7.0 or higher.
+ */
+export async function encapsulateBits<
+    T extends CryptoKey,
+    U extends AlgorithmIdentifier
+>(algorithm: U, encapsulationKey: T): Promise<EncapsulatedBits> {
+    const subtle = (await _crypto).subtle as ExtendedSubtleCrypto;
+    return await subtle.encapsulateBits(algorithm, encapsulationKey);
+}
+
+/**
+ * Requires Node.js 24.7.0 or higher.
+ */
+export async function encapsulateKey<
+    T extends CryptoKey,
+    S extends CryptoKey,
+    U extends AlgorithmIdentifier,
+    V extends AlgorithmIdentifier | HmacImportParams | AesDerivedKeyParams
+>(
+    algorithm: U,
+    encapsulationKey: T,
+    sharedKeyAlgorithm: V,
+    extractable: boolean,
+    keyUsages: ExtendedKeyUsage[]
+): Promise<EncapsulatedKey<S>> {
+    const subtle = (await _crypto).subtle as ExtendedSubtleCrypto;
+    return (await subtle.encapsulateKey(
+        algorithm,
+        encapsulationKey,
+        sharedKeyAlgorithm,
+        extractable,
+        keyUsages as KeyUsage[]
+    )) as EncapsulatedKey<S>;
+}
+
+/**
+ * Requires Node.js 24.7.0 or higher.
+ */
+export async function decapsulateBits<
+    T extends CryptoKey,
+    U extends AlgorithmIdentifier
+>(
+    algorithm: U,
+    decapsulationKey: T,
+    ciphertext: BufferSource
+): Promise<ArrayBuffer> {
+    const subtle = (await _crypto).subtle as ExtendedSubtleCrypto;
+    return await subtle.decapsulateBits(
+        algorithm,
+        decapsulationKey,
+        ciphertext
+    );
+}
+
+/**
+ * Requires Node.js 24.7.0 or higher.
+ */
+export async function decapsulateKey<
+    T extends CryptoKey,
+    S extends CryptoKey,
+    U extends AlgorithmIdentifier,
+    V extends AlgorithmIdentifier | HmacImportParams | AesDerivedKeyParams
+>(
+    algorithm: U,
+    decapsulationKey: T,
+    ciphertext: BufferSource,
+    sharedKeyAlgorithm: V,
+    extractable: boolean,
+    keyUsages: ExtendedKeyUsage[]
+): Promise<S> {
+    const subtle = (await _crypto).subtle as ExtendedSubtleCrypto;
+    return (await subtle.decapsulateKey(
+        algorithm,
+        decapsulationKey,
+        ciphertext,
+        sharedKeyAlgorithm,
+        extractable,
+        keyUsages as KeyUsage[]
+    )) as S;
 }

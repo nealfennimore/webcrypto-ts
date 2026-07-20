@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ed448 Original should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "Ed448",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "Ed448",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "verify",
+    ],
+  },
+}
+`;
+
+exports[`Ed448 Proxied should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "Ed448",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "sign",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "Ed448",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "verify",
+    ],
+  },
+}
+`;

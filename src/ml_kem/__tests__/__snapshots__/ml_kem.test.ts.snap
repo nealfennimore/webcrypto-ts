@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ML-KEM ML-KEM-512 should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-KEM-512",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "decapsulateKey",
+      "decapsulateBits",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-KEM-512",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "encapsulateKey",
+      "encapsulateBits",
+    ],
+  },
+}
+`;
+
+exports[`ML-KEM ML-KEM-768 should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-KEM-768",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "decapsulateKey",
+      "decapsulateBits",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-KEM-768",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "encapsulateKey",
+      "encapsulateBits",
+    ],
+  },
+}
+`;
+
+exports[`ML-KEM ML-KEM-1024 should generate key 1`] = `
+Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-KEM-1024",
+    },
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
+      "decapsulateKey",
+      "decapsulateBits",
+    ],
+  },
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
+      "name": "ML-KEM-1024",
+    },
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
+      "encapsulateKey",
+      "encapsulateBits",
+    ],
+  },
+}
+`;
