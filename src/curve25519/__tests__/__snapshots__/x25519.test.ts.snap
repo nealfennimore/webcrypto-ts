@@ -1,29 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ECDH Non-proxied should derive keys 1`] = `
+exports[`X25519 Non-proxied should derive keys 1`] = `
 CryptoKey Object {
   "algorithm": Object {
-    "hash": Object {
-      "name": "SHA-512",
-    },
-    "length": 512,
-    "name": "HMAC",
+    "length": 256,
+    "name": "AES-GCM",
   },
   "extractable": true,
   "type": "secret",
   "usages": Array [
-    "sign",
-    "verify",
+    "encrypt",
+    "decrypt",
   ],
 }
 `;
 
-exports[`ECDH Non-proxied should generate key 1`] = `
+exports[`X25519 Non-proxied should generate key 1`] = `
 Object {
   "privateKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDH",
-      "namedCurve": "P-521",
+      "name": "X25519",
     },
     "extractable": true,
     "type": "private",
@@ -34,8 +30,7 @@ Object {
   },
   "publicKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDH",
-      "namedCurve": "P-521",
+      "name": "X25519",
     },
     "extractable": true,
     "type": "public",
@@ -44,30 +39,26 @@ Object {
 }
 `;
 
-exports[`ECDH Proxied should derive keys 1`] = `
+exports[`X25519 Proxied should derive keys 1`] = `
 CryptoKey Object {
   "algorithm": Object {
-    "hash": Object {
-      "name": "SHA-512",
-    },
-    "length": 512,
-    "name": "HMAC",
+    "length": 256,
+    "name": "AES-GCM",
   },
   "extractable": true,
   "type": "secret",
   "usages": Array [
-    "sign",
-    "verify",
+    "encrypt",
+    "decrypt",
   ],
 }
 `;
 
-exports[`ECDH Proxied should generate key 1`] = `
+exports[`X25519 Proxied should generate key 1`] = `
 Object {
   "privateKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDH",
-      "namedCurve": "P-521",
+      "name": "X25519",
     },
     "extractable": true,
     "type": "private",
@@ -78,8 +69,7 @@ Object {
   },
   "publicKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDH",
-      "namedCurve": "P-521",
+      "name": "X25519",
     },
     "extractable": true,
     "type": "public",

@@ -3,6 +3,7 @@ module.exports = {
     preset: "ts-jest",
     testEnvironment: "jsdom",
     setupFiles: ["<rootDir>/jest.setup.cjs"],
+    snapshotSerializers: ["<rootDir>/jest.crypto-key-serializer.cjs"],
     testTimeout: 10000,
     globals: {
         "ts-jest": {

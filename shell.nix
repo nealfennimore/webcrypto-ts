@@ -4,6 +4,6 @@
 with pkgs;
 mkShell {
   packages = [
-    nodejs_20
+    nodejs_22
   ];
 }

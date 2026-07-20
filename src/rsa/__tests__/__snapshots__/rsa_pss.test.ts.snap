@@ -2,11 +2,8 @@
 
 exports[`RSA_PSS Original should generate key 1`] = `
 Object {
-  "privateKey": CryptoKey {
-    Symbol(kKeyObject): PrivateKeyObject {
-      Symbol(kKeyType): "private",
-    },
-    Symbol(kAlgorithm): Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
       "hash": Object {
         "name": "SHA-512",
       },
@@ -18,16 +15,14 @@ Object {
         1,
       ],
     },
-    Symbol(kExtractable): true,
-    Symbol(kKeyUsages): Array [
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
       "sign",
     ],
   },
-  "publicKey": CryptoKey {
-    Symbol(kKeyObject): PublicKeyObject {
-      Symbol(kKeyType): "public",
-    },
-    Symbol(kAlgorithm): Object {
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
       "hash": Object {
         "name": "SHA-512",
       },
@@ -39,8 +34,9 @@ Object {
         1,
       ],
     },
-    Symbol(kExtractable): true,
-    Symbol(kKeyUsages): Array [
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
       "verify",
     ],
   },
@@ -49,11 +45,8 @@ Object {
 
 exports[`RSA_PSS Proxied should generate key 1`] = `
 Object {
-  "privateKey": CryptoKey {
-    Symbol(kKeyObject): PrivateKeyObject {
-      Symbol(kKeyType): "private",
-    },
-    Symbol(kAlgorithm): Object {
+  "privateKey": CryptoKey Object {
+    "algorithm": Object {
       "hash": Object {
         "name": "SHA-512",
       },
@@ -65,16 +58,14 @@ Object {
         1,
       ],
     },
-    Symbol(kExtractable): true,
-    Symbol(kKeyUsages): Array [
+    "extractable": true,
+    "type": "private",
+    "usages": Array [
       "sign",
     ],
   },
-  "publicKey": CryptoKey {
-    Symbol(kKeyObject): PublicKeyObject {
-      Symbol(kKeyType): "public",
-    },
-    Symbol(kAlgorithm): Object {
+  "publicKey": CryptoKey Object {
+    "algorithm": Object {
       "hash": Object {
         "name": "SHA-512",
       },
@@ -86,8 +77,9 @@ Object {
         1,
       ],
     },
-    Symbol(kExtractable): true,
-    Symbol(kKeyUsages): Array [
+    "extractable": true,
+    "type": "public",
+    "usages": Array [
       "verify",
     ],
   },

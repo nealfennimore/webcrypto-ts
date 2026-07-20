@@ -1,16 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HKDF Original should derive keys: AES_CBC_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -18,16 +16,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -35,16 +31,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -52,16 +46,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -69,16 +61,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -86,16 +76,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -103,16 +91,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -120,16 +106,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -137,16 +121,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CBC_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -154,16 +136,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -171,16 +151,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -188,16 +166,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -205,16 +181,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -222,16 +196,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -239,16 +211,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -256,16 +226,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -273,16 +241,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -290,16 +256,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_CTR_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -307,16 +271,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -324,16 +286,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -341,16 +301,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -358,16 +316,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -375,16 +331,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -392,16 +346,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -409,16 +361,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -426,16 +376,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -443,16 +391,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_GCM_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -460,16 +406,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -477,16 +421,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -494,16 +436,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -511,16 +451,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -528,16 +466,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -545,16 +481,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -562,16 +496,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -579,16 +511,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -596,16 +526,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: AES_KW_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -613,19 +541,17 @@ CryptoKey {
 `;
 
 exports[`HKDF Original should derive keys: HMAC_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "hash": Object {
       "name": "SHA-512",
     },
     "length": 512,
     "name": "HMAC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "sign",
     "verify",
   ],
@@ -633,16 +559,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -650,16 +574,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -667,16 +589,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -684,16 +604,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -701,16 +619,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -718,16 +634,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -735,16 +649,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -752,16 +664,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -769,16 +679,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CBC_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CBC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -786,16 +694,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -803,16 +709,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -820,16 +724,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -837,16 +739,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -854,16 +754,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -871,16 +769,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -888,16 +784,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -905,16 +799,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -922,16 +814,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_CTR_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-CTR",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -939,16 +829,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -956,16 +844,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -973,16 +859,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -990,16 +874,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -1007,16 +889,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -1024,16 +904,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -1041,16 +919,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -1058,16 +934,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -1075,16 +949,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_GCM_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-GCM",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "encrypt",
     "decrypt",
   ],
@@ -1092,16 +964,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_128_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1109,16 +979,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_128_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1126,16 +994,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_128_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 128,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1143,16 +1009,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_192_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1160,16 +1024,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_192_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1177,16 +1039,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_192_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 192,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1194,16 +1054,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_256_SHA_256 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1211,16 +1069,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_256_SHA_384 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1228,16 +1084,14 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: AES_KW_256_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "length": 256,
     "name": "AES-KW",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "wrapKey",
     "unwrapKey",
   ],
@@ -1245,19 +1099,17 @@ CryptoKey {
 `;
 
 exports[`HKDF Proxied should derive keys: HMAC_SHA_512 1`] = `
-CryptoKey {
-  Symbol(kKeyObject): SecretKeyObject {
-    Symbol(kKeyType): "secret",
-  },
-  Symbol(kAlgorithm): Object {
+CryptoKey Object {
+  "algorithm": Object {
     "hash": Object {
       "name": "SHA-512",
     },
     "length": 512,
     "name": "HMAC",
   },
-  Symbol(kExtractable): true,
-  Symbol(kKeyUsages): Array [
+  "extractable": true,
+  "type": "secret",
+  "usages": Array [
     "sign",
     "verify",
   ],

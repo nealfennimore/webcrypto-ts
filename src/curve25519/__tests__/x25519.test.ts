@@ -1,6 +1,5 @@
-import * as Authentication from "../../hmac/index.js";
+import * as AES from "../../aes/index.js";
 import * as params from "../../params.js";
-import * as SHA from "../../sha/index.js";
 import * as Curve25519 from "../index.js";
 import {
     X25519CryptoKeyPair,
@@ -55,15 +54,14 @@ describe("X25519", () => {
         });
         it("should derive keys", async () => {
             const otherKeyPair = await X25519.generateKey();
-            const hmacParams: params.EnforcedHmacKeyGenParams = {
-                name: Authentication.Alg.Code.HMAC,
-                hash: SHA.Alg.Variant.SHA_512,
-                length: 512,
+            const aesParams: params.EnforcedAesKeyGenParams = {
+                name: AES.Alg.Mode.AES_GCM,
+                length: 256,
             };
             let key = await X25519.deriveKey(
                 { public: otherKeyPair.publicKey.self },
                 keyPair.privateKey,
-                hmacParams
+                aesParams
             );
             expect(key).toMatchSnapshot();
         });
@@ -105,14 +103,13 @@ describe("X25519", () => {
         });
         it("should derive keys", async () => {
             const otherKeyPair = await X25519.generateKey();
-            const hmacParams: params.EnforcedHmacKeyGenParams = {
-                name: Authentication.Alg.Code.HMAC,
-                hash: SHA.Alg.Variant.SHA_512,
-                length: 512,
+            const aesParams: params.EnforcedAesKeyGenParams = {
+                name: AES.Alg.Mode.AES_GCM,
+                length: 256,
             };
             let key = await keyPair.privateKey.deriveKey(
                 { public: otherKeyPair.publicKey.self },
-                hmacParams
+                aesParams
             );
             expect(key).toMatchSnapshot();
         });

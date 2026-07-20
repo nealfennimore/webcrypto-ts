@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ECDSA Original should generate key 1`] = `
+exports[`Ed25519 Original should generate key 1`] = `
 Object {
   "privateKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDSA",
-      "namedCurve": "P-521",
+      "name": "Ed25519",
     },
     "extractable": true,
     "type": "private",
@@ -15,8 +14,7 @@ Object {
   },
   "publicKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDSA",
-      "namedCurve": "P-521",
+      "name": "Ed25519",
     },
     "extractable": true,
     "type": "public",
@@ -27,12 +25,11 @@ Object {
 }
 `;
 
-exports[`ECDSA Proxied should generate key 1`] = `
+exports[`Ed25519 Proxied should generate key 1`] = `
 Object {
   "privateKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDSA",
-      "namedCurve": "P-521",
+      "name": "Ed25519",
     },
     "extractable": true,
     "type": "private",
@@ -42,8 +39,7 @@ Object {
   },
   "publicKey": CryptoKey Object {
     "algorithm": Object {
-      "name": "ECDSA",
-      "namedCurve": "P-521",
+      "name": "Ed25519",
     },
     "extractable": true,
     "type": "public",

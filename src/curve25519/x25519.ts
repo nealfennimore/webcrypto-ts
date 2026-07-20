@@ -185,34 +185,34 @@ export const exportKey = async (
 ) => Curve25519Shared.exportKey(format, key);
 
 /**
- * Derive a shared key between two X25519 key pairs
+ * Derive a shared key between two X25519 key pairs.
+ * Note that the derived key material is limited to 256 bits,
+ * so the derived key type must not require more than that.
  * @example
  * ```ts
  * const keyPair = await X25519.generateKey();
  * const otherKeyPair = await X25519.generateKey();
- * const hmacParams: params.EnforcedHmacKeyGenParams = {
- *      name: Authentication.Alg.Code.HMAC,
- *      hash: SHA.Alg.Variant.SHA_512,
- *      length: 512,
+ * const aesParams: params.EnforcedAesKeyGenParams = {
+ *      name: AES.Alg.Mode.AES_GCM,
+ *      length: 256,
  * };
  * let key = await X25519.deriveKey(
  *      { public: otherKeyPair.publicKey.self },
  *      keyPair.privateKey.self,
- *      hmacParams
+ *      aesParams
  * );
  * ```
  * @example
  * ```ts
  * const keyPair = await X25519.generateKey();
  * const otherKeyPair = await X25519.generateKey();
- * const hmacParams: params.EnforcedHmacKeyGenParams = {
- *      name: Authentication.Alg.Code.HMAC,
- *      hash: SHA.Alg.Variant.SHA_512,
- *      length: 512,
+ * const aesParams: params.EnforcedAesKeyGenParams = {
+ *      name: AES.Alg.Mode.AES_GCM,
+ *      length: 256,
  * };
  * let key = await keyPair.privateKey.deriveKey(
  *      { public: otherKeyPair.publicKey.self },
- *      hmacParams
+ *      aesParams
  * );
  * ```
  */
