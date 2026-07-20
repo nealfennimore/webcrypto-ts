@@ -64,6 +64,38 @@ const isVerified = await publicKey.verify(
 );
 ```
 
+### Ed25519
+
+```ts
+import * as Ed25519 from "@nfen/webcrypto-ts/lib/curve25519/ed25519";
+const keyPair = await Ed25519.generateKeyPair();
+
+const message = new TextEncoder().encode("a message");
+const signature = await keyPair.privateKey.sign(message);
+
+const pubJwk = await keyPair.publicKey.exportKey("jwk");
+const publicKey = await Ed25519.importKey("jwk", pubJwk, true, ["verify"]);
+
+const isVerified = await publicKey.verify(signature, message);
+```
+
+### X25519
+
+```ts
+import * as X25519 from "@nfen/webcrypto-ts/lib/curve25519/x25519";
+
+const keyPair = await X25519.generateKeyPair();
+const otherKeyPair = await X25519.generateKeyPair();
+
+const key = await keyPair.privateKey.deriveKey(
+    { public: otherKeyPair.publicKey.self },
+    {
+        name: "AES-GCM",
+        length: 256,
+    }
+);
+```
+
 ### RSA-OAEP
 
 ```ts

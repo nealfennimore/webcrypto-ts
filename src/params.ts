@@ -3,6 +3,10 @@
  * @module
  */
 import { Alg as AES } from "./aes/shared.js";
+import {
+    Alg as CURVE25519,
+    X25519PubCryptoKey,
+} from "./curve25519/shared.js";
 import { Alg as EC, EcdhPubCryptoKey } from "./ec/shared.js";
 import { Alg as Authentication } from "./hmac/index.js";
 import { Alg as KDF } from "./kdf/shared.js";
@@ -20,6 +24,10 @@ export interface EnforcedRsaHashedKeyGenParams extends RsaHashedKeyGenParams {
 export interface EnforcedEcKeyGenParams extends EcKeyGenParams {
     name: EC.Variants;
     namedCurve: EC.Curves;
+}
+
+export interface EnforcedCurve25519KeyGenParams extends Algorithm {
+    name: CURVE25519.Variants;
 }
 
 export interface EnforcedAesKeyGenParams extends AesKeyGenParams {
@@ -41,6 +49,10 @@ export interface EnforcedRsaHashedImportParams extends RsaHashedImportParams {
 export interface EnforcedEcKeyImportParams extends EcKeyImportParams {
     name: EC.Variants;
     namedCurve: EC.Curves;
+}
+
+export interface EnforcedCurve25519KeyImportParams extends Algorithm {
+    name: CURVE25519.Variants;
 }
 
 export interface EnforcedHmacImportParams extends HmacImportParams {
@@ -68,6 +80,15 @@ export interface EnforcedEcdsaParams extends EcdsaParams {
 export interface EnforcedEcdhKeyDeriveParams extends EcdhKeyDeriveParams {
     name: EC.Variant.ECDH;
     public: EcdhPubCryptoKey;
+}
+
+export interface EnforcedEd25519Params extends Algorithm {
+    name: CURVE25519.Variant.Ed25519;
+}
+
+export interface EnforcedX25519KeyDeriveParams extends EcdhKeyDeriveParams {
+    name: CURVE25519.Variant.X25519;
+    public: X25519PubCryptoKey;
 }
 
 export interface AesGcmKeyAlgorithm extends AesKeyAlgorithm {
@@ -136,14 +157,17 @@ export type EnforcedAesParams =
 export type EnforcedImportParams =
     | EnforcedRsaHashedImportParams
     | EnforcedEcKeyImportParams
+    | EnforcedCurve25519KeyImportParams
     | EnforcedHmacImportParams
     | EnforcedAesKeyAlgorithmNames;
 export type EnforcedKeyGenParams =
     | EnforcedRsaHashedKeyGenParams
     | EnforcedEcKeyGenParams
+    | EnforcedCurve25519KeyGenParams
     | EnforcedHmacKeyGenParams
     | EnforcedAesKeyGenParams;
 export type EnforcedKeyDeriveParams =
     | EnforcedEcdhKeyDeriveParams
+    | EnforcedX25519KeyDeriveParams
     | EnforcedHkdfParams
     | EnforcedPbkdf2Params;

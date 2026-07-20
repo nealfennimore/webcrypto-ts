@@ -3,11 +3,12 @@
  * @example
  * ```ts
  * import * as WebCrypto from "@nfen/webcrypto-ts";
- * import {AES, EC, HMAC, KDF, Random, RSA, SHA} from "@nfen/webcrypto-ts";
+ * import {AES, Curve25519, EC, HMAC, KDF, Random, RSA, SHA} from "@nfen/webcrypto-ts";
  * ```
  * @module
  */
 export * as AES from "./aes/index.js";
+export * as Curve25519 from "./curve25519/index.js";
 export * as EC from "./ec/index.js";
 export * as HMAC from "./hmac/index.js";
 export * as KDF from "./kdf/index.js";

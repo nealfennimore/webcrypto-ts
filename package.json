@@ -8,8 +8,10 @@
         "aes-gcm",
         "aes-kw",
         "aes",
+        "curve25519",
         "ecdh",
         "ecdsa",
+        "ed25519",
         "elliptic-curve",
         "hkdf",
         "hmac",
@@ -22,7 +24,8 @@
         "sha384",
         "sha512",
         "webcrypto-api",
-        "webcrypto"
+        "webcrypto",
+        "x25519"
     ],
     "types": "./lib/index.d.js",
     "main": "./lib/index.js",
@@ -30,6 +33,7 @@
         ".": "./lib/index.js",
         "./lib/*": "./lib/*.js",
         "./lib/aes/*": "./lib/aes/*.js",
+        "./lib/curve25519/*": "./lib/curve25519/*.js",
         "./lib/ec/*": "./lib/ec/*.js",
         "./lib/hmac/*": "./lib/hmac/*.js",
         "./lib/kdf/*": "./lib/kdf/*.js",

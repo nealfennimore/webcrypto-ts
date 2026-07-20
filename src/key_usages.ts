@@ -4,6 +4,7 @@
  */
 
 import { Alg as AES } from "./aes/shared.js";
+import { Alg as CURVE25519 } from "./curve25519/shared.js";
 import { Alg as EC } from "./ec/shared.js";
 import { Alg as Authentication } from "./hmac/index.js";
 import { Alg as KDF } from "./kdf/shared.js";
@@ -69,11 +70,13 @@ export function getKeyUsagePairsByAlg(alg: string): KeyUsagePair {
 
         case Authentication.Code.HMAC:
         case EC.Variant.ECDSA:
+        case CURVE25519.Variant.Ed25519:
         case RSA.Variant.RSA_PSS:
         case RSA.Variant.RSASSA_PKCS1_v1_5:
             return SigningKeyUsagePair;
 
         case EC.Variant.ECDH:
+        case CURVE25519.Variant.X25519:
         case KDF.Variant.HKDF:
         case KDF.Variant.PBKDF2:
             return DeriveKeyUsagePair;
